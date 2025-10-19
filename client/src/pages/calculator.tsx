@@ -1,5 +1,5 @@
 import { useParams, Link } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -8,8 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { calculatorsData } from "@/data/calculators";
+import { performCalculation } from "@/lib/calculatorEngine";
+import { getFormFields } from "@/lib/calculatorForms";
 
 export default function CalculatorPage() {
   const params = useParams();
@@ -22,6 +25,9 @@ export default function CalculatorPage() {
 
   // Find calculator from our static data
   const calculator = calculatorsData.find(calc => calc.slug === slug);
+
+  // Get form fields for this calculator
+  const formFields = calculator ? getFormFields(calculator.slug) : [];
 
   const recordUsage = useMutation({
     mutationFn: async (data: any) => {
@@ -49,55 +55,9 @@ export default function CalculatorPage() {
   const handleCalculate = () => {
     if (!calculator) return;
 
-    // Basic calculation logic based on calculator type
-    let calculatedResult = '';
-
     try {
-      switch (calculator.slug) {
-        case 'percentage-calculator':
-          const value = parseFloat(inputs.value || '0');
-          const percentage = parseFloat(inputs.percentage || '0');
-          calculatedResult = `${percentage}% of ${value} = ${(value * percentage / 100).toFixed(2)}`;
-          break;
-        
-        case 'tip-calculator':
-          const bill = parseFloat(inputs.bill || '0');
-          const tipPercent = parseFloat(inputs.tip || '15');
-          const tip = bill * tipPercent / 100;
-          const total = bill + tip;
-          calculatedResult = `Tip: $${tip.toFixed(2)} | Total: $${total.toFixed(2)}`;
-          break;
-        
-        case 'bmi-calculator':
-          const weight = parseFloat(inputs.weight || '0');
-          const height = parseFloat(inputs.height || '0');
-          const bmi = weight / ((height / 100) ** 2);
-          let category = '';
-          if (bmi < 18.5) category = 'Underweight';
-          else if (bmi < 25) category = 'Normal';
-          else if (bmi < 30) category = 'Overweight';
-          else category = 'Obese';
-          calculatedResult = `BMI: ${bmi.toFixed(1)} (${category})`;
-          break;
-        
-        case 'mortgage-calculator':
-        case 'loan-calculator':
-        case 'personal-loan-calculator':
-        case 'auto-loan-calculator':
-        case 'student-loan-calculator':
-          const principal = parseFloat(inputs.principal || '0');
-          const rate = parseFloat(inputs.rate || '0') / 100 / 12;
-          const term = parseFloat(inputs.term || '0') * 12;
-          const monthlyPayment = principal * (rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1);
-          const totalPaid = monthlyPayment * term;
-          const totalInterest = totalPaid - principal;
-          calculatedResult = `Monthly Payment: $${monthlyPayment.toFixed(2)} | Total Interest: $${totalInterest.toFixed(2)} | Total Paid: $${totalPaid.toFixed(2)}`;
-          break;
-        
-        default:
-          calculatedResult = 'Calculation completed successfully!';
-      }
-
+      // Use the comprehensive calculator engine
+      const calculatedResult = performCalculation(calculator.slug, inputs);
       setResult(calculatedResult);
 
       // Record usage if authenticated
@@ -123,6 +83,9 @@ export default function CalculatorPage() {
               <div className="text-center">
                 <h1 className="text-2xl font-bold text-gray-900 mb-4">Calculator Not Found</h1>
                 <p className="text-gray-600">The calculator you're looking for doesn't exist.</p>
+                <Link href="/">
+                  <Button className="mt-4" data-testid="button-home">Go to Home</Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -156,179 +119,47 @@ export default function CalculatorPage() {
               <div>
                 <h3 className="text-xl font-semibold mb-4">Enter Values</h3>
                 
-                {/* Dynamic form fields based on calculator type */}
-                {calculator.slug === 'percentage-calculator' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="value">Value</Label>
-                      <Input
-                        id="value"
-                        type="number"
-                        placeholder="Enter value"
-                        value={inputs.value || ''}
-                        onChange={(e) => handleInputChange('value', e.target.value)}
-                      />
+                {/* Dynamic form fields */}
+                <div className="space-y-4">
+                  {formFields.map((field) => (
+                    <div key={field.id}>
+                      <Label htmlFor={field.id}>{field.label}</Label>
+                      {field.type === 'select' ? (
+                        <Select
+                          value={inputs[field.id] || field.options?.[0]?.value || ''}
+                          onValueChange={(value) => handleInputChange(field.id, value)}
+                        >
+                          <SelectTrigger id={field.id} data-testid={`select-${field.id}`}>
+                            <SelectValue placeholder={`Select ${field.label}`} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {field.options?.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <Input
+                          id={field.id}
+                          type={field.type}
+                          step={field.step}
+                          placeholder={field.placeholder}
+                          value={inputs[field.id] || ''}
+                          onChange={(e) => handleInputChange(field.id, e.target.value)}
+                          data-testid={`input-${field.id}`}
+                        />
+                      )}
                     </div>
-                    <div>
-                      <Label htmlFor="percentage">Percentage (%)</Label>
-                      <Input
-                        id="percentage"
-                        type="number"
-                        placeholder="Enter percentage"
-                        value={inputs.percentage || ''}
-                        onChange={(e) => handleInputChange('percentage', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {calculator.slug === 'tip-calculator' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="bill">Bill Amount ($)</Label>
-                      <Input
-                        id="bill"
-                        type="number"
-                        placeholder="Enter bill amount"
-                        value={inputs.bill || ''}
-                        onChange={(e) => handleInputChange('bill', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="tip">Tip Percentage (%)</Label>
-                      <Input
-                        id="tip"
-                        type="number"
-                        placeholder="Enter tip percentage"
-                        value={inputs.tip || '15'}
-                        onChange={(e) => handleInputChange('tip', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {calculator.slug === 'bmi-calculator' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="weight">Weight (kg)</Label>
-                      <Input
-                        id="weight"
-                        type="number"
-                        placeholder="Enter weight in kg"
-                        value={inputs.weight || ''}
-                        onChange={(e) => handleInputChange('weight', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="height">Height (cm)</Label>
-                      <Input
-                        id="height"
-                        type="number"
-                        placeholder="Enter height in cm"
-                        value={inputs.height || ''}
-                        onChange={(e) => handleInputChange('height', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {calculator.slug === 'mortgage-calculator' && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="principal">Loan Amount ($)</Label>
-                      <Input
-                        id="principal"
-                        type="number"
-                        placeholder="Enter loan amount"
-                        value={inputs.principal || ''}
-                        onChange={(e) => handleInputChange('principal', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="rate">Annual Interest Rate (%)</Label>
-                      <Input
-                        id="rate"
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter annual interest rate"
-                        value={inputs.rate || ''}
-                        onChange={(e) => handleInputChange('rate', e.target.value)}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="term">Loan Term (years)</Label>
-                      <Input
-                        id="term"
-                        type="number"
-                        placeholder="Enter loan term in years"
-                        value={inputs.term || ''}
-                        onChange={(e) => handleInputChange('term', e.target.value)}
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {/* Loan calculators (personal, auto, student, general loan) */}
-                {['loan-calculator', 'personal-loan-calculator', 'auto-loan-calculator', 'student-loan-calculator'].includes(calculator.slug) && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="principal">Loan Amount ($)</Label>
-                      <Input
-                        id="principal"
-                        type="number"
-                        placeholder="Enter loan amount"
-                        value={inputs.principal || ''}
-                        onChange={(e) => handleInputChange('principal', e.target.value)}
-                        data-testid="input-principal"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="rate">Annual Interest Rate (%)</Label>
-                      <Input
-                        id="rate"
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter annual interest rate"
-                        value={inputs.rate || ''}
-                        onChange={(e) => handleInputChange('rate', e.target.value)}
-                        data-testid="input-rate"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="term">Loan Term (years)</Label>
-                      <Input
-                        id="term"
-                        type="number"
-                        placeholder="Enter loan term in years"
-                        value={inputs.term || ''}
-                        onChange={(e) => handleInputChange('term', e.target.value)}
-                        data-testid="input-term"
-                      />
-                    </div>
-                  </div>
-                )}
-                
-                {/* Default form for other calculators */}
-                {!['percentage-calculator', 'tip-calculator', 'bmi-calculator', 'mortgage-calculator', 'loan-calculator', 'personal-loan-calculator', 'auto-loan-calculator', 'student-loan-calculator'].includes(calculator.slug) && (
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="input1">Input Value</Label>
-                      <Input
-                        id="input1"
-                        type="number"
-                        placeholder="Enter value"
-                        value={inputs.input1 || ''}
-                        onChange={(e) => handleInputChange('input1', e.target.value)}
-                        data-testid="input-value"
-                      />
-                    </div>
-                  </div>
-                )}
+                  ))}
+                </div>
                 
                 <Button 
                   onClick={handleCalculate} 
                   className="w-full mt-6 bg-blue-600 hover:bg-blue-700"
                   size="lg"
+                  data-testid="button-calculate"
                 >
                   Calculate
                 </Button>
@@ -339,20 +170,32 @@ export default function CalculatorPage() {
                 <h3 className="text-xl font-semibold mb-4">Result</h3>
                 <div className="bg-gray-100 rounded-lg p-6 min-h-32">
                   {result ? (
-                    <div className="text-lg font-semibold text-green-600">{result}</div>
+                    <div className="text-lg font-semibold text-green-600" data-testid="text-result">{result}</div>
                   ) : (
                     <div className="text-gray-500">Results will appear here after calculation</div>
                   )}
                 </div>
                 
                 {/* Embed Code */}
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">Embed this calculator:</h4>
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <h4 className="font-semibold mb-2">Embed this calculator on your website</h4>
+                  <p className="text-sm text-gray-600 mb-3">
+                    Copy and paste the code below into your HTML to add this calculator to your website:
+                  </p>
                   <Input
                     readOnly
-                    value={`<iframe src="${window.location.origin}/calculator/${slug}?embed=true" width="100%" height="400"></iframe>`}
-                    className="text-sm"
+                    value={`<iframe src="${window.location.origin}/calculator/${slug}?embed=true" width="100%" height="600" frameborder="0"></iframe>`}
+                    className="text-sm font-mono"
+                    data-testid="input-embed-code"
+                    onClick={(e) => {
+                      e.currentTarget.select();
+                      navigator.clipboard.writeText(e.currentTarget.value);
+                      toast({ title: "Copied to clipboard!" });
+                    }}
                   />
+                  <p className="text-xs text-gray-500 mt-2">
+                    Click the code above to copy it. You can adjust the width and height values as needed.
+                  </p>
                 </div>
               </div>
               
@@ -369,6 +212,23 @@ export default function CalculatorPage() {
                 Whether you're a student, professional, or just need quick calculations, this tool will save you time and ensure accuracy. 
                 All calculations are performed client-side for privacy and speed.
                 {isAuthenticated && " Your calculation history is automatically saved when you're signed in."}
+              </p>
+            </div>
+            
+            {/* Backlink */}
+            <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+              <p className="text-sm text-gray-600">
+                Powered by{' '}
+                <a 
+                  href="https://calculatethis.org" 
+                  className="text-blue-600 hover:text-blue-800 font-semibold underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="link-backlink"
+                >
+                  CalculateThis.org
+                </a>
+                {' '}- Free Online Calculators for Math, Finance, Health & More
               </p>
             </div>
           </CardContent>
