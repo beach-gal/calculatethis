@@ -1,4 +1,4 @@
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
@@ -81,11 +81,17 @@ export default function CalculatorPage() {
           break;
         
         case 'mortgage-calculator':
+        case 'loan-calculator':
+        case 'personal-loan-calculator':
+        case 'auto-loan-calculator':
+        case 'student-loan-calculator':
           const principal = parseFloat(inputs.principal || '0');
           const rate = parseFloat(inputs.rate || '0') / 100 / 12;
           const term = parseFloat(inputs.term || '0') * 12;
           const monthlyPayment = principal * (rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1);
-          calculatedResult = `Monthly Payment: $${monthlyPayment.toFixed(2)}`;
+          const totalPaid = monthlyPayment * term;
+          const totalInterest = totalPaid - principal;
+          calculatedResult = `Monthly Payment: $${monthlyPayment.toFixed(2)} | Total Interest: $${totalInterest.toFixed(2)} | Total Paid: $${totalPaid.toFixed(2)}`;
           break;
         
         default:
@@ -130,6 +136,13 @@ export default function CalculatorPage() {
       <Header />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Back to Home Button */}
+        <Link href="/">
+          <Button variant="outline" className="mb-4" data-testid="button-back-home">
+            ← Back to Home
+          </Button>
+        </Link>
+        
         <Card>
           <CardHeader>
             <CardTitle className="text-3xl font-bold text-blue-600">{calculator.name}</CardTitle>
@@ -255,8 +268,48 @@ export default function CalculatorPage() {
                   </div>
                 )}
                 
+                {/* Loan calculators (personal, auto, student, general loan) */}
+                {['loan-calculator', 'personal-loan-calculator', 'auto-loan-calculator', 'student-loan-calculator'].includes(calculator.slug) && (
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="principal">Loan Amount ($)</Label>
+                      <Input
+                        id="principal"
+                        type="number"
+                        placeholder="Enter loan amount"
+                        value={inputs.principal || ''}
+                        onChange={(e) => handleInputChange('principal', e.target.value)}
+                        data-testid="input-principal"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="rate">Annual Interest Rate (%)</Label>
+                      <Input
+                        id="rate"
+                        type="number"
+                        step="0.01"
+                        placeholder="Enter annual interest rate"
+                        value={inputs.rate || ''}
+                        onChange={(e) => handleInputChange('rate', e.target.value)}
+                        data-testid="input-rate"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="term">Loan Term (years)</Label>
+                      <Input
+                        id="term"
+                        type="number"
+                        placeholder="Enter loan term in years"
+                        value={inputs.term || ''}
+                        onChange={(e) => handleInputChange('term', e.target.value)}
+                        data-testid="input-term"
+                      />
+                    </div>
+                  </div>
+                )}
+                
                 {/* Default form for other calculators */}
-                {!['percentage-calculator', 'tip-calculator', 'bmi-calculator', 'mortgage-calculator'].includes(calculator.slug) && (
+                {!['percentage-calculator', 'tip-calculator', 'bmi-calculator', 'mortgage-calculator', 'loan-calculator', 'personal-loan-calculator', 'auto-loan-calculator', 'student-loan-calculator'].includes(calculator.slug) && (
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="input1">Input Value</Label>
@@ -266,6 +319,7 @@ export default function CalculatorPage() {
                         placeholder="Enter value"
                         value={inputs.input1 || ''}
                         onChange={(e) => handleInputChange('input1', e.target.value)}
+                        data-testid="input-value"
                       />
                     </div>
                   </div>
