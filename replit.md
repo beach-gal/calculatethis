@@ -131,7 +131,52 @@ Preferred communication style: Simple, everyday language.
 - lucide-react for icons
 - class-variance-authority and clsx for conditional styling
 
+**Calculator Engine Architecture (October 2025):**
+
+The calculator system uses a scalable registry-based architecture for managing 200+ calculators:
+
+**Core Components:**
+1. **calculatorConfig.ts (289 lines)**: Registry mapping each calculator slug to:
+   - Handler type (arithmetic, geometry, finance, conversion, health, etc.)
+   - Required form fields array
+   - Imperial unit preferences
+
+2. **calculatorHandlers.ts (1079 lines)**: Calculation logic organized by handler type:
+   - handleArithmetic: Basic math, ratios, fractions, expression evaluation
+   - handlePercentage, handleStatistics, handleNumberTheory, handleAlgebra
+   - handleGeometry, handleTrigonometry
+   - handleConversion: Unit conversions with imperial defaults (lbs, ft, °F, mph, gal)
+   - handleLoan, handleInvestment, handleSalary, handleTaxDiscount
+   - handleHealthBMI, handleHealthCalories, handleHealthFitness
+   - handleDateTime, handleGrade, handleConstruction
+   - handleText, handleRandom, handleGenerator, handleOther
+
+3. **calculatorEngineNew.ts (117 lines)**: Routing engine that:
+   - Looks up calculator configuration from registry
+   - Routes to appropriate handler based on handler type
+   - Handles errors gracefully with user-friendly messages
+
+4. **calculatorFormsNew.ts**: Dynamic form field generator:
+   - Maps field IDs to predefined form field configurations
+   - Provides sensible fallbacks for unmapped fields
+   - Smart text vs number field detection
+   - Handles common fields like expression, value, percentage, principal, rate, weight, etc.
+
+**Design Decisions:**
+- Registry pattern allows easy addition of new calculators
+- Handler-based grouping reduces code duplication
+- Data-driven form generation eliminates manual form definitions
+- Imperial units as default for all conversions (per requirements)
+- Safe expression evaluation for basic/scientific calculators using Function constructor
+- All calculators share common UI/UX patterns
+
+**Security:**
+- Expression evaluation sanitizes input to only allow safe characters
+- Invalid/malicious expressions rejected with clear error messages
+- No eval() usage - uses Function constructor in strict mode
+
 **Static Data:**
-- Calculator definitions currently hardcoded in client/src/data/calculators.ts
-- 200+ calculator entries with name, slug, category, description
+- Calculator definitions in client/src/data/calculators.ts (200+ entries)
+- Provides name, slug, category, description for UI display
+- Complemented by calculatorConfig.ts for execution logic
 - Future: Migrate to database-driven calculator definitions
