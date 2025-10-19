@@ -15,6 +15,7 @@ export interface FormField {
 // Field presets for common input types
 const commonFields = {
   // Math
+  expression: { id: 'expression', label: 'Expression', type: 'text' as const, placeholder: 'e.g., 5 + 3 * 2' },
   value: { id: 'value', label: 'Value', type: 'number' as const, placeholder: 'Enter value', step: '0.01' },
   percentage: { id: 'percentage', label: 'Percentage (%)', type: 'number' as const, placeholder: 'Enter percentage', step: '0.01' },
   number: { id: 'number', label: 'Number', type: 'number' as const, placeholder: 'Enter number', step: '0.01' },
@@ -155,15 +156,34 @@ export function getFormFields(slug: string): FormField[] {
     if (commonFields[fieldId as keyof typeof commonFields]) {
       formFields.push(commonFields[fieldId as keyof typeof commonFields]);
     } else {
-      // Create a generic field
+      // Create a generic field with sensible defaults
+      // Determine if it should be text or number based on field name
+      const isTextfield = fieldId.includes('text') || fieldId.includes('name') || 
+                         fieldId.includes('equation') || fieldId.includes('shape') ||
+                         fieldId.includes('operation') || fieldId.includes('case') ||
+                         fieldId.includes('odds') || fieldId.includes('ratio') ||
+                         fieldId.includes('activity') || fieldId.includes('Time');
+      
+      const label = fieldId
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, str => str.toUpperCase())
+        .replace(/([0-9])/g, ' $1')
+        .trim();
+      
       formFields.push({
         id: fieldId,
-        label: fieldId.charAt(0).toUpperCase() + fieldId.slice(1).replace(/([A-Z])/g, ' $1'),
-        type: 'number',
-        placeholder: `Enter ${fieldId}`,
-        step: '0.01'
+        label: label,
+        type: isTextfield ? 'text' : 'number',
+        placeholder: `Enter ${label.toLowerCase()}`,
+        step: isTextfield ? undefined : '0.01'
       });
     }
+  }
+  
+  // Validate that we generated at least one field
+  if (formFields.length === 0) {
+    console.warn(`No fields generated for calculator: ${slug}`);
+    return [commonFields.value];
   }
   
   return formFields;

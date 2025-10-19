@@ -17,7 +17,27 @@ const lcm = (a: number, b: number): number => Math.abs(a * b) / gcd(a, b);
 // Arithmetic Handlers
 export function handleArithmetic(slug: string, inputs: CalculatorInputs): string {
   if (slug === 'basic-calculator' || slug === 'scientific-calculator') {
-    return 'Please use the input fields to perform calculations';
+    const expression = inputs.expression || '';
+    if (!expression) return 'Please enter an expression to calculate';
+    
+    try {
+      // Safe expression evaluation - only allow numbers and basic operators
+      const sanitized = expression.replace(/[^0-9+\-*/().\s]/g, '');
+      if (sanitized !== expression) {
+        return 'Invalid characters in expression. Use only numbers and operators (+, -, *, /, ())';
+      }
+      
+      // Evaluate using Function constructor (safer than eval)
+      const result = Function('"use strict"; return (' + sanitized + ')')();
+      
+      if (typeof result !== 'number' || !isFinite(result)) {
+        return 'Invalid expression';
+      }
+      
+      return `${expression} = ${result}`;
+    } catch (error) {
+      return 'Invalid expression. Please check your input.';
+    }
   }
   
   if (slug === 'ratio-calculator') {
