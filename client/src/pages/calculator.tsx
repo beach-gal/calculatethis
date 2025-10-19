@@ -123,7 +123,7 @@ export default function CalculatorPage() {
                 <div className="space-y-4">
                   {formFields.map((field) => (
                     <div key={field.id}>
-                      <Label htmlFor={field.id}>{field.label}</Label>
+                      <Label htmlFor={field.id} data-testid={`label-${field.id}`}>{field.label}</Label>
                       {field.type === 'select' ? (
                         <Select
                           value={inputs[field.id] || field.options?.[0]?.value || ''}
@@ -132,9 +132,13 @@ export default function CalculatorPage() {
                           <SelectTrigger id={field.id} data-testid={`select-${field.id}`}>
                             <SelectValue placeholder={`Select ${field.label}`} />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent data-testid={`select-content-${field.id}`}>
                             {field.options?.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem 
+                                key={option.value} 
+                                value={option.value}
+                                data-testid={`select-option-${field.id}-${option.value}`}
+                              >
                                 {option.label}
                               </SelectItem>
                             ))}
