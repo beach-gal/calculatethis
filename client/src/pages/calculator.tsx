@@ -11,8 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { calculatorsData } from "@/data/calculators";
-import { performCalculation } from "@/lib/calculatorEngine";
-import { getFormFields } from "@/lib/calculatorForms";
+import { performCalculation } from "@/lib/calculatorEngineNew";
+import { getFormFields } from "@/lib/calculatorFormsNew";
 
 export default function CalculatorPage() {
   const params = useParams();
