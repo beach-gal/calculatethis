@@ -2,7 +2,28 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { insertCalculatorUsageSchema } from "@shared/schema";
+import { insertCalculatorUsageSchema, insertAdCodeSchema, insertSettingSchema } from "@shared/schema";
+
+// Admin middleware
+const isAdmin = async (req: any, res: any, next: any) => {
+  try {
+    if (!req.user || !req.user.claims || !req.user.claims.sub) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    
+    const userId = req.user.claims.sub;
+    const admin = await storage.isAdmin(userId);
+    
+    if (!admin) {
+      return res.status(403).json({ message: "Forbidden: Admin access required" });
+    }
+    
+    next();
+  } catch (error) {
+    console.error("Error checking admin status:", error);
+    res.status(500).json({ message: "Failed to verify admin status" });
+  }
+};
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -314,6 +335,131 @@ If user says "I need a calculator for paint coverage", generate:
     } catch (error) {
       console.error("Error generating calculator:", error);
       res.status(500).json({ message: "Failed to generate calculator" });
+    }
+  });
+
+  // Admin routes - Ad Codes Management
+  app.get('/api/admin/ad-codes', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const adCodes = await storage.getAdCodes();
+      res.json(adCodes);
+    } catch (error) {
+      console.error("Error fetching ad codes:", error);
+      res.status(500).json({ message: "Failed to fetch ad codes" });
+    }
+  });
+
+  app.post('/api/admin/ad-codes', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const adCodeData = insertAdCodeSchema.parse(req.body);
+      const adCode = await storage.createAdCode(adCodeData);
+      res.json(adCode);
+    } catch (error) {
+      console.error("Error creating ad code:", error);
+      res.status(500).json({ message: "Failed to create ad code" });
+    }
+  });
+
+  app.put('/api/admin/ad-codes/:id', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const adCode = await storage.updateAdCode(id, req.body);
+      res.json(adCode);
+    } catch (error) {
+      console.error("Error updating ad code:", error);
+      res.status(500).json({ message: "Failed to update ad code" });
+    }
+  });
+
+  app.delete('/api/admin/ad-codes/:id', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteAdCode(id);
+      res.json({ message: "Ad code deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting ad code:", error);
+      res.status(500).json({ message: "Failed to delete ad code" });
+    }
+  });
+
+  // Admin routes - Admin Users Management
+  app.get('/api/admin/admins', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const admins = await storage.getAdminUsers();
+      res.json(admins);
+    } catch (error) {
+      console.error("Error fetching admins:", error);
+      res.status(500).json({ message: "Failed to fetch admins" });
+    }
+  });
+
+  app.post('/api/admin/admins', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { userId } = req.body;
+      if (!userId) {
+        return res.status(400).json({ message: "User ID is required" });
+      }
+      const admin = await storage.addAdmin(userId);
+      res.json(admin);
+    } catch (error) {
+      console.error("Error adding admin:", error);
+      res.status(500).json({ message: "Failed to add admin" });
+    }
+  });
+
+  app.delete('/api/admin/admins/:userId', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { userId } = req.params;
+      await storage.removeAdmin(userId);
+      res.json({ message: "Admin removed successfully" });
+    } catch (error) {
+      console.error("Error removing admin:", error);
+      res.status(500).json({ message: "Failed to remove admin" });
+    }
+  });
+
+  // Admin routes - Settings Management
+  app.get('/api/admin/settings', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const settings = await storage.getAllSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      res.status(500).json({ message: "Failed to fetch settings" });
+    }
+  });
+
+  app.get('/api/settings/:key', async (req, res) => {
+    try {
+      const { key } = req.params;
+      const value = await storage.getSetting(key);
+      res.json({ key, value });
+    } catch (error) {
+      console.error("Error fetching setting:", error);
+      res.status(500).json({ message: "Failed to fetch setting" });
+    }
+  });
+
+  app.post('/api/admin/settings', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const settingData = insertSettingSchema.parse(req.body);
+      const setting = await storage.setSetting(settingData.key, settingData.value);
+      res.json(setting);
+    } catch (error) {
+      console.error("Error saving setting:", error);
+      res.status(500).json({ message: "Failed to save setting" });
+    }
+  });
+
+  // Check if current user is admin
+  app.get('/api/admin/check', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const isAdminUser = await storage.isAdmin(userId);
+      res.json({ isAdmin: isAdminUser });
+    } catch (error) {
+      console.error("Error checking admin status:", error);
+      res.status(500).json({ message: "Failed to check admin status" });
     }
   });
 
