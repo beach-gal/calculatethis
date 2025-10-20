@@ -30,17 +30,17 @@ export default function Landing() {
       <Header />
       
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-4">
         
         {/* Header Ad */}
-        <AdSlot location="header" className="mb-6" />
+        <AdSlot location="header" className="mb-4" />
         
         {/* Hero Section */}
-        <section className="text-center mb-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+        <section className="text-center mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Free Online Calculators
           </h1>
-          <p className="text-xl text-gray-600 mb-5">
+          <p className="text-lg text-gray-600 mb-4">
             Over 200 calculators for Math, Finance, Health, and everyday calculations
           </p>
           
@@ -50,11 +50,11 @@ export default function Landing() {
               <input 
                 type="search" 
                 placeholder="Search calculators (e.g., mortgage, BMI, percentage)..." 
-                className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 shadow-lg"
+                className="w-full px-5 py-3 text-base border-2 border-gray-300 rounded-xl focus:outline-none focus:border-blue-500 shadow-lg"
                 value={searchQuery}
                 onChange={handleSearch}
               />
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 px-5 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm">
                 Search
               </button>
             </div>
@@ -84,40 +84,36 @@ export default function Landing() {
         </section>
 
         {/* AI Calculator Builder Promo - NEW Feature */}
-        <section className="mb-10">
+        <section className="mb-8">
           <Link href="/custom-calculator" data-testid="link-custom-calculator">
-            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
-              <div className="bg-white rounded-xl p-6 md:p-10">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-pulse">
+              <div className="bg-white rounded-lg p-4 md:p-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div className="flex-1 text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
-                      <Sparkles className="h-10 w-10 text-purple-600" />
-                      <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                      <Sparkles className="h-7 w-7 text-purple-600" />
+                      <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                         AI Calculator Builder
                       </h2>
                       <Badge variant="new">NEW</Badge>
                     </div>
-                    <p className="text-xl text-gray-700 mb-4">
+                    <p className="text-lg text-gray-700 mb-2">
                       Can't find the calculator you need? <span className="font-bold">Create your own in seconds with AI!</span>
                     </p>
-                    <p className="text-gray-600 mb-6">
-                      Just describe what you want to calculate in plain English, and our AI will build a custom calculator instantly. 
-                      No coding required!
-                    </p>
-                    <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                      <div className="bg-purple-50 px-4 py-2 rounded-lg text-sm text-purple-700 font-medium">
+                    <div className="flex flex-wrap gap-2 justify-center md:justify-start text-sm">
+                      <div className="bg-purple-50 px-3 py-1 rounded-lg text-purple-700 font-medium">
                         ✨ Instant generation
                       </div>
-                      <div className="bg-pink-50 px-4 py-2 rounded-lg text-sm text-pink-700 font-medium">
+                      <div className="bg-pink-50 px-3 py-1 rounded-lg text-pink-700 font-medium">
                         🎯 Perfectly customized
                       </div>
-                      <div className="bg-blue-50 px-4 py-2 rounded-lg text-sm text-blue-700 font-medium">
+                      <div className="bg-blue-50 px-3 py-1 rounded-lg text-blue-700 font-medium">
                         🚀 Free to use
                       </div>
                     </div>
                   </div>
                   <div className="flex-shrink-0">
-                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-shadow">
+                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-bold text-base shadow-lg hover:shadow-xl transition-shadow" data-testid="button-try-ai-calculator">
                       Try It Now →
                     </div>
                   </div>
