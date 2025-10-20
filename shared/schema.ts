@@ -56,6 +56,32 @@ export const calculators = pgTable("calculators", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Ad codes table for ad rotation management
+export const adCodes = pgTable("ad_codes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull(),
+  location: varchar("location").notNull(), // e.g., 'leaderboard', 'sidebar', 'rectangle'
+  code: text("code").notNull(),
+  active: integer("active").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Admin users table
+export const adminUsers = pgTable("admin_users", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull().unique(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Settings table for site configuration
+export const settings = pgTable("settings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: varchar("key").notNull().unique(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertCalculatorUsageSchema = createInsertSchema(calculatorUsage).omit({
   id: true,
   createdAt: true,
@@ -66,9 +92,31 @@ export const insertCalculatorSchema = createInsertSchema(calculators).omit({
   createdAt: true,
 });
 
+export const insertAdCodeSchema = createInsertSchema(adCodes).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertAdminUserSchema = createInsertSchema(adminUsers).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSettingSchema = createInsertSchema(settings).omit({
+  id: true,
+  updatedAt: true,
+});
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type CalculatorUsage = typeof calculatorUsage.$inferSelect;
 export type InsertCalculatorUsage = z.infer<typeof insertCalculatorUsageSchema>;
 export type Calculator = typeof calculators.$inferSelect;
 export type InsertCalculator = z.infer<typeof insertCalculatorSchema>;
+export type AdCode = typeof adCodes.$inferSelect;
+export type InsertAdCode = z.infer<typeof insertAdCodeSchema>;
+export type AdminUser = typeof adminUsers.$inferSelect;
+export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
+export type Setting = typeof settings.$inferSelect;
+export type InsertSetting = z.infer<typeof insertSettingSchema>;
