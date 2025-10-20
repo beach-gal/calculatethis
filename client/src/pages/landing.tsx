@@ -86,7 +86,7 @@ export default function Landing() {
         {/* AI Calculator Builder Promo - NEW Feature */}
         <section className="mb-8">
           <Link href="/custom-calculator" data-testid="link-custom-calculator">
-            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] animate-pulse">
+            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
               <div className="bg-white rounded-lg p-4 md:p-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div className="flex-1 text-center md:text-left">
