@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import Header from "@/components/Header";
+import AdSlot from "@/components/AdSlot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -116,6 +117,9 @@ export default function CustomCalculator() {
           Back to Home
         </Button>
 
+        {/* Header Ad */}
+        <AdSlot location="header" className="mb-6" />
+
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Sparkles className="h-8 w-8 text-purple-500" />
@@ -183,7 +187,11 @@ export default function CustomCalculator() {
 
         {/* Generated Calculator Section */}
         {generatedCalculator && (
-          <Card data-testid="card-generated">
+          <>
+            {/* Inline Ad */}
+            <AdSlot location="inline" className="mb-6" />
+            
+            <Card data-testid="card-generated">
             <CardHeader>
               <CardTitle>{generatedCalculator.name}</CardTitle>
               <CardDescription>{generatedCalculator.description}</CardDescription>
@@ -235,7 +243,11 @@ export default function CustomCalculator() {
               )}
             </CardContent>
           </Card>
+          </>
         )}
+
+        {/* Footer Ad */}
+        <AdSlot location="footer" className="mt-6" />
       </main>
     </div>
   );
