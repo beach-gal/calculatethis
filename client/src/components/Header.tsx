@@ -34,11 +34,11 @@ export default function Header() {
 
   return (
     <header className="bg-blue-50 shadow-md sticky top-0 z-50 border-b border-blue-100">
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           {/* Logo (clickable home link) */}
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity">
-            <img src={logoPath} alt="CalculateThis.org Logo" className="h-20 w-auto" data-testid="logo-image" />
+            <img src={logoPath} alt="CalculateThis.org Logo" className="h-[200px] w-auto" data-testid="logo-image" />
           </Link>
           
           {/* Navigation & Auth */}
