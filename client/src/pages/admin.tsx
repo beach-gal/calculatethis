@@ -78,6 +78,37 @@ export default function AdminPage() {
   );
 }
 
+const AD_PLACEMENTS = [
+  {
+    id: "header",
+    name: "Header",
+    description: "Top of every page, above main content",
+    recommendedSize: "728x90 (Leaderboard) or 970x90 (Large Leaderboard)",
+    position: "Full width, centered"
+  },
+  {
+    id: "sidebar",
+    name: "Sidebar",
+    description: "Right side of calculator pages",
+    recommendedSize: "300x250 (Medium Rectangle) or 300x600 (Half Page)",
+    position: "Right column, visible while scrolling"
+  },
+  {
+    id: "inline",
+    name: "Inline",
+    description: "Between content sections",
+    recommendedSize: "728x90 (Leaderboard) or 336x280 (Large Rectangle)",
+    position: "Centered within content flow"
+  },
+  {
+    id: "footer",
+    name: "Footer",
+    description: "Bottom of every page",
+    recommendedSize: "728x90 (Leaderboard) or 970x90 (Large Leaderboard)",
+    position: "Full width, bottom of page"
+  }
+];
+
 function AdCodesManagement() {
   const { toast } = useToast();
   const [name, setName] = useState("");
@@ -137,12 +168,51 @@ function AdCodesManagement() {
     createMutation.mutate({ name: name.trim(), code: code.trim(), location, active: isActive ? 1 : 0 });
   };
 
+  const selectedPlacement = AD_PLACEMENTS.find(p => p.id === location);
+
   return (
     <div className="space-y-6">
+      {/* Ad Placement Guide */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="text-blue-900">Ad Placement Guide</CardTitle>
+          <CardDescription className="text-blue-700">
+            Select a location below to see recommended ad sizes and placement details
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4">
+            {AD_PLACEMENTS.map((placement) => (
+              <div key={placement.id} className="bg-white border-2 border-blue-100 rounded-lg p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <h3 className="font-semibold text-blue-900">{placement.name}</h3>
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                    {placement.id}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600 mb-3">{placement.description}</p>
+                <div className="space-y-1 text-sm">
+                  <div className="flex items-start gap-2">
+                    <span className="font-medium text-blue-700 min-w-[90px]">Size:</span>
+                    <span className="text-gray-700">{placement.recommendedSize}</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-medium text-blue-700 min-w-[90px]">Position:</span>
+                    <span className="text-gray-700">{placement.position}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <CardTitle>Add New Ad Code</CardTitle>
-          <CardDescription>Paste your ad network code (e.g., Google AdSense, AdThrive)</CardDescription>
+          <CardDescription>
+            Paste the code from your ad network (Google AdSense, Media.net, AdThrive, Ezoic, etc.)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -153,35 +223,48 @@ function AdCodesManagement() {
                 data-testid="input-adname"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., Google AdSense Header"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="code">Ad Code</Label>
-              <textarea
-                id="code"
-                data-testid="input-adcode"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className="w-full min-h-[120px] px-3 py-2 border rounded-md"
-                placeholder="<script>...</script>"
+                placeholder="e.g., Google AdSense Header Leaderboard"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location">Ad Placement Location</Label>
               <Select value={location} onValueChange={setLocation}>
                 <SelectTrigger id="location" data-testid="select-location">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="header">Header</SelectItem>
-                  <SelectItem value="sidebar">Sidebar</SelectItem>
-                  <SelectItem value="footer">Footer</SelectItem>
-                  <SelectItem value="inline">Inline</SelectItem>
+                  {AD_PLACEMENTS.map((placement) => (
+                    <SelectItem key={placement.id} value={placement.id}>
+                      {placement.name} - {placement.recommendedSize}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
+              {selectedPlacement && (
+                <div className="mt-2 p-3 bg-gray-50 rounded-md border">
+                  <p className="text-sm font-medium text-gray-700 mb-1">Selected: {selectedPlacement.name}</p>
+                  <p className="text-xs text-gray-600 mb-2">{selectedPlacement.description}</p>
+                  <p className="text-xs text-blue-600 font-medium">
+                    Recommended: {selectedPlacement.recommendedSize}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="code">Ad Code (from your ad network)</Label>
+              <textarea
+                id="code"
+                data-testid="input-adcode"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="w-full min-h-[140px] px-3 py-2 border rounded-md font-mono text-sm"
+                placeholder="Paste your ad code here. Example:
+<script async src='https://pagead2.googlesyndication.com/...'></script>
+<ins class='adsbygoogle' style='display:inline-block;width:728px;height:90px'></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>"
+              />
             </div>
 
             <div className="flex items-center space-x-2">
@@ -191,7 +274,7 @@ function AdCodesManagement() {
                 checked={isActive}
                 onCheckedChange={setIsActive}
               />
-              <Label htmlFor="active">Active</Label>
+              <Label htmlFor="active">Active (show this ad immediately)</Label>
             </div>
 
             <Button type="submit" data-testid="button-add-adcode" disabled={createMutation.isPending}>
