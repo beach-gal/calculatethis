@@ -72,6 +72,15 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
     -   **Administrators Management**: Add/remove admin users.
     -   **Settings Management**: Configure site settings like contact email.
 
+### Ad Placement System
+
+- **Purpose**: Display active ad codes across all calculator pages with strategic placement.
+- **Component**: Reusable AdSlot component that fetches and renders ads by location.
+- **Locations**: header (top of pages), sidebar (right side on calculator pages), inline (between content), footer (bottom of pages).
+- **Page Coverage**: Landing page, individual calculator pages, and AI-generated calculator pages all include ad placements.
+- **Ad Rotation**: Randomly selects one ad when multiple active ads exist for a location.
+- **Integration**: Managed through admin dashboard; changes take effect immediately on page reload.
+
 ## External Dependencies
 
 1.  **Neon PostgreSQL**: Serverless PostgreSQL database solution.
