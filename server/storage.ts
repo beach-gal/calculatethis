@@ -2,15 +2,24 @@ import {
   users,
   calculatorUsage,
   calculators,
+  adCodes,
+  adminUsers,
+  settings,
   type User,
   type UpsertUser,
   type CalculatorUsage,
   type InsertCalculatorUsage,
   type Calculator,
   type InsertCalculator,
+  type AdCode,
+  type InsertAdCode,
+  type AdminUser,
+  type InsertAdminUser,
+  type Setting,
+  type InsertSetting,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 export interface IStorage {
   // User operations (mandatory for Replit Auth)
@@ -26,6 +35,24 @@ export interface IStorage {
   recordCalculatorUsage(usage: InsertCalculatorUsage): Promise<CalculatorUsage>;
   getUserCalculatorHistory(userId: string, limit?: number): Promise<CalculatorUsage[]>;
   getCalculatorStats(calculatorName: string): Promise<number>;
+  
+  // Admin operations - Ad codes
+  getAdCodes(): Promise<AdCode[]>;
+  getAdCodeById(id: string): Promise<AdCode | undefined>;
+  createAdCode(adCode: InsertAdCode): Promise<AdCode>;
+  updateAdCode(id: string, adCode: Partial<InsertAdCode>): Promise<AdCode>;
+  deleteAdCode(id: string): Promise<void>;
+  
+  // Admin operations - Admin users
+  getAdminUsers(): Promise<AdminUser[]>;
+  isAdmin(userId: string): Promise<boolean>;
+  addAdmin(userId: string): Promise<AdminUser>;
+  removeAdmin(userId: string): Promise<void>;
+  
+  // Admin operations - Settings
+  getSetting(key: string): Promise<string | undefined>;
+  setSetting(key: string, value: string): Promise<Setting>;
+  getAllSettings(): Promise<Setting[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -95,6 +122,81 @@ export class DatabaseStorage implements IStorage {
       .from(calculatorUsage)
       .where(eq(calculatorUsage.calculatorName, calculatorName));
     return Number(result[0]?.count || 0);
+  }
+
+  // Admin operations - Ad codes
+  async getAdCodes(): Promise<AdCode[]> {
+    return await db.select().from(adCodes).orderBy(desc(adCodes.createdAt));
+  }
+
+  async getAdCodeById(id: string): Promise<AdCode | undefined> {
+    const [adCode] = await db.select().from(adCodes).where(eq(adCodes.id, id));
+    return adCode;
+  }
+
+  async createAdCode(adCode: InsertAdCode): Promise<AdCode> {
+    const [newAdCode] = await db.insert(adCodes).values(adCode).returning();
+    return newAdCode;
+  }
+
+  async updateAdCode(id: string, adCode: Partial<InsertAdCode>): Promise<AdCode> {
+    const [updatedAdCode] = await db
+      .update(adCodes)
+      .set({ ...adCode, updatedAt: new Date() })
+      .where(eq(adCodes.id, id))
+      .returning();
+    return updatedAdCode;
+  }
+
+  async deleteAdCode(id: string): Promise<void> {
+    await db.delete(adCodes).where(eq(adCodes.id, id));
+  }
+
+  // Admin operations - Admin users
+  async getAdminUsers(): Promise<AdminUser[]> {
+    return await db.select().from(adminUsers).orderBy(desc(adminUsers.createdAt));
+  }
+
+  async isAdmin(userId: string): Promise<boolean> {
+    const [admin] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.userId, userId));
+    return !!admin;
+  }
+
+  async addAdmin(userId: string): Promise<AdminUser> {
+    const [newAdmin] = await db
+      .insert(adminUsers)
+      .values({ userId })
+      .returning();
+    return newAdmin;
+  }
+
+  async removeAdmin(userId: string): Promise<void> {
+    await db.delete(adminUsers).where(eq(adminUsers.userId, userId));
+  }
+
+  // Admin operations - Settings
+  async getSetting(key: string): Promise<string | undefined> {
+    const [setting] = await db.select().from(settings).where(eq(settings.key, key));
+    return setting?.value;
+  }
+
+  async setSetting(key: string, value: string): Promise<Setting> {
+    const [setting] = await db
+      .insert(settings)
+      .values({ key, value })
+      .onConflictDoUpdate({
+        target: settings.key,
+        set: { value, updatedAt: new Date() },
+      })
+      .returning();
+    return setting;
+  }
+
+  async getAllSettings(): Promise<Setting[]> {
+    return await db.select().from(settings);
   }
 }
 
