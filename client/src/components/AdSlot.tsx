@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { AdCode, Setting } from "@shared/schema";
+import type { AdCode } from "@shared/schema";
 
 interface AdSlotProps {
   location: string;
@@ -7,15 +7,15 @@ interface AdSlotProps {
 }
 
 export default function AdSlot({ location, className = "" }: AdSlotProps) {
-  const { data: settings } = useQuery<Setting[]>({
-    queryKey: ['/api/admin/settings'],
+  const { data: adsSetting } = useQuery<{ key: string; value: string | undefined }>({
+    queryKey: ['/api/settings/ads_enabled'],
   });
 
   const { data: ads, isLoading } = useQuery<AdCode[]>({
     queryKey: ['/api/ad-codes', location],
   });
 
-  const adsEnabled = settings?.find((s) => s.key === 'ads_enabled')?.value === '1';
+  const adsEnabled = adsSetting?.value === '1';
 
   if (!adsEnabled) {
     return null;
