@@ -188,7 +188,7 @@ export default function Landing() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 mt-16">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             
             <div>
               <h4 className="text-lg font-bold mb-4">Popular Calculators</h4>
@@ -207,16 +207,6 @@ export default function Landing() {
                 <li><a href="#finance" className="hover:text-white transition-colors">Finance Calculators</a></li>
                 <li><a href="#health" className="hover:text-white transition-colors">Health Calculators</a></li>
                 <li><a href="#other" className="hover:text-white transition-colors">Other Calculators</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="text-lg font-bold mb-4">Resources</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="/about" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
             
