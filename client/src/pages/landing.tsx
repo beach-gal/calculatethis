@@ -134,7 +134,9 @@ export default function Landing() {
         </div>
 
         {/* Calculator Categories Section */}
-        <CategoryGrid />
+        <div id="calculators">
+          <CategoryGrid />
+        </div>
 
         {/* Ad Widget Area 2 */}
         <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 mb-12 text-center">
@@ -256,7 +258,7 @@ export default function Landing() {
               </ul>
             </div>
             
-            <div>
+            <div id="contact">
               <h4 className="text-lg font-bold mb-4">Get in Touch</h4>
               <p className="text-gray-400 mb-4">Have questions or feedback? We'd love to hear from you.</p>
               <ul className="space-y-2 text-gray-400">
