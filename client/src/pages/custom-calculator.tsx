@@ -32,6 +32,7 @@ export default function CustomCalculator() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const [description, setDescription] = useState("");
+  const [creatorName, setCreatorName] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCalculator, setGeneratedCalculator] = useState<GeneratedCalculator | null>(null);
   const [inputs, setInputs] = useState<Record<string, string>>({});
@@ -52,7 +53,10 @@ export default function CustomCalculator() {
     setResult(null);
 
     try {
-      const response = await apiRequest('POST', '/api/generate-calculator', { description });
+      const response = await apiRequest('POST', '/api/generate-calculator', { 
+        description,
+        creatorName: creatorName.trim() || undefined
+      });
       const calculator = await response.json();
       setGeneratedCalculator(calculator);
       
@@ -151,6 +155,19 @@ export default function CustomCalculator() {
                 rows={4}
                 className="mt-1"
               />
+            </div>
+
+            <div>
+              <Label htmlFor="creatorName">Your Name (Optional)</Label>
+              <Input
+                id="creatorName"
+                data-testid="input-creator-name"
+                value={creatorName}
+                onChange={(e) => setCreatorName(e.target.value)}
+                placeholder="Your name or username"
+                className="mt-1"
+              />
+              <p className="text-sm text-gray-500 mt-1">If your calculator gets featured, your name will be displayed in the Community Built section!</p>
             </div>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">

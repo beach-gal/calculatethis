@@ -52,6 +52,7 @@ export const calculators = pgTable("calculators", {
   category: varchar("category").notNull(),
   description: text("description"),
   formula: text("formula"),
+  creatorName: varchar("creator_name"),
   active: integer("active").default(1),
   featured: integer("featured").default(0),
   createdAt: timestamp("created_at").defaultNow(),
