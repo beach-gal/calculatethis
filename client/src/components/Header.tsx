@@ -1,10 +1,17 @@
 import { Link, useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import logoPath from "@assets/new_logo-removebg-preview_1760971211931.png";
 
 export default function Header() {
   const { isAuthenticated, isLoading, user } = useAuth();
   const [, navigate] = useLocation();
+
+  // Check if user is admin
+  const { data: adminCheck } = useQuery<{ isAdmin: boolean }>({
+    queryKey: ['/api/admin/check'],
+    enabled: !!user,
+  });
 
   const handleSignIn = () => {
     window.location.href = "/api/login";
@@ -68,8 +75,13 @@ export default function Header() {
                 Contact
               </a>
               {isAuthenticated && (
-                <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                <Link href="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium transition-colors" data-testid="link-dashboard">
                   Dashboard
+                </Link>
+              )}
+              {isAuthenticated && adminCheck?.isAdmin && (
+                <Link href="/admin" className="text-orange-600 hover:text-orange-700 font-bold transition-colors" data-testid="link-admin">
+                  Admin
                 </Link>
               )}
             </nav>
