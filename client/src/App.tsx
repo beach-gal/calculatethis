@@ -11,6 +11,7 @@ import CalculatorPage from "@/pages/calculator";
 import CustomCalculator from "@/pages/custom-calculator";
 import Dashboard from "@/pages/dashboard";
 import AdminPage from "@/pages/admin";
+import AdminTestPage from "@/pages/admin-test";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -22,6 +23,7 @@ function Router() {
       <Route path="/custom-calculator" component={CustomCalculator} />
       <Route path="/calculator/:slug" component={CalculatorPage} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/admin-test" component={AdminTestPage} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />
     </Switch>

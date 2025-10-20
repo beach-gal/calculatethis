@@ -15,9 +15,8 @@ import { useLocation } from "wouter";
 import type { AdCode, AdminUser, Setting } from "@shared/schema";
 
 export default function AdminPage() {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const [, setLocation] = useLocation();
-  const { toast } = useToast();
 
   // Check if user is admin
   const { data: adminCheck, isLoading: checkingAdmin } = useQuery<{ isAdmin: boolean }>({
@@ -25,18 +24,26 @@ export default function AdminPage() {
     enabled: !!user,
   });
 
-  // If not admin, redirect to home
-  if (!checkingAdmin && (!adminCheck || !adminCheck.isAdmin)) {
-    setLocation('/');
-    return null;
-  }
+  // If not admin, redirect to home using useEffect
+  useEffect(() => {
+    // Only redirect if we're sure they're not an admin
+    if (!authLoading && !checkingAdmin && user && (!adminCheck || !adminCheck.isAdmin)) {
+      setLocation('/');
+    }
+  }, [authLoading, checkingAdmin, user, adminCheck, setLocation]);
 
-  if (checkingAdmin) {
+  // Show loading state while checking
+  if (authLoading || checkingAdmin) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">Loading...</div>
       </div>
     );
+  }
+
+  // Don't render if not logged in or not admin
+  if (!user || !adminCheck || !adminCheck.isAdmin) {
+    return null;
   }
 
   return (
@@ -79,7 +86,7 @@ function AdCodesManagement() {
 
   const createMutation = useMutation({
     mutationFn: (data: { name: string; code: string; location: string; active: number }) =>
-      apiRequest('/api/admin/ad-codes', 'POST', data),
+      apiRequest('POST', '/api/admin/ad-codes', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/ad-codes'] });
       toast({ title: "Ad code created successfully" });
@@ -95,7 +102,7 @@ function AdCodesManagement() {
 
   const toggleActiveMutation = useMutation({
     mutationFn: ({ id, active }: { id: string; active: number }) =>
-      apiRequest(`/api/admin/ad-codes/${id}`, 'PUT', { active }),
+      apiRequest('PUT', `/api/admin/ad-codes/${id}`, { active }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/ad-codes'] });
       toast({ title: "Ad code updated successfully" });
@@ -106,7 +113,7 @@ function AdCodesManagement() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: string) => apiRequest(`/api/admin/ad-codes/${id}`, 'DELETE'),
+    mutationFn: (id: string) => apiRequest('DELETE', `/api/admin/ad-codes/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/ad-codes'] });
       toast({ title: "Ad code deleted successfully" });
@@ -256,7 +263,7 @@ function AdminsManagement() {
   });
 
   const addMutation = useMutation({
-    mutationFn: (userId: string) => apiRequest('/api/admin/admins', 'POST', { userId }),
+    mutationFn: (userId: string) => apiRequest('POST', '/api/admin/admins', { userId }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/admins'] });
       toast({ title: "Administrator added successfully" });
@@ -268,7 +275,7 @@ function AdminsManagement() {
   });
 
   const removeMutation = useMutation({
-    mutationFn: (userId: string) => apiRequest(`/api/admin/admins/${userId}`, 'DELETE'),
+    mutationFn: (userId: string) => apiRequest('DELETE', `/api/admin/admins/${userId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/admins'] });
       toast({ title: "Administrator removed successfully" });
@@ -376,7 +383,7 @@ function SettingsManagement() {
 
   const saveMutation = useMutation({
     mutationFn: (data: { key: string; value: string }) =>
-      apiRequest('/api/admin/settings', 'POST', data),
+      apiRequest('POST', '/api/admin/settings', data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/settings'] });
       toast({ title: "Setting saved successfully" });
