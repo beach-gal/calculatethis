@@ -174,8 +174,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // STRICT validation: formula must only contain allowed characters
-      // Only allow: numbers, operators, parentheses, function names, and field IDs
-      const allowedPattern = /^[a-zA-Z0-9+\-*/()\s.,]+$/;
+      // Allow: numbers, math operators, comparisons, ternary operators, parentheses, function names, and field IDs
+      const allowedPattern = /^[a-zA-Z0-9+\-*/()\s.,<>=?:!&|]+$/;
       if (!allowedPattern.test(formula)) {
         throw new Error('Formula contains invalid characters');
       }
@@ -185,7 +185,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         /[\[\]]/,  // No array/property access
         /['"`]/,   // No strings or template literals
         /\$/,      // No template literal syntax
-        /=/,       // No assignments
+        /;/,       // No statement separators
         /constructor/i,
         /prototype/i,
         /__proto__/i,

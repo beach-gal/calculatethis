@@ -75,26 +75,26 @@ export default function CommunityCalculators() {
                 href={`/custom-calculator/${calculator.slug}`}
                 data-testid={`link-community-calculator-${calculator.slug}`}
               >
-                <Card className="h-full hover:shadow-xl transition-all hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-white to-blue-50">
+                <Card className="h-full hover:shadow-xl transition-all hover:scale-[1.02] cursor-pointer bg-white border-2 border-gray-200">
                   <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-3">
                       <Sparkles className="h-5 w-5 text-purple-600" />
                       <Badge variant="new">AI-Generated</Badge>
                     </div>
-                    <CardTitle className="text-xl">{calculator.name}</CardTitle>
-                    <CardDescription className="line-clamp-2">
+                    <CardTitle className="text-xl text-gray-900 mb-2">{calculator.name}</CardTitle>
+                    <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
                       {calculator.description}
-                    </CardDescription>
+                    </p>
                   </CardHeader>
                   <CardContent>
                     {calculator.creatorName && (
-                      <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                      <div className="flex items-center gap-2 mb-3 text-sm text-gray-700">
                         <User className="h-4 w-4" />
                         <span>Created by <span className="font-semibold text-purple-600">{calculator.creatorName}</span></span>
                       </div>
                     )}
                     <div className="flex items-center gap-2">
-                      <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-medium">
+                      <span className="bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
                         {calculator.category}
                       </span>
                     </div>

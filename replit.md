@@ -57,8 +57,8 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
 - **Overview**: Allows users to describe a calculator in plain English, and AI generates a functional calculator.
 - **AI Generation**: Uses Replit AI Integrations (OpenAI-compatible) to generate calculator name, description, input fields, and `mathjs` formula.
 - **Secure Formula Execution**: Formulas are executed server-side with a multi-layered security architecture:
-    1.  **Character Whitelist**: Restricts allowed characters in formulas.
-    2.  **Pattern Blocklist**: Blocks dangerous patterns (e.g., `[]`, `.` for property access, keywords like `eval`).
+    1.  **Character Whitelist**: Allows safe math operators, comparisons (`<`, `>`, `=`), ternary operators (`?`, `:`), and logical operators (`!`, `&`, `|`).
+    2.  **Pattern Blocklist**: Blocks dangerous patterns (e.g., `[]`, `.` for property access, keywords like `eval`, statement separators).
     3.  **Input Validation**: Converts all user inputs to numbers and rejects invalid values.
     4.  **Safe Evaluation**: Uses `mathjs.evaluate()` which is AST-based and prevents arbitrary code execution.
     5.  **Result Validation**: Ensures results are valid numbers.
