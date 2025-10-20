@@ -79,7 +79,17 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
 - **Locations**: header (top of pages), sidebar (right side on calculator pages), inline (between content), footer (bottom of pages).
 - **Page Coverage**: Landing page, individual calculator pages, and AI-generated calculator pages all include ad placements.
 - **Ad Rotation**: Randomly selects one ad when multiple active ads exist for a location.
+- **Global Toggle**: Admins can enable/disable all ads globally via Settings tab to adjust spacing. Uses public `/api/settings/ads_enabled` endpoint accessible to all users.
 - **Integration**: Managed through admin dashboard; changes take effect immediately on page reload.
+
+### Community Built Calculators
+
+- **Purpose**: Showcase user-created AI calculators on the homepage to inspire and engage visitors.
+- **Featured System**: Admins can mark calculators as "featured" to display them in the Community Built section on the landing page.
+- **Admin Management**: New "Community Calculators" tab in admin dashboard lists all AI-generated calculators with toggle switches to feature/unfeature them.
+- **Display**: Featured calculators appear in a dedicated section on the homepage with special styling (gradient backgrounds, badges).
+- **Schema**: `calculators` table includes `featured` column (0 or 1) to track featured status.
+- **API**: Public endpoint `/api/calculators/featured/list` returns up to 6 featured calculators for homepage display.
 
 ## External Dependencies
 
