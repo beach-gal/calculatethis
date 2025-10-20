@@ -30,17 +30,17 @@ export default function Landing() {
       <Header />
       
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-6">
         
         {/* Header Ad */}
-        <AdSlot location="header" className="mb-8" />
+        <AdSlot location="header" className="mb-6" />
         
         {/* Hero Section */}
-        <section className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <section className="text-center mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Free Online Calculators
           </h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <p className="text-xl text-gray-600 mb-5">
             Over 200 calculators for Math, Finance, Health, and everyday calculations
           </p>
           
@@ -84,10 +84,10 @@ export default function Landing() {
         </section>
 
         {/* AI Calculator Builder Promo - NEW Feature */}
-        <section className="mb-12">
+        <section className="mb-10">
           <Link href="/custom-calculator" data-testid="link-custom-calculator">
             <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
-              <div className="bg-white rounded-xl p-8 md:p-12">
+              <div className="bg-white rounded-xl p-6 md:p-10">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="flex-1 text-center md:text-left">
                     <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
