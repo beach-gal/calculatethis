@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,13 @@ export default function ContactDialog() {
   const [message, setMessage] = useState("");
   const { toast } = useToast();
 
+  // Fetch contact email from settings
+  const { data: contactEmailData } = useQuery<{ key: string; value: string | undefined }>({
+    queryKey: ['/api/settings/contact_email'],
+  });
+
+  const contactEmail = contactEmailData?.value || 'nethania@gmail.com';
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -27,7 +35,7 @@ export default function ContactDialog() {
     const body = encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     );
-    const mailtoLink = `mailto:nethania@gmail.com?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
     
     // Open email client
     window.location.href = mailtoLink;
