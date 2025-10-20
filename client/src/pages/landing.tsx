@@ -313,6 +313,11 @@ function CommunityBuiltSection() {
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{calculator.name}</h3>
                 <p className="text-gray-600 text-sm line-clamp-2">{calculator.description}</p>
+                {calculator.creatorName && (
+                  <p className="text-gray-500 text-xs mt-1">
+                    Created by <span className="font-semibold text-purple-600">{calculator.creatorName}</span>
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">

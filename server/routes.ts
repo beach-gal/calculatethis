@@ -228,7 +228,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI Custom Calculator Generation
   app.post('/api/generate-calculator', async (req, res) => {
     try {
-      const { description } = req.body;
+      const { description, creatorName } = req.body;
       
       if (!description || typeof description !== 'string') {
         return res.status(400).json({ message: "Description is required" });
@@ -352,7 +352,47 @@ If user says "I need a calculator for paint coverage", generate:
         }
       }
       
-      res.json(generatedCalculator);
+      // Generate slug from calculator name
+      const baseSlug = generatedCalculator.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+      
+      // Make slug unique by appending random suffix
+      const randomSuffix = Math.random().toString(36).substring(2, 8);
+      const slug = `${baseSlug}-${randomSuffix}`;
+      
+      // Determine category based on description/name (simple heuristic)
+      let category = 'Other';
+      const lowerDesc = (generatedCalculator.description + ' ' + generatedCalculator.name).toLowerCase();
+      if (lowerDesc.match(/bmi|calories|health|fitness|weight|heart/i)) {
+        category = 'Health';
+      } else if (lowerDesc.match(/loan|mortgage|interest|payment|investment|finance|tax|salary/i)) {
+        category = 'Finance';
+      } else if (lowerDesc.match(/calculate|math|formula|equation|algebra|geometry/i)) {
+        category = 'Math';
+      }
+      
+      // Save calculator to database
+      const savedCalculator = await storage.createCalculator({
+        name: generatedCalculator.name,
+        slug,
+        category,
+        description: generatedCalculator.description,
+        formula: generatedCalculator.formula,
+        creatorName: creatorName || null,
+        active: 1,
+        featured: 0,
+      });
+      
+      // Return the generated calculator with database info
+      res.json({
+        ...generatedCalculator,
+        id: savedCalculator.id,
+        slug: savedCalculator.slug,
+        category: savedCalculator.category,
+        creatorName: savedCalculator.creatorName,
+      });
     } catch (error) {
       console.error("Error generating calculator:", error);
       res.status(500).json({ message: "Failed to generate calculator" });
