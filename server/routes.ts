@@ -338,6 +338,18 @@ If user says "I need a calculator for paint coverage", generate:
     }
   });
 
+  // Public route to fetch active ad codes by location
+  app.get('/api/ad-codes/:location', async (req, res) => {
+    try {
+      const { location } = req.params;
+      const ads = await storage.getActiveAdsByLocation(location);
+      res.json(ads);
+    } catch (error) {
+      console.error("Error fetching ads:", error);
+      res.status(500).json({ message: "Failed to fetch ads" });
+    }
+  });
+
   // Admin routes - Ad Codes Management
   app.get('/api/admin/ad-codes', isAuthenticated, isAdmin, async (req, res) => {
     try {

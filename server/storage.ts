@@ -42,6 +42,7 @@ export interface IStorage {
   createAdCode(adCode: InsertAdCode): Promise<AdCode>;
   updateAdCode(id: string, adCode: Partial<InsertAdCode>): Promise<AdCode>;
   deleteAdCode(id: string): Promise<void>;
+  getActiveAdsByLocation(location: string): Promise<AdCode[]>;
   
   // Admin operations - Admin users
   getAdminUsers(): Promise<AdminUser[]>;
@@ -150,6 +151,14 @@ export class DatabaseStorage implements IStorage {
 
   async deleteAdCode(id: string): Promise<void> {
     await db.delete(adCodes).where(eq(adCodes.id, id));
+  }
+
+  async getActiveAdsByLocation(location: string): Promise<AdCode[]> {
+    return await db
+      .select()
+      .from(adCodes)
+      .where(and(eq(adCodes.location, location), eq(adCodes.active, 1)))
+      .orderBy(adCodes.createdAt);
   }
 
   // Admin operations - Admin users
