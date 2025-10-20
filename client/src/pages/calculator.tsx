@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
+import AdSlot from "@/components/AdSlot";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -105,6 +106,9 @@ export default function CalculatorPage() {
             ← Back to Home
           </Button>
         </Link>
+
+        {/* Header Ad */}
+        <AdSlot location="header" className="mb-6" />
         
         <Card>
           <CardHeader>
@@ -179,6 +183,9 @@ export default function CalculatorPage() {
                     <div className="text-gray-500">Results will appear here after calculation</div>
                   )}
                 </div>
+
+                {/* Sidebar Ad */}
+                <AdSlot location="sidebar" className="mt-6" />
                 
                 {/* Embed Code */}
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
@@ -204,6 +211,9 @@ export default function CalculatorPage() {
               </div>
               
             </div>
+
+            {/* Inline Ad */}
+            <AdSlot location="inline" className="mt-8" />
             
             {/* SEO Content */}
             <div className="mt-12 pt-8 border-t border-gray-200">
@@ -237,6 +247,9 @@ export default function CalculatorPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Footer Ad */}
+        <AdSlot location="footer" className="mt-6" />
       </main>
     </div>
   );
