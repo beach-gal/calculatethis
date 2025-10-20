@@ -85,11 +85,17 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
 ### Community Built Calculators
 
 - **Purpose**: Showcase user-created AI calculators on the homepage to inspire and engage visitors.
+- **Creator Attribution**: Users can optionally add their name when creating calculators, which is displayed with special purple styling on featured calculators.
 - **Featured System**: Admins can mark calculators as "featured" to display them in the Community Built section on the landing page.
 - **Admin Management**: New "Community Calculators" tab in admin dashboard lists all AI-generated calculators with toggle switches to feature/unfeature them.
-- **Display**: Featured calculators appear in a dedicated section on the homepage with special styling (gradient backgrounds, badges).
-- **Schema**: `calculators` table includes `featured` column (0 or 1) to track featured status.
-- **API**: Public endpoint `/api/calculators/featured/list` returns up to 6 featured calculators for homepage display.
+- **Display**: Featured calculators appear in a dedicated section on the homepage with special styling (gradient backgrounds, AI-Generated badges, creator names).
+- **Schema**: `calculators` table includes `featured` column (0 or 1), `creator_name` (nullable varchar), and `fields` (jsonb) to store field definitions.
+- **API**: 
+  - Public endpoint `/api/calculators/featured/list` returns up to 6 featured calculators for homepage display
+  - Public endpoint `/api/calculators/slug/:slug` fetches individual calculators by slug for viewing
+- **Routes**: 
+  - `/custom-calculator` - AI calculator builder
+  - `/custom-calculator/:slug` - View individual saved calculator with inputs and calculation
 
 ## External Dependencies
 

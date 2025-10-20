@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useParams } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import AdSlot from "@/components/AdSlot";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Sparkles, ArrowLeft } from "lucide-react";
+import { Loader2, Sparkles, ArrowLeft, User } from "lucide-react";
 import Badge from "@/components/Badge";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -29,6 +30,8 @@ interface GeneratedCalculator {
 }
 
 export default function CustomCalculator() {
+  const params = useParams();
+  const slug = params.slug as string | undefined;
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const [description, setDescription] = useState("");
@@ -37,6 +40,12 @@ export default function CustomCalculator() {
   const [generatedCalculator, setGeneratedCalculator] = useState<GeneratedCalculator | null>(null);
   const [inputs, setInputs] = useState<Record<string, string>>({});
   const [result, setResult] = useState<string | null>(null);
+
+  // If slug exists, load the calculator from database
+  const { data: savedCalculator, isLoading: isLoadingCalculator } = useQuery<any>({
+    queryKey: ['/api/calculators/slug', slug],
+    enabled: !!slug,
+  });
 
   const handleGenerate = async () => {
     if (!description.trim()) {
@@ -84,15 +93,16 @@ export default function CustomCalculator() {
   };
 
   const handleCalculate = async () => {
-    if (!generatedCalculator) return;
+    const calculator = slug ? savedCalculator : generatedCalculator;
+    if (!calculator) return;
 
     try {
       // Execute formula server-side for security (using mathjs)
       const response = await apiRequest('POST', '/api/execute-custom-calculator', {
-        formula: generatedCalculator.formula,
+        formula: calculator.formula,
         inputs,
-        resultLabel: generatedCalculator.resultLabel,
-        resultUnit: generatedCalculator.resultUnit
+        resultLabel: calculator.resultLabel,
+        resultUnit: calculator.resultUnit
       });
       const data = await response.json();
       setResult(data.result);
@@ -106,6 +116,115 @@ export default function CustomCalculator() {
     }
   };
 
+  // If viewing a saved calculator
+  if (slug) {
+    if (isLoadingCalculator) {
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <Header />
+          <main className="max-w-4xl mx-auto px-4 py-8">
+            <div className="flex justify-center items-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+            </div>
+          </main>
+        </div>
+      );
+    }
+
+    if (!savedCalculator) {
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <Header />
+          <main className="max-w-4xl mx-auto px-4 py-8">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <h1 className="text-2xl font-bold text-gray-900 mb-4">Calculator Not Found</h1>
+                  <p className="text-gray-600">The calculator you're looking for doesn't exist.</p>
+                  <Button onClick={() => navigate('/')} className="mt-4">Go to Home</Button>
+                </div>
+              </CardContent>
+            </Card>
+          </main>
+        </div>
+      );
+    }
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <main className="max-w-4xl mx-auto px-4 py-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="mb-6"
+            data-testid="button-back-home"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Home
+          </Button>
+
+          <AdSlot location="header" className="mb-6" />
+
+          <Card data-testid="card-saved-calculator">
+            <CardHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-6 w-6 text-purple-500" />
+                <Badge variant="new">AI-Generated</Badge>
+              </div>
+              <CardTitle className="text-3xl">{savedCalculator.name}</CardTitle>
+              <CardDescription>{savedCalculator.description}</CardDescription>
+              {savedCalculator.creatorName && (
+                <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+                  <User className="h-4 w-4" />
+                  <span>Created by <span className="font-semibold text-purple-600">{savedCalculator.creatorName}</span></span>
+                </div>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {savedCalculator.fields?.map((field: any) => (
+                  <div key={field.id}>
+                    <Label htmlFor={field.id}>{field.label}</Label>
+                    <Input
+                      id={field.id}
+                      type={field.type}
+                      data-testid={`input-${field.id}`}
+                      placeholder={field.placeholder}
+                      step={field.step}
+                      value={inputs[field.id] || ''}
+                      onChange={(e) => setInputs({ ...inputs, [field.id]: e.target.value })}
+                      className="mt-1"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <Button
+                onClick={handleCalculate}
+                className="w-full"
+                size="lg"
+                data-testid="button-calculate"
+              >
+                Calculate
+              </Button>
+
+              {result && (
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-2">Result</h3>
+                  <p className="text-2xl font-bold text-blue-700" data-testid="text-result">{result}</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <AdSlot location="footer" className="mt-6" />
+        </main>
+      </div>
+    );
+  }
+
+  // Builder mode (no slug)
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />

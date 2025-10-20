@@ -76,6 +76,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/calculators/slug/:slug', async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const calculator = await storage.getCalculatorBySlug(slug);
+      if (!calculator) {
+        return res.status(404).json({ message: "Calculator not found" });
+      }
+      res.json(calculator);
+    } catch (error) {
+      console.error("Error fetching calculator:", error);
+      res.status(500).json({ message: "Failed to fetch calculator" });
+    }
+  });
+
   app.patch('/api/calculators/:id/toggle-featured', isAuthenticated, isAdmin, async (req, res) => {
     try {
       const calculator = await storage.toggleFeatured(req.params.id);
@@ -380,6 +394,9 @@ If user says "I need a calculator for paint coverage", generate:
         category,
         description: generatedCalculator.description,
         formula: generatedCalculator.formula,
+        fields: generatedCalculator.fields,
+        resultLabel: generatedCalculator.resultLabel || null,
+        resultUnit: generatedCalculator.resultUnit || null,
         creatorName: creatorName || null,
         active: 1,
         featured: 0,

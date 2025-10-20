@@ -20,6 +20,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/custom-calculator/:slug" component={CustomCalculator} />
       <Route path="/custom-calculator" component={CustomCalculator} />
       <Route path="/calculator/:slug" component={CalculatorPage} />
       <Route path="/dashboard" component={Dashboard} />
