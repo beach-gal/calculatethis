@@ -12,7 +12,7 @@ import { Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
-import type { AdCode, AdminUser, Setting } from "@shared/schema";
+import type { AdCode, AdminUser, Setting, Calculator } from "@shared/schema";
 
 export default function AdminPage() {
   const { user, isLoading: authLoading } = useAuth();
@@ -51,14 +51,19 @@ export default function AdminPage() {
       <h1 className="text-3xl font-bold mb-6" data-testid="title-admin">Admin Dashboard</h1>
 
       <Tabs defaultValue="adcodes" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="adcodes" data-testid="tab-adcodes">Ad Codes</TabsTrigger>
+          <TabsTrigger value="community" data-testid="tab-community">Community Calculators</TabsTrigger>
           <TabsTrigger value="admins" data-testid="tab-admins">Administrators</TabsTrigger>
           <TabsTrigger value="settings" data-testid="tab-settings">Settings</TabsTrigger>
         </TabsList>
 
         <TabsContent value="adcodes">
           <AdCodesManagement />
+        </TabsContent>
+
+        <TabsContent value="community">
+          <CommunityCalculatorsManagement />
         </TabsContent>
 
         <TabsContent value="admins">
@@ -364,9 +369,87 @@ function AdminsManagement() {
   );
 }
 
+function CommunityCalculatorsManagement() {
+  const { toast } = useToast();
+
+  const { data: calculators, isLoading } = useQuery<Calculator[]>({
+    queryKey: ['/api/calculators'],
+  });
+
+  const toggleFeaturedMutation = useMutation({
+    mutationFn: (id: string) => apiRequest('PATCH', `/api/calculators/${id}/toggle-featured`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/calculators'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/calculators/featured/list'] });
+      toast({ title: "Calculator featured status updated" });
+    },
+    onError: () => {
+      toast({ title: "Failed to update calculator", variant: "destructive" });
+    },
+  });
+
+  const communityCalculators = calculators?.filter(calc => calc.formula) || [];
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Community-Built Calculators</CardTitle>
+        <CardDescription>
+          Manage AI-generated calculators created by users. Feature them to showcase on the homepage.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : communityCalculators.length === 0 ? (
+          <div className="text-muted-foreground">No community calculators yet</div>
+        ) : (
+          <div className="space-y-4">
+            {communityCalculators.map((calculator) => (
+              <div
+                key={calculator.id}
+                data-testid={`calculator-item-${calculator.id}`}
+                className="border rounded-lg p-4"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                      <h3 className="font-semibold">{calculator.name}</h3>
+                      {calculator.featured === 1 && (
+                        <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-1">{calculator.description}</p>
+                    <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
+                      <span>Category: {calculator.category}</span>
+                      <span>Created: {calculator.createdAt ? new Date(calculator.createdAt).toLocaleDateString() : 'N/A'}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      data-testid={`switch-featured-${calculator.id}`}
+                      checked={calculator.featured === 1}
+                      onCheckedChange={() => toggleFeaturedMutation.mutate(calculator.id)}
+                      disabled={toggleFeaturedMutation.isPending}
+                    />
+                    <Label className="text-sm">Featured</Label>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 function SettingsManagement() {
   const { toast } = useToast();
   const [contactEmail, setContactEmail] = useState("");
+  const [adsEnabled, setAdsEnabled] = useState(true);
 
   const { data: settings, isLoading } = useQuery<Setting[]>({
     queryKey: ['/api/admin/settings'],
@@ -377,6 +460,10 @@ function SettingsManagement() {
       const emailSetting = settings.find((s) => s.key === 'contact_email');
       if (emailSetting) {
         setContactEmail(emailSetting.value);
+      }
+      const adsSetting = settings.find((s) => s.key === 'ads_enabled');
+      if (adsSetting) {
+        setAdsEnabled(adsSetting.value === '1');
       }
     }
   }, [settings]);
@@ -402,35 +489,69 @@ function SettingsManagement() {
     saveMutation.mutate({ key: 'contact_email', value: contactEmail.trim() });
   };
 
+  const handleAdsToggle = (checked: boolean) => {
+    setAdsEnabled(checked);
+    saveMutation.mutate({ key: 'ads_enabled', value: checked ? '1' : '0' });
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Contact Settings</CardTitle>
-        <CardDescription>Configure the contact email shown on the website</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="contactEmail">Contact Email</Label>
-              <Input
-                id="contactEmail"
-                type="email"
-                data-testid="input-contact-email"
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
-                placeholder="contact@calculatethis.org"
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Advertising Settings</CardTitle>
+          <CardDescription>Control whether ads are displayed across the site</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="ads-toggle">Display Advertisements</Label>
+                <div className="text-sm text-gray-500">
+                  Toggle ads on/off globally to adjust spacing
+                </div>
+              </div>
+              <Switch
+                id="ads-toggle"
+                data-testid="switch-ads-enabled"
+                checked={adsEnabled}
+                onCheckedChange={handleAdsToggle}
               />
             </div>
+          )}
+        </CardContent>
+      </Card>
 
-            <Button type="submit" data-testid="button-save-settings" disabled={saveMutation.isPending}>
-              Save Settings
-            </Button>
-          </form>
-        )}
-      </CardContent>
-    </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Contact Settings</CardTitle>
+          <CardDescription>Configure the contact email shown on the website</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="contactEmail">Contact Email</Label>
+                <Input
+                  id="contactEmail"
+                  type="email"
+                  data-testid="input-contact-email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  placeholder="contact@calculatethis.org"
+                />
+              </div>
+
+              <Button type="submit" data-testid="button-save-settings" disabled={saveMutation.isPending}>
+                Save Settings
+              </Button>
+            </form>
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }
