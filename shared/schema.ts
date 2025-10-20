@@ -53,6 +53,7 @@ export const calculators = pgTable("calculators", {
   description: text("description"),
   formula: text("formula"),
   active: integer("active").default(1),
+  featured: integer("featured").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

@@ -30,6 +30,8 @@ export interface IStorage {
   getCalculators(): Promise<Calculator[]>;
   getCalculatorBySlug(slug: string): Promise<Calculator | undefined>;
   createCalculator(calculator: InsertCalculator): Promise<Calculator>;
+  getFeaturedCalculators(limit?: number): Promise<Calculator[]>;
+  toggleFeatured(id: string): Promise<Calculator>;
   
   // Usage tracking operations
   recordCalculatorUsage(usage: InsertCalculatorUsage): Promise<CalculatorUsage>;
@@ -97,6 +99,29 @@ export class DatabaseStorage implements IStorage {
       .values(calculator)
       .returning();
     return newCalculator;
+  }
+
+  async getFeaturedCalculators(limit = 6): Promise<Calculator[]> {
+    return await db
+      .select()
+      .from(calculators)
+      .where(and(eq(calculators.featured, 1), eq(calculators.active, 1)))
+      .orderBy(desc(calculators.createdAt))
+      .limit(limit);
+  }
+
+  async toggleFeatured(id: string): Promise<Calculator> {
+    const calculator = await db.select().from(calculators).where(eq(calculators.id, id));
+    if (!calculator[0]) {
+      throw new Error("Calculator not found");
+    }
+    const newFeaturedValue = calculator[0].featured === 1 ? 0 : 1;
+    const [updated] = await db
+      .update(calculators)
+      .set({ featured: newFeaturedValue })
+      .where(eq(calculators.id, id))
+      .returning();
+    return updated;
   }
 
   // Usage tracking operations

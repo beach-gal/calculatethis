@@ -65,6 +65,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/calculators/featured/list', async (req, res) => {
+    try {
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
+      const calculators = await storage.getFeaturedCalculators(limit);
+      res.json(calculators);
+    } catch (error) {
+      console.error("Error fetching featured calculators:", error);
+      res.status(500).json({ message: "Failed to fetch featured calculators" });
+    }
+  });
+
+  app.patch('/api/calculators/:id/toggle-featured', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const calculator = await storage.toggleFeatured(req.params.id);
+      res.json(calculator);
+    } catch (error) {
+      console.error("Error toggling featured status:", error);
+      res.status(500).json({ message: "Failed to toggle featured status" });
+    }
+  });
+
   // Usage tracking routes (protected)
   app.post('/api/calculator-usage', isAuthenticated, async (req: any, res) => {
     try {
