@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/Header";
+import AdSlot from "@/components/AdSlot";
 import Calculator from "@/components/Calculator";
 import CategoryGrid from "@/components/CategoryGrid";
 import ContactDialog from "@/components/ContactDialog";
@@ -30,6 +31,9 @@ export default function Landing() {
       
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
+        
+        {/* Header Ad */}
+        <AdSlot location="header" className="mb-8" />
         
         {/* Hero Section */}
         <section className="text-center mb-12">
@@ -128,20 +132,16 @@ export default function Landing() {
           <Calculator />
         </section>
 
-        {/* Ad Widget Area 1 */}
-        <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 mb-12 text-center">
-          <p className="text-gray-500 font-medium">Advertisement Area - 728x90 Leaderboard</p>
-        </div>
+        {/* Inline Ad */}
+        <AdSlot location="inline" className="mb-12" />
 
         {/* Calculator Categories Section */}
         <div id="calculators">
           <CategoryGrid />
         </div>
 
-        {/* Ad Widget Area 2 */}
-        <div className="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 mb-12 text-center">
-          <p className="text-gray-500 font-medium">Advertisement Area - 300x250 Medium Rectangle</p>
-        </div>
+        {/* Sidebar Ad */}
+        <AdSlot location="sidebar" className="mb-12" />
 
         {/* Featured Calculators Section */}
         <section className="mb-12">
@@ -231,6 +231,8 @@ export default function Landing() {
           </div>
         </section>
 
+        {/* Footer Ad */}
+        <AdSlot location="footer" className="mt-12" />
       </main>
 
       {/* Footer */}
