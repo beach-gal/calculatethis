@@ -180,3 +180,90 @@ The calculator system uses a scalable registry-based architecture for managing 2
 - Provides name, slug, category, description for UI display
 - Complemented by calculatorConfig.ts for execution logic
 - Future: Migrate to database-driven calculator definitions
+
+### AI-Powered Custom Calculator Builder (October 2025)
+
+**Overview:**
+The custom calculator builder allows users to describe any calculator in plain English, and AI generates a fully functional calculator instantly. Accessible via `/custom-calculator` with a prominent "NEW" badge on the homepage.
+
+**Architecture:**
+1. **Frontend (client/src/pages/custom-calculator.tsx):**
+   - Text input for user description
+   - AI generation triggered via OpenAI-compatible Replit AI Integrations
+   - Dynamic form rendering based on AI-generated field definitions
+   - Calculation execution via secure server-side API
+
+2. **Backend API Endpoints:**
+   - `POST /api/generate-calculator`: AI generation using Replit AI Integrations (GPT-4)
+   - `POST /api/execute-custom-calculator`: Secure server-side formula evaluation
+
+**AI Generation (server/routes.ts):**
+- Uses Replit AI Integrations (OpenAI-compatible endpoint)
+- No separate API key required - billed to Replit credits
+- AI prompt constrains formulas to simple mathematical expressions only
+- Generates: calculator name, description, input fields, mathjs formula, result label/unit
+
+**Secure Formula Execution:**
+The custom calculator execution endpoint implements defense-in-depth security to prevent remote code execution (RCE):
+
+**Multi-Layer Security Architecture:**
+
+1. **Layer 1 - Character Whitelist:**
+   - Regex: `/^[a-zA-Z0-9+\-*/()\s.,]+$/`
+   - Only allows: letters, numbers, math operators (+, -, *, /), parentheses, spaces, dots, commas
+   - Blocks ALL other characters including brackets, quotes, special symbols
+
+2. **Layer 2 - Pattern Blocklist:**
+   - Blocks property access: `[]`, `.`
+   - Blocks string literals: `'`, `"`, `` ` ``
+   - Blocks template syntax: `$`
+   - Blocks assignments: `=`
+   - Blocks dangerous keywords (case-insensitive): constructor, prototype, __proto__, globalThis, process, require, import, eval, Function, Object, Array, String
+
+3. **Layer 3 - Input Validation:**
+   - All user inputs converted to numbers via parseFloat()
+   - Rejects NaN and Infinity values
+   - Only numeric scope passed to mathjs evaluator
+
+4. **Layer 4 - Safe Expression Evaluation:**
+   - Uses `mathjs.evaluate(formula, scope)` for evaluation
+   - mathjs uses AST-based parsing (no eval(), no Function constructor)
+   - Cannot execute arbitrary JavaScript code
+   - Only mathematical expressions can be evaluated
+
+5. **Layer 5 - Result Validation:**
+   - Result must be typeof 'number'
+   - Result must be finite (not Infinity or NaN)
+   - Formatted server-side with label and unit
+
+**Allowed Mathematical Operations:**
+- Arithmetic: +, -, *, /, ()
+- Functions: sqrt(), ceil(), floor(), round(), abs(), min(), max(), pow()
+- Variables: Input field IDs from AI-generated schema
+
+**Example Flow:**
+1. User: "Calculate paint needed for a room"
+2. AI generates: 
+   - Fields: length, width, height
+   - Formula: `ceil((2 * (length + width) * height) / 350)`
+   - Label: "Paint Needed", Unit: "gallons"
+3. User enters: 12, 10, 8
+4. Server validates and evaluates: `ceil((2 * (12 + 10) * 8) / 350)` = 2
+5. Result: "Paint Needed: 2 gallons"
+
+**Security Validation (Architect-Approved):**
+- ✅ Prevents property access exploits
+- ✅ Blocks string concatenation attacks
+- ✅ Rejects template literal injection
+- ✅ Stops prototype pollution attempts
+- ✅ Prevents Node.js global access
+- ✅ Blocks function constructor usage
+- ✅ AST-based evaluation prevents eval-based RCE
+- ✅ Multi-layer defense ensures no single bypass works
+
+**Design Decisions:**
+- Server-side execution only (never client-side) for security
+- mathjs chosen for AST-based parsing over eval/Function
+- AI prompt constrains output to mathjs-compatible expressions
+- Replit AI Integrations eliminates API key management burden
+- Imperial units as default for all generated calculators

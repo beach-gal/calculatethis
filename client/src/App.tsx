@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import CalculatorPage from "@/pages/calculator";
+import CustomCalculator from "@/pages/custom-calculator";
 import Dashboard from "@/pages/dashboard";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/custom-calculator" component={CustomCalculator} />
       <Route path="/calculator/:slug" component={CalculatorPage} />
       <Route path="/dashboard" component={Dashboard} />
       <Route component={NotFound} />

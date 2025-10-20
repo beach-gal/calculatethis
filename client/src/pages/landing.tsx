@@ -3,8 +3,10 @@ import Header from "@/components/Header";
 import Calculator from "@/components/Calculator";
 import CategoryGrid from "@/components/CategoryGrid";
 import ContactDialog from "@/components/ContactDialog";
+import Badge from "@/components/Badge";
 import { searchCalculators } from "@/data/calculators";
 import { Link } from "wouter";
+import { Sparkles } from "lucide-react";
 
 export default function Landing() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -75,6 +77,50 @@ export default function Landing() {
               </div>
             )}
           </div>
+        </section>
+
+        {/* AI Calculator Builder Promo - NEW Feature */}
+        <section className="mb-12">
+          <Link href="/custom-calculator" data-testid="link-custom-calculator">
+            <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl p-1 cursor-pointer hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
+              <div className="bg-white rounded-xl p-8 md:p-12">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                      <Sparkles className="h-10 w-10 text-purple-600" />
+                      <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        AI Calculator Builder
+                      </h2>
+                      <Badge variant="new">NEW</Badge>
+                    </div>
+                    <p className="text-xl text-gray-700 mb-4">
+                      Can't find the calculator you need? <span className="font-bold">Create your own in seconds with AI!</span>
+                    </p>
+                    <p className="text-gray-600 mb-6">
+                      Just describe what you want to calculate in plain English, and our AI will build a custom calculator instantly. 
+                      No coding required!
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-start">
+                      <div className="bg-purple-50 px-4 py-2 rounded-lg text-sm text-purple-700 font-medium">
+                        ✨ Instant generation
+                      </div>
+                      <div className="bg-pink-50 px-4 py-2 rounded-lg text-sm text-pink-700 font-medium">
+                        🎯 Perfectly customized
+                      </div>
+                      <div className="bg-blue-50 px-4 py-2 rounded-lg text-sm text-blue-700 font-medium">
+                        🚀 Free to use
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-shadow">
+                      Try It Now →
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
         </section>
 
         {/* Working Calculator Section */}
