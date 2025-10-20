@@ -96,6 +96,8 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
 - **Routes**: 
   - `/custom-calculator` - AI calculator builder
   - `/custom-calculator/:slug` - View individual saved calculator with inputs and calculation
+  - `/community-calculators` - Browse all featured community calculators
+- **Landing Page Display**: Compact teaser showing 3 featured calculators with a "View All" link to the dedicated community page.
 
 ## External Dependencies
 

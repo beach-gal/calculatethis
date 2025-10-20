@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import CalculatorPage from "@/pages/calculator";
 import CustomCalculator from "@/pages/custom-calculator";
+import CommunityCalculators from "@/pages/community-calculators";
 import Dashboard from "@/pages/dashboard";
 import AdminPage from "@/pages/admin";
 import AdminTestPage from "@/pages/admin-test";
@@ -20,6 +21,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/community-calculators" component={CommunityCalculators} />
       <Route path="/custom-calculator/:slug" component={CustomCalculator} />
       <Route path="/custom-calculator" component={CustomCalculator} />
       <Route path="/calculator/:slug" component={CalculatorPage} />

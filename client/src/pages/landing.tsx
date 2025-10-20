@@ -290,46 +290,50 @@ function CommunityBuiltSection() {
     return null;
   }
 
+  const previewCalculators = featuredCalculators.slice(0, 3);
+
   return (
-    <section className="mb-12">
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <Users className="h-8 w-8 text-blue-600" />
-        <h2 className="text-3xl font-bold text-gray-900">Community Built Calculators</h2>
-      </div>
-      <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-        Check out these amazing calculators created by our users with AI! Each one was made in seconds using our AI Calculator Builder.
-      </p>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {featuredCalculators.map((calculator) => (
-          <Link
-            key={calculator.id}
-            href={`/custom-calculator/${calculator.slug}`}
-            className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg p-6 hover:shadow-xl transition-all hover:scale-[1.02] border-2 border-transparent hover:border-blue-200"
-            data-testid={`link-community-calculator-${calculator.slug}`}
-          >
-            <div className="flex items-start gap-2 mb-3">
-              <Sparkles className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{calculator.name}</h3>
-                <p className="text-gray-600 text-sm line-clamp-2">{calculator.description}</p>
-                {calculator.creatorName && (
-                  <p className="text-gray-500 text-xs mt-1">
-                    Created by <span className="font-semibold text-purple-600">{calculator.creatorName}</span>
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-200">
-              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded font-medium">
-                {calculator.category}
-              </span>
-              <span className="bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded font-medium">
-                AI-Generated
-              </span>
-            </div>
+    <section className="mb-8">
+      <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border-2 border-blue-100">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Users className="h-6 w-6 text-blue-600" />
+            <h2 className="text-2xl font-bold text-gray-900">Community Built Calculators</h2>
+          </div>
+          <Link href="/community-calculators">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm transition-colors" data-testid="button-view-all-community">
+              View All →
+            </button>
           </Link>
-        ))}
+        </div>
+        <p className="text-gray-700 mb-6">
+          Check out calculators created by our community using AI! Made in seconds with our AI Calculator Builder.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {previewCalculators.map((calculator) => (
+            <Link
+              key={calculator.id}
+              href={`/custom-calculator/${calculator.slug}`}
+              className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition-all hover:scale-[1.02]"
+              data-testid={`link-community-calculator-${calculator.slug}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-purple-600" />
+                <span className="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded font-medium">
+                  AI-Generated
+                </span>
+              </div>
+              <h3 className="text-base font-bold text-gray-900 mb-1">{calculator.name}</h3>
+              <p className="text-gray-600 text-sm line-clamp-2 mb-2">{calculator.description}</p>
+              {calculator.creatorName && (
+                <p className="text-gray-600 text-xs">
+                  by <span className="font-semibold text-purple-600">{calculator.creatorName}</span>
+                </p>
+              )}
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
