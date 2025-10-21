@@ -15,6 +15,7 @@ import AdminPage from "@/pages/admin";
 import AdminTestPage from "@/pages/admin-test";
 import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
+import Settings from "@/pages/settings";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/custom-calculator" component={CustomCalculator} />
       <Route path="/calculator/:slug" component={CalculatorPage} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/settings" component={Settings} />
       <Route path="/admin-test" component={AdminTestPage} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />

@@ -90,6 +90,11 @@ export default function Header() {
                   Dashboard
                 </Link>
               )}
+              {isAuthenticated && (
+                <Link href="/settings" className="text-gray-700 hover:text-blue-600 font-medium transition-colors" data-testid="link-settings">
+                  Settings
+                </Link>
+              )}
               {isAuthenticated && adminCheck?.isAdmin && (
                 <Link href="/admin" className="text-orange-600 hover:text-orange-700 font-bold transition-colors" data-testid="link-admin">
                   Admin
