@@ -492,11 +492,18 @@ If user says "I need a calculator for paint coverage", generate:
 
   app.post('/api/admin/admins', isAuthenticated, isAdmin, async (req, res) => {
     try {
-      const { userId } = req.body;
-      if (!userId) {
-        return res.status(400).json({ message: "User ID is required" });
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
       }
-      const admin = await storage.addAdmin(userId);
+      
+      // Look up user by email
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found with that email" });
+      }
+      
+      const admin = await storage.addAdmin(user.id);
       res.json(admin);
     } catch (error) {
       console.error("Error adding admin:", error);

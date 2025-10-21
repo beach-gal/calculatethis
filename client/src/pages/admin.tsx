@@ -344,21 +344,25 @@ function AdCodesManagement() {
 
 function AdminsManagement() {
   const { toast } = useToast();
-  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
 
   const { data: admins, isLoading } = useQuery<AdminUser[]>({
     queryKey: ['/api/admin/admins'],
   });
 
   const addMutation = useMutation({
-    mutationFn: (userId: string) => apiRequest('POST', '/api/admin/admins', { userId }),
+    mutationFn: (email: string) => apiRequest('POST', '/api/admin/admins', { email }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/admins'] });
       toast({ title: "Administrator added successfully" });
-      setUserId("");
+      setEmail("");
     },
-    onError: () => {
-      toast({ title: "Failed to add administrator", variant: "destructive" });
+    onError: (error: any) => {
+      toast({ 
+        title: "Failed to add administrator", 
+        description: error.message || "User not found or already an admin",
+        variant: "destructive" 
+      });
     },
   });
 
@@ -375,11 +379,11 @@ function AdminsManagement() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userId.trim()) {
-      toast({ title: "User ID is required", variant: "destructive" });
+    if (!email.trim()) {
+      toast({ title: "Email is required", variant: "destructive" });
       return;
     }
-    addMutation.mutate(userId.trim());
+    addMutation.mutate(email.trim());
   };
 
   return (
@@ -387,18 +391,19 @@ function AdminsManagement() {
       <Card>
         <CardHeader>
           <CardTitle>Add Administrator</CardTitle>
-          <CardDescription>Enter the user ID from Replit Auth to grant admin access</CardDescription>
+          <CardDescription>Enter the user's email address to grant admin access</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="userId">User ID</Label>
+              <Label htmlFor="email">Email Address</Label>
               <Input
-                id="userId"
-                data-testid="input-userid"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                placeholder="Enter Replit user ID"
+                id="email"
+                type="email"
+                data-testid="input-admin-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="user@example.com"
               />
             </div>
 
@@ -428,7 +433,12 @@ function AdminsManagement() {
                   className="flex items-center justify-between border rounded-lg p-4"
                 >
                   <div>
-                    <div className="font-medium">{admin.userId}</div>
+                    <div className="font-medium">{admin.email || admin.userId}</div>
+                    {admin.firstName && admin.lastName && (
+                      <div className="text-sm text-muted-foreground">
+                        {admin.firstName} {admin.lastName}
+                      </div>
+                    )}
                     <div className="text-sm text-muted-foreground">
                       Added: {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString() : 'N/A'}
                     </div>

@@ -122,7 +122,11 @@ export type Calculator = typeof calculators.$inferSelect;
 export type InsertCalculator = z.infer<typeof insertCalculatorSchema>;
 export type AdCode = typeof adCodes.$inferSelect;
 export type InsertAdCode = z.infer<typeof insertAdCodeSchema>;
-export type AdminUser = typeof adminUsers.$inferSelect;
+export type AdminUser = typeof adminUsers.$inferSelect & {
+  email?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+};
 export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingSchema>;
