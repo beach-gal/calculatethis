@@ -13,6 +13,8 @@ import CommunityCalculators from "@/pages/community-calculators";
 import Dashboard from "@/pages/dashboard";
 import AdminPage from "@/pages/admin";
 import AdminTestPage from "@/pages/admin-test";
+import LoginPage from "@/pages/login";
+import RegisterPage from "@/pages/register";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -21,6 +23,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/register" component={RegisterPage} />
       <Route path="/community-calculators" component={CommunityCalculators} />
       <Route path="/custom-calculator/:slug" component={CustomCalculator} />
       <Route path="/custom-calculator" component={CustomCalculator} />

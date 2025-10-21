@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import { queryClient } from "@/lib/queryClient";
 import logoPath from "@assets/new_logo-removebg-preview_1760971211931.png";
 
 export default function Header() {
@@ -14,11 +15,21 @@ export default function Header() {
   });
 
   const handleSignIn = () => {
-    window.location.href = "/api/login";
+    navigate("/login");
   };
 
-  const handleSignOut = () => {
-    window.location.href = "/api/logout";
+  const handleSignUp = () => {
+    navigate("/register");
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      queryClient.invalidateQueries({ queryKey: ['/api/auth/user'] });
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const scrollToCalculators = (e: React.MouseEvent) => {
@@ -121,7 +132,7 @@ export default function Header() {
                     Sign In
                   </button>
                   <button 
-                    onClick={handleSignIn}
+                    onClick={handleSignUp}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium shadow-md"
                     data-testid="button-signup"
                   >

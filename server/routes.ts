@@ -1,17 +1,25 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth } from "./emailAuth";
 import { insertCalculatorUsageSchema, insertAdCodeSchema, insertSettingSchema } from "@shared/schema";
+
+// Auth middleware
+const isAuthenticated = (req: any, res: any, next: any) => {
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  next();
+};
 
 // Admin middleware
 const isAdmin = async (req: any, res: any, next: any) => {
   try {
-    if (!req.user || !req.user.claims || !req.user.claims.sub) {
+    if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     
-    const userId = req.user.claims.sub;
+    const userId = req.user.id;
     const admin = await storage.isAdmin(userId);
     
     if (!admin) {
@@ -32,8 +40,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      const user = req.user;
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -103,7 +110,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Usage tracking routes (protected)
   app.post('/api/calculator-usage', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const usageData = insertCalculatorUsageSchema.parse({
         ...req.body,
         userId,
@@ -119,7 +126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/my-calculator-history', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const history = await storage.getUserCalculatorHistory(userId);
       res.json(history);
     } catch (error) {
@@ -544,7 +551,7 @@ If user says "I need a calculator for paint coverage", generate:
   // Check if current user is admin
   app.get('/api/admin/check', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user.id;
       const isAdminUser = await storage.isAdmin(userId);
       res.json({ isAdmin: isAdminUser });
     } catch (error) {
