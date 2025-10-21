@@ -209,25 +209,18 @@ export class DatabaseStorage implements IStorage {
   // Admin operations - Admin users
   async getAdminUsers(): Promise<AdminUser[]> {
     const results = await db
-      .select({
-        id: adminUsers.id,
-        userId: adminUsers.userId,
-        createdAt: adminUsers.createdAt,
-        email: users.email,
-        firstName: users.firstName,
-        lastName: users.lastName,
-      })
+      .select()
       .from(adminUsers)
       .leftJoin(users, eq(adminUsers.userId, users.id))
       .orderBy(desc(adminUsers.createdAt));
     
     return results.map(r => ({
-      id: r.id,
-      userId: r.userId,
-      createdAt: r.createdAt,
-      email: r.email,
-      firstName: r.firstName,
-      lastName: r.lastName,
+      id: r.admin_users.id,
+      userId: r.admin_users.userId,
+      createdAt: r.admin_users.createdAt,
+      email: r.users?.email || null,
+      firstName: r.users?.firstName || null,
+      lastName: r.users?.lastName || null,
     })) as AdminUser[];
   }
 
