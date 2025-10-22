@@ -88,6 +88,16 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Password reset tokens table
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  token: varchar("token").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: integer("used").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertCalculatorUsageSchema = createInsertSchema(calculatorUsage).omit({
   id: true,
   createdAt: true,
@@ -114,6 +124,11 @@ export const insertSettingSchema = createInsertSchema(settings).omit({
   updatedAt: true,
 });
 
+export const insertPasswordResetTokenSchema = createInsertSchema(passwordResetTokens).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 export type CalculatorUsage = typeof calculatorUsage.$inferSelect;
@@ -130,3 +145,5 @@ export type AdminUser = typeof adminUsers.$inferSelect & {
 export type InsertAdminUser = z.infer<typeof insertAdminUserSchema>;
 export type Setting = typeof settings.$inferSelect;
 export type InsertSetting = z.infer<typeof insertSettingSchema>;
+export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+export type InsertPasswordResetToken = z.infer<typeof insertPasswordResetTokenSchema>;
