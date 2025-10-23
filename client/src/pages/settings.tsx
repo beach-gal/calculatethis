@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { User } from "@shared/schema";
+import SEO from "@/components/SEO";
 
 export default function Settings() {
   const { toast } = useToast();
@@ -65,6 +66,11 @@ export default function Settings() {
 
   return (
     <div className="container mx-auto py-8 px-4">
+      <SEO
+        title="Account Settings - CalculateThis.org"
+        description="Manage your CalculateThis.org account settings and change your password."
+        ogUrl="https://calculatethis.org/settings"
+      />
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-brown-900 dark:text-brown-100">Account Settings</h1>
 

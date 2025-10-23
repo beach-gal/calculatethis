@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import Header from "@/components/Header";
+import SEO from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
@@ -47,6 +48,11 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="Dashboard - CalculateThis.org"
+        description="View your calculation history and manage your account on CalculateThis.org."
+        ogUrl="https://calculatethis.org/dashboard"
+      />
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 py-8">
