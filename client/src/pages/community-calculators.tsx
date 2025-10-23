@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import AdSlot from "@/components/AdSlot";
+import SEO from "@/components/SEO";
 import { Link, useLocation } from "wouter";
 import { ArrowLeft, Sparkles, Users, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,12 @@ export default function CommunityCalculators() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="Community Built Calculators - AI-Generated Calculators | CalculateThis.org"
+        description="Explore amazing calculators created by our community using AI. Each calculator was made in seconds with our AI Calculator Builder."
+        keywords="community calculators, AI calculators, user-generated calculators, custom calculators"
+        ogUrl="https://calculatethis.org/community-calculators"
+      />
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
