@@ -5,6 +5,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
 import AdSlot from "@/components/AdSlot";
+import SEO from "@/components/SEO";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,6 +78,11 @@ export default function CalculatorPage() {
   if (!calculator) {
     return (
       <div className="min-h-screen bg-gray-50">
+        <SEO
+          title="Calculator Not Found - CalculateThis.org"
+          description="The calculator you're looking for doesn't exist. Browse our collection of 200+ free online calculators."
+          ogUrl={`https://calculatethis.org/calculator/${slug}`}
+        />
         <Header />
         <main className="max-w-4xl mx-auto px-4 py-8">
           <Card>
@@ -97,6 +103,12 @@ export default function CalculatorPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title={`${calculator.name} - Free Online Calculator | CalculateThis.org`}
+        description={`${calculator.description} Use our free ${calculator.name.toLowerCase()} for quick and accurate calculations.`}
+        keywords={`${calculator.name}, ${calculator.category} calculator, online calculator, free calculator`}
+        ogUrl={`https://calculatethis.org/calculator/${slug}`}
+      />
       <Header />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
