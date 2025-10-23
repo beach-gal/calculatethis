@@ -3,6 +3,7 @@ import { useLocation, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import AdSlot from "@/components/AdSlot";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -121,6 +122,11 @@ export default function CustomCalculator() {
     if (isLoadingCalculator) {
       return (
         <div className="min-h-screen bg-gray-50">
+          <SEO
+            title="Loading Calculator - CalculateThis.org"
+            description="Loading your custom AI-generated calculator"
+            ogUrl={`https://calculatethis.org/custom-calculator/${slug}`}
+          />
           <Header />
           <main className="max-w-4xl mx-auto px-4 py-8">
             <div className="flex justify-center items-center py-12">
@@ -134,6 +140,11 @@ export default function CustomCalculator() {
     if (!savedCalculator) {
       return (
         <div className="min-h-screen bg-gray-50">
+          <SEO
+            title="Calculator Not Found - CalculateThis.org"
+            description="The custom calculator you're looking for doesn't exist. Create your own AI-powered calculator."
+            ogUrl={`https://calculatethis.org/custom-calculator/${slug}`}
+          />
           <Header />
           <main className="max-w-4xl mx-auto px-4 py-8">
             <Card>
@@ -152,6 +163,12 @@ export default function CustomCalculator() {
 
     return (
       <div className="min-h-screen bg-gray-50">
+        <SEO
+          title={`${savedCalculator.name} - AI-Generated Calculator | CalculateThis.org`}
+          description={`${savedCalculator.description} Use this free AI-generated calculator for quick calculations.`}
+          keywords={`${savedCalculator.name}, AI calculator, custom calculator, online calculator`}
+          ogUrl={`https://calculatethis.org/custom-calculator/${slug}`}
+        />
         <Header />
         <main className="max-w-4xl mx-auto px-4 py-8">
           <Button
@@ -227,6 +244,12 @@ export default function CustomCalculator() {
   // Builder mode (no slug)
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="AI Calculator Builder - Create Custom Calculators | CalculateThis.org"
+        description="Build your own custom calculator using AI. Describe any calculation you need and get a working calculator instantly."
+        keywords="AI calculator, custom calculator builder, create calculator, online calculator generator"
+        ogUrl="https://calculatethis.org/custom-calculator"
+      />
       <Header />
 
       <main className="max-w-4xl mx-auto px-4 py-8">
