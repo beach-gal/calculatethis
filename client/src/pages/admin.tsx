@@ -12,6 +12,7 @@ import { Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
+import Header from "@/components/Header";
 import type { AdCode, AdminUser, Setting, Calculator } from "@shared/schema";
 
 export default function AdminPage() {
@@ -35,8 +36,11 @@ export default function AdminPage() {
   // Show loading state while checking
   if (authLoading || checkingAdmin) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">Loading...</div>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center">Loading...</div>
+        </div>
       </div>
     );
   }
@@ -47,33 +51,36 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6" data-testid="title-admin">Admin Dashboard</h1>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6" data-testid="title-admin">Admin Dashboard</h1>
 
-      <Tabs defaultValue="adcodes" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="adcodes" data-testid="tab-adcodes">Ad Codes</TabsTrigger>
-          <TabsTrigger value="community" data-testid="tab-community">Community Calculators</TabsTrigger>
-          <TabsTrigger value="admins" data-testid="tab-admins">Administrators</TabsTrigger>
-          <TabsTrigger value="settings" data-testid="tab-settings">Settings</TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="adcodes" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="adcodes" data-testid="tab-adcodes">Ad Codes</TabsTrigger>
+            <TabsTrigger value="community" data-testid="tab-community">Community Calculators</TabsTrigger>
+            <TabsTrigger value="admins" data-testid="tab-admins">Administrators</TabsTrigger>
+            <TabsTrigger value="settings" data-testid="tab-settings">Settings</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="adcodes">
-          <AdCodesManagement />
-        </TabsContent>
+          <TabsContent value="adcodes">
+            <AdCodesManagement />
+          </TabsContent>
 
-        <TabsContent value="community">
-          <CommunityCalculatorsManagement />
-        </TabsContent>
+          <TabsContent value="community">
+            <CommunityCalculatorsManagement />
+          </TabsContent>
 
-        <TabsContent value="admins">
-          <AdminsManagement />
-        </TabsContent>
+          <TabsContent value="admins">
+            <AdminsManagement />
+          </TabsContent>
 
-        <TabsContent value="settings">
-          <SettingsManagement />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="settings">
+            <SettingsManagement />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
