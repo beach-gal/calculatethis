@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
 import { Eye, EyeOff } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
@@ -55,6 +56,11 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-orange-50 flex items-center justify-center px-4 py-12">
+      <SEO
+        title="Sign In - CalculateThis.org"
+        description="Sign in to your CalculateThis.org account to access your calculation history and saved calculators."
+        ogUrl="https://calculatethis.org/login"
+      />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>

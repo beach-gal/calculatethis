@@ -11,6 +11,7 @@ import { Link, useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { CheckCircle, AlertCircle, Eye, EyeOff } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const resetPasswordSchema = z.object({
   newPassword: z.string().min(8, "Password must be at least 8 characters"),
@@ -69,6 +70,11 @@ export default function ResetPassword() {
   if (!token) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+        <SEO
+          title="Invalid Reset Link - CalculateThis.org"
+          description="This password reset link is invalid or has expired. Request a new password reset link."
+          ogUrl="https://calculatethis.org/reset-password"
+        />
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center text-red-600 dark:text-red-400">
@@ -97,6 +103,11 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+      <SEO
+        title="Reset Your Password - CalculateThis.org"
+        description="Create a new password for your CalculateThis.org account."
+        ogUrl="https://calculatethis.org/reset-password"
+      />
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">

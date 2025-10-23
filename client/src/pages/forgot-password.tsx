@@ -11,6 +11,7 @@ import { Link } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { CheckCircle } from "lucide-react";
+import SEO from "@/components/SEO";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -47,6 +48,11 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4">
+      <SEO
+        title="Forgot Password - CalculateThis.org"
+        description="Reset your CalculateThis.org password. Enter your email to receive a password reset link."
+        ogUrl="https://calculatethis.org/forgot-password"
+      />
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">

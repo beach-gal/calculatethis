@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
 import { Eye, EyeOff } from "lucide-react";
+import SEO from "@/components/SEO";
 
 export default function RegisterPage() {
   const [, setLocation] = useLocation();
@@ -82,6 +83,11 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-orange-50 flex items-center justify-center px-4 py-12">
+      <SEO
+        title="Create Account - CalculateThis.org"
+        description="Sign up for CalculateThis.org to save your calculation history and create custom calculators."
+        ogUrl="https://calculatethis.org/register"
+      />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
