@@ -6,6 +6,7 @@ import Calculator from "@/components/Calculator";
 import CategoryGrid from "@/components/CategoryGrid";
 import ContactDialog from "@/components/ContactDialog";
 import Badge from "@/components/Badge";
+import SEO from "@/components/SEO";
 import { searchCalculators } from "@/data/calculators";
 import { Link } from "wouter";
 import { Sparkles, Users } from "lucide-react";
@@ -29,6 +30,12 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEO
+        title="CalculateThis.org - Free Online Calculators for Math, Finance, Health & More"
+        description="Free online calculators for math, finance, health, and everyday calculations. 200+ calculators including mortgage, BMI, percentage, and more."
+        keywords="calculator, online calculator, math calculator, finance calculator, mortgage calculator, BMI calculator, percentage calculator, tip calculator"
+        ogUrl="https://calculatethis.org"
+      />
       <Header />
       
       {/* Main Content */}
