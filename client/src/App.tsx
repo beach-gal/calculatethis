@@ -18,6 +18,7 @@ import RegisterPage from "@/pages/register";
 import Settings from "@/pages/settings";
 import ForgotPassword from "@/pages/forgot-password";
 import ResetPassword from "@/pages/reset-password";
+import AdminSetup from "@/pages/admin-setup";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -36,6 +37,7 @@ function Router() {
       <Route path="/calculator/:slug" component={CalculatorPage} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/settings" component={Settings} />
+      <Route path="/admin-setup" component={AdminSetup} />
       <Route path="/admin-test" component={AdminTestPage} />
       <Route path="/admin" component={AdminPage} />
       <Route component={NotFound} />

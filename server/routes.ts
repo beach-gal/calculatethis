@@ -120,6 +120,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // One-time admin setup endpoint
+  app.post('/api/make-me-admin', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const userEmail = req.user.email;
+
+      // Check if user is already an admin
+      const isAlreadyAdmin = await storage.isAdmin(userId);
+      if (isAlreadyAdmin) {
+        return res.json({ message: "You are already an administrator", isAdmin: true });
+      }
+
+      // Make user an admin
+      await storage.addAdmin(userId);
+
+      res.json({ 
+        message: `Successfully made ${userEmail} an administrator!`,
+        isAdmin: true
+      });
+    } catch (error) {
+      console.error("Error making user admin:", error);
+      res.status(500).json({ message: "Failed to make user admin" });
+    }
+  });
+
   app.post('/api/auth/reset-password', async (req: any, res) => {
     try {
       const { token, newPassword } = req.body;
