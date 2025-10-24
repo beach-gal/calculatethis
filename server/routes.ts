@@ -107,13 +107,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const resetToken = await storage.createPasswordResetToken(user.id);
 
       // In production, you would send an email here
-      // For now, we'll return the reset link in the response
+      // For development, we'll return the reset link in the response
       const resetLink = `${req.protocol}://${req.get('host')}/reset-password?token=${resetToken.token}`;
 
-      res.json({ 
-        message: "If an account exists with this email, a password reset link has been sent.",
-        resetLink // Remove this in production when email is set up
-      });
+      const response: any = { 
+        message: "If an account exists with this email, a password reset link has been sent."
+      };
+
+      // Only include resetLink in development mode
+      if (process.env.NODE_ENV === 'development') {
+        response.resetLink = resetLink;
+      }
+
+      res.json(response);
     } catch (error) {
       console.error("Error requesting password reset:", error);
       res.status(500).json({ message: "Failed to process password reset request" });
