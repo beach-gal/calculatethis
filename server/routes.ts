@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth } from "./emailAuth";
 import { insertCalculatorUsageSchema, insertAdCodeSchema, insertSettingSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
+import { sendPasswordResetEmail } from "./sendgrid";
 
 // Auth middleware
 const isAuthenticated = (req: any, res: any, next: any) => {
@@ -106,15 +107,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create reset token
       const resetToken = await storage.createPasswordResetToken(user.id);
 
-      // In production, you would send an email here
-      // For development, we'll return the reset link in the response
+      // Generate reset link
       const resetLink = `${req.protocol}://${req.get('host')}/reset-password?token=${resetToken.token}`;
+
+      // Send email with reset link
+      try {
+        await sendPasswordResetEmail(user.email, resetLink);
+      } catch (emailError) {
+        console.error('Failed to send password reset email:', emailError);
+        // Don't reveal that email sending failed for security reasons
+      }
 
       const response: any = { 
         message: "If an account exists with this email, a password reset link has been sent."
       };
 
-      // Only include resetLink in development mode
+      // Only include resetLink in development mode for testing
       if (process.env.NODE_ENV === 'development') {
         response.resetLink = resetLink;
       }
