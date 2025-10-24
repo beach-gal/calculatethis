@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { setupAuth } from "./emailAuth";
 import { insertCalculatorUsageSchema, insertAdCodeSchema, insertSettingSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
-import { sendPasswordResetEmail } from "./sendgrid";
+import { sendPasswordResetEmail } from "./resend";
 
 // Auth middleware
 const isAuthenticated = (req: any, res: any, next: any) => {
