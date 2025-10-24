@@ -5,6 +5,7 @@ import { setupAuth } from "./emailAuth";
 import { insertCalculatorUsageSchema, insertAdCodeSchema, insertSettingSchema } from "@shared/schema";
 import bcrypt from "bcrypt";
 import { sendPasswordResetEmail } from "./resend";
+import { calculatorsData } from "../client/src/data/calculators";
 
 // Auth middleware
 const isAuthenticated = (req: any, res: any, next: any) => {
@@ -716,6 +717,69 @@ If user says "I need a calculator for paint coverage", generate:
     } catch (error) {
       console.error("Error checking admin status:", error);
       res.status(500).json({ message: "Failed to check admin status" });
+    }
+  });
+
+  // Sitemap
+  app.get('/sitemap.xml', async (req, res) => {
+    try {
+      const baseUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://calculatethis.org' 
+        : 'http://localhost:5000';
+      
+      const customCalculators = await storage.getCalculators();
+      
+      const now = new Date().toISOString();
+      
+      let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+      xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+      
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/</loc>\n`;
+      xml += `    <lastmod>${now}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>1.0</priority>\n`;
+      xml += `  </url>\n`;
+      
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/custom-calculator</loc>\n`;
+      xml += `    <lastmod>${now}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>0.8</priority>\n`;
+      xml += `  </url>\n`;
+      
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/community-calculators</loc>\n`;
+      xml += `    <lastmod>${now}</lastmod>\n`;
+      xml += `    <changefreq>daily</changefreq>\n`;
+      xml += `    <priority>0.8</priority>\n`;
+      xml += `  </url>\n`;
+      
+      for (const calc of calculatorsData) {
+        xml += `  <url>\n`;
+        xml += `    <loc>${baseUrl}/calculator/${calc.slug}</loc>\n`;
+        xml += `    <lastmod>${now}</lastmod>\n`;
+        xml += `    <changefreq>monthly</changefreq>\n`;
+        xml += `    <priority>0.7</priority>\n`;
+        xml += `  </url>\n`;
+      }
+      
+      for (const calc of customCalculators) {
+        xml += `  <url>\n`;
+        xml += `    <loc>${baseUrl}/custom-calculator/${calc.slug}</loc>\n`;
+        xml += `    <lastmod>${now}</lastmod>\n`;
+        xml += `    <changefreq>monthly</changefreq>\n`;
+        xml += `    <priority>0.6</priority>\n`;
+        xml += `  </url>\n`;
+      }
+      
+      xml += '</urlset>';
+      
+      res.header('Content-Type', 'application/xml');
+      res.send(xml);
+    } catch (error) {
+      console.error("Error generating sitemap:", error);
+      res.status(500).send('Error generating sitemap');
     }
   });
 
