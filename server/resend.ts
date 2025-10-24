@@ -45,9 +45,17 @@ async function getCredentials() {
     }
     
     console.log('[Resend] Credentials retrieved successfully');
+    
+    let fromEmail = connectionSettings.settings.from_email;
+    
+    if (fromEmail && fromEmail.includes('@myyahoo.com')) {
+      fromEmail = 'onboarding@resend.dev';
+      console.log('[Resend] Using Resend test domain for unverified sender');
+    }
+    
     return {
       apiKey: connectionSettings.settings.api_key, 
-      fromEmail: connectionSettings.settings.from_email || 'noreply@calculatethis.org'
+      fromEmail: fromEmail || 'onboarding@resend.dev'
     };
   } catch (error) {
     console.error('[Resend] Error fetching credentials:', error);
