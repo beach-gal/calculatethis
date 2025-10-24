@@ -3,7 +3,13 @@ import sgMail from '@sendgrid/mail';
 let connectionSettings: any;
 
 async function getCredentials() {
-  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME
+  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+  
+  console.log('[SendGrid] Checking credentials...');
+  console.log('[SendGrid] REPLIT_CONNECTORS_HOSTNAME:', hostname ? 'present' : 'missing');
+  console.log('[SendGrid] REPL_IDENTITY:', process.env.REPL_IDENTITY ? 'present' : 'missing');
+  console.log('[SendGrid] WEB_REPL_RENEWAL:', process.env.WEB_REPL_RENEWAL ? 'present' : 'missing');
+  
   const xReplitToken = process.env.REPL_IDENTITY 
     ? 'repl ' + process.env.REPL_IDENTITY 
     : process.env.WEB_REPL_RENEWAL 
@@ -11,23 +17,39 @@ async function getCredentials() {
     : null;
 
   if (!xReplitToken) {
+    console.error('[SendGrid] X_REPLIT_TOKEN not found for repl/depl');
     throw new Error('X_REPLIT_TOKEN not found for repl/depl');
   }
 
-  connectionSettings = await fetch(
-    'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=sendgrid',
-    {
-      headers: {
-        'Accept': 'application/json',
-        'X_REPLIT_TOKEN': xReplitToken
+  try {
+    const response = await fetch(
+      'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=sendgrid',
+      {
+        headers: {
+          'Accept': 'application/json',
+          'X_REPLIT_TOKEN': xReplitToken
+        }
       }
-    }
-  ).then(res => res.json()).then(data => data.items?.[0]);
+    );
+    
+    console.log('[SendGrid] Fetch response status:', response.status);
+    
+    const data = await response.json();
+    console.log('[SendGrid] Response data:', JSON.stringify(data, null, 2));
+    
+    connectionSettings = data.items?.[0];
 
-  if (!connectionSettings || (!connectionSettings.settings.api_key || !connectionSettings.settings.from_email)) {
-    throw new Error('SendGrid not connected');
+    if (!connectionSettings || (!connectionSettings.settings?.api_key || !connectionSettings.settings?.from_email)) {
+      console.error('[SendGrid] Connection settings missing or incomplete:', connectionSettings);
+      throw new Error('SendGrid not connected or missing API key/from_email');
+    }
+    
+    console.log('[SendGrid] Credentials retrieved successfully');
+    return {apiKey: connectionSettings.settings.api_key, email: connectionSettings.settings.from_email};
+  } catch (error) {
+    console.error('[SendGrid] Error fetching credentials:', error);
+    throw error;
   }
-  return {apiKey: connectionSettings.settings.api_key, email: connectionSettings.settings.from_email};
 }
 
 // WARNING: Never cache this client.
@@ -43,8 +65,10 @@ export async function getUncachableSendGridClient() {
 }
 
 export async function sendPasswordResetEmail(toEmail: string, resetLink: string) {
+  console.log('[SendGrid] Attempting to send password reset email to:', toEmail);
   try {
     const { client, fromEmail } = await getUncachableSendGridClient();
+    console.log('[SendGrid] Client initialized, from email:', fromEmail);
     
     const msg = {
       to: toEmail,
@@ -68,10 +92,14 @@ export async function sendPasswordResetEmail(toEmail: string, resetLink: string)
     };
     
     await client.send(msg);
-    console.log('Password reset email sent to:', toEmail);
+    console.log('[SendGrid] ✅ Password reset email sent successfully to:', toEmail);
     return true;
   } catch (error) {
-    console.error('Error sending password reset email:', error);
+    console.error('[SendGrid] ❌ Error sending password reset email:', error);
+    if (error && typeof error === 'object' && 'response' in error) {
+      const sgError = error as any;
+      console.error('[SendGrid] SendGrid response:', sgError.response?.body);
+    }
     throw error;
   }
 }
