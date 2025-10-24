@@ -99,18 +99,26 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
   - `/community-calculators` - Browse all featured community calculators
 - **Landing Page Display**: Compact teaser showing 3 featured calculators with a "View All" link to the dedicated community page.
 
+### Email Service
+
+- **Resend Integration**: Transactional email service for password reset functionality via Replit connector.
+- **Configuration**: Requires domain verification at https://resend.com/domains to send emails to any recipient.
+- **Test Mode**: Without domain verification, can only send to the email address associated with the Resend account.
+- **Implementation**: Server-side module (`server/resend.ts`) handles email sending with HTML templates.
+
 ## External Dependencies
 
 1.  **Neon PostgreSQL**: Serverless PostgreSQL database solution.
 2.  **Replit Authentication Service**: OIDC provider for user identity.
-3.  **Google Fonts**: Inter and Roboto Mono font families for typography.
-4.  **Vite**: Build tool and development server.
-5.  **esbuild**: Backend bundling for production.
-6.  **tsx**: TypeScript execution for development.
-7.  **Tailwind CSS**: Utility-first CSS framework.
-8.  **Drizzle Kit**: Database migration tool.
-9.  **Radix UI**: Unstyled component primitives (via shadcn/ui).
-10. **react-hook-form**: Form validation.
-11. **date-fns**: Date manipulation utility.
-12. **lucide-react**: Icon library.
-13. **mathjs**: For safe mathematical expression evaluation in custom calculators.
+3.  **Resend**: Transactional email service for password reset emails.
+4.  **Google Fonts**: Inter and Roboto Mono font families for typography.
+5.  **Vite**: Build tool and development server.
+6.  **esbuild**: Backend bundling for production.
+7.  **tsx**: TypeScript execution for development.
+8.  **Tailwind CSS**: Utility-first CSS framework.
+9.  **Drizzle Kit**: Database migration tool.
+10. **Radix UI**: Unstyled component primitives (via shadcn/ui).
+11. **react-hook-form**: Form validation.
+12. **date-fns**: Date manipulation utility.
+13. **lucide-react**: Icon library.
+14. **mathjs**: For safe mathematical expression evaluation in custom calculators.
