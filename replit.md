@@ -106,6 +106,13 @@ PostgreSQL is used with Drizzle ORM. Key tables include:
 - **Test Mode**: Without domain verification, can only send to the email address associated with the Resend account.
 - **Implementation**: Server-side module (`server/resend.ts`) handles email sending with HTML templates.
 
+### SEO & Sitemap
+
+- **Dynamic XML Sitemap**: Automatically generated sitemap at `/sitemap.xml` includes all pages for search engine indexing.
+- **Coverage**: Homepage, all 200+ calculator pages, custom calculator builder, community calculators, and user-created AI calculators.
+- **Updates**: Sitemap updates automatically as new custom calculators are added to the database.
+- **Priorities**: Homepage (1.0), main pages (0.8), calculators (0.7), custom calculators (0.6).
+
 ## External Dependencies
 
 1.  **Neon PostgreSQL**: Serverless PostgreSQL database solution.
