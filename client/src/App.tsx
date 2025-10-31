@@ -19,6 +19,7 @@ import Settings from "@/pages/settings";
 import ForgotPassword from "@/pages/forgot-password";
 import ResetPassword from "@/pages/reset-password";
 import AdminSetup from "@/pages/admin-setup";
+import EmergencyReset from "@/pages/emergency-reset";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/register" component={RegisterPage} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/emergency-reset" component={EmergencyReset} />
       <Route path="/community-calculators" component={CommunityCalculators} />
       <Route path="/custom-calculator/:slug" component={CustomCalculator} />
       <Route path="/custom-calculator" component={CustomCalculator} />

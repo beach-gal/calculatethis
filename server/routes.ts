@@ -767,6 +767,45 @@ If user says "I need a calculator for paint coverage", generate:
     }
   });
 
+  // Emergency password reset (only works if no admins exist - for initial setup)
+  app.post('/api/emergency-password-reset', async (req, res) => {
+    try {
+      const { email, newPassword } = req.body;
+      
+      if (!email || !newPassword) {
+        return res.status(400).json({ message: "Email and new password are required" });
+      }
+
+      // Check if any admins already exist
+      const existingAdmins = await storage.getAdminUsers();
+      if (existingAdmins.length > 0) {
+        return res.status(403).json({ 
+          message: "Emergency reset is disabled. Admins already exist. Use the normal password reset flow.",
+        });
+      }
+
+      // No admins exist, allow password reset
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ message: "User not found with that email" });
+      }
+
+      // Hash the new password
+      const bcrypt = await import('bcrypt');
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the password
+      await storage.updateUserPassword(user.id, hashedPassword);
+
+      res.json({ 
+        message: "Password reset successfully! You can now log in with your new password."
+      });
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      res.status(500).json({ message: "Failed to reset password" });
+    }
+  });
+
   // Admin routes - Admin Users Management
   app.get('/api/admin/admins', isAuthenticated, isAdmin, async (req, res) => {
     try {
