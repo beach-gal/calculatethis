@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
@@ -488,21 +488,54 @@ function CommunityCalculatorsManagement() {
     },
   });
 
+  const seedFeaturedMutation = useMutation({
+    mutationFn: () => apiRequest('POST', '/api/calculators/seed-featured'),
+    onSuccess: (data: any) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/calculators'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/calculators/featured/list'] });
+      toast({ 
+        title: data.message,
+        description: `Created: ${data.created}, Skipped: ${data.skipped}`
+      });
+    },
+    onError: () => {
+      toast({ title: "Failed to seed calculators", variant: "destructive" });
+    },
+  });
+
   const communityCalculators = calculators?.filter(calc => calc.formula) || [];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Community-Built Calculators</CardTitle>
-        <CardDescription>
-          Manage AI-generated calculators created by users. Feature them to showcase on the homepage.
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Community-Built Calculators</CardTitle>
+            <CardDescription>
+              Manage AI-generated calculators created by users. Feature them to showcase on the homepage.
+            </CardDescription>
+          </div>
+          <Button
+            onClick={() => seedFeaturedMutation.mutate()}
+            disabled={seedFeaturedMutation.isPending}
+            variant="outline"
+            data-testid="button-seed-featured"
+          >
+            <Sparkles className="h-4 w-4 mr-2" />
+            {seedFeaturedMutation.isPending ? "Seeding..." : "Seed Sample Calculators"}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         {isLoading ? (
           <div>Loading...</div>
         ) : communityCalculators.length === 0 ? (
-          <div className="text-muted-foreground">No community calculators yet</div>
+          <div className="space-y-4">
+            <div className="text-muted-foreground">No community calculators yet</div>
+            <p className="text-sm text-gray-600">
+              Click "Seed Sample Calculators" above to add 5 featured community calculators to your site!
+            </p>
+          </div>
         ) : (
           <div className="space-y-4">
             {communityCalculators.map((calculator) => (

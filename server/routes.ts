@@ -260,6 +260,114 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Seed featured calculators (admin only, one-time use)
+  app.post('/api/calculators/seed-featured', isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const sampleCalculators = [
+        {
+          name: "Pizza Party Calculator",
+          slug: "pizza-party-calc-xyz123",
+          category: "Other",
+          description: "Calculate how many pizzas you need based on number of guests and slices per person",
+          formula: "ceil((guests * slicesPerPerson) / 8)",
+          fields: [
+            { id: "guests", step: "1", type: "number", label: "Number of Guests", placeholder: "Enter number of guests" },
+            { id: "slicesPerPerson", step: "1", type: "number", label: "Slices Per Person", placeholder: "Enter slices per person" }
+          ],
+          resultLabel: "Pizzas Needed",
+          resultUnit: "pizzas",
+          creatorName: "Mike Johnson",
+          active: 1,
+          featured: 1
+        },
+        {
+          name: "Dog Years Calculator",
+          slug: "dog-years-calc-abc456",
+          category: "Health",
+          description: "Convert your dog's age to human years based on breed size",
+          formula: "(age <= 2) ? age * 10.5 : 21 + (age - 2) * 4",
+          fields: [
+            { id: "age", step: "1", type: "number", label: "Dog Age (years)", placeholder: "Enter dog age" }
+          ],
+          resultLabel: "Human Years",
+          resultUnit: "years",
+          creatorName: "Sarah Chen",
+          active: 1,
+          featured: 1
+        },
+        {
+          name: "Perfect Tip Calculator",
+          slug: "perfect-tip-calc-def789",
+          category: "Finance",
+          description: "Calculate the perfect tip amount and split the bill among friends",
+          formula: "round((billAmount * (tipPercent / 100)) / numberOfPeople * 100) / 100",
+          fields: [
+            { id: "billAmount", step: "0.01", type: "number", label: "Bill Amount ($)", placeholder: "Enter bill amount" },
+            { id: "tipPercent", step: "1", type: "number", label: "Tip Percentage", placeholder: "Enter tip %" },
+            { id: "numberOfPeople", step: "1", type: "number", label: "Number of People", placeholder: "Enter number of people" }
+          ],
+          resultLabel: "Tip Per Person",
+          resultUnit: "$",
+          creatorName: "Alex Martinez",
+          active: 1,
+          featured: 1
+        },
+        {
+          name: "Study Time Planner",
+          slug: "study-time-planner-jkl345",
+          category: "Other",
+          description: "Calculate how many study sessions you need to prepare for an exam",
+          formula: "ceil(totalPages / (pagesPerHour * hoursPerDay))",
+          fields: [
+            { id: "totalPages", step: "1", type: "number", label: "Total Pages", placeholder: "Enter total pages" },
+            { id: "pagesPerHour", step: "1", type: "number", label: "Pages Per Hour", placeholder: "Enter pages per hour" },
+            { id: "hoursPerDay", step: "1", type: "number", label: "Hours Per Day", placeholder: "Enter hours per day" }
+          ],
+          resultLabel: "Days Needed",
+          resultUnit: "days",
+          creatorName: "Taylor Kim",
+          active: 1,
+          featured: 1
+        },
+        {
+          name: "Coffee Brew Ratio",
+          slug: "coffee-brew-ratio-ghi012",
+          category: "Other",
+          description: "Calculate how many tablespoons of coffee you need based on cups of water and desired brew strength",
+          formula: "round((cups * 8) / (brewStrength == 1 ? 8 : brewStrength == 2 ? 6 : 4) * 10) / 10",
+          fields: [
+            { id: "cups", step: "0.5", type: "number", label: "Water Amount (cups)", placeholder: "Enter number of cups" },
+            { id: "brewStrength", step: "1", type: "number", label: "Brew Strength (1=Weak, 2=Medium, 3=Strong)", placeholder: "Enter 1, 2, or 3" }
+          ],
+          resultLabel: "Coffee Needed",
+          resultUnit: "tablespoons",
+          creatorName: "Jamie Lee",
+          active: 1,
+          featured: 1
+        }
+      ];
+
+      const created = [];
+      for (const calc of sampleCalculators) {
+        // Check if calculator with this slug already exists
+        const existing = await storage.getCalculatorBySlug(calc.slug);
+        if (!existing) {
+          const newCalc = await storage.createCalculator(calc);
+          created.push(newCalc);
+        }
+      }
+
+      res.json({ 
+        message: `Successfully seeded ${created.length} featured calculators`,
+        created: created.length,
+        skipped: sampleCalculators.length - created.length
+      });
+    } catch (error) {
+      console.error("Error seeding featured calculators:", error);
+      res.status(500).json({ message: "Failed to seed featured calculators" });
+    }
+  });
+
   // Usage tracking routes (protected)
   app.post('/api/calculator-usage', isAuthenticated, async (req: any, res) => {
     try {
