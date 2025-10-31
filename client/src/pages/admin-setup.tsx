@@ -17,7 +17,7 @@ export default function AdminSetup() {
   const handleMakeAdmin = async () => {
     setIsLoading(true);
     try {
-      const response = await apiRequest('POST', '/api/make-me-admin', {}) as unknown as { message: string };
+      const response = await apiRequest('POST', '/api/setup-first-admin', {}) as unknown as { message: string };
       
       // Invalidate admin check query
       queryClient.invalidateQueries({ queryKey: ['/api/admin/check'] });
@@ -96,8 +96,13 @@ export default function AdminSetup() {
                 Logged in as: <strong>{(user as any).email}</strong>
               </p>
               <p className="text-sm text-gray-600">
-                Click the button below to grant yourself administrator privileges.
+                Click the button below to grant yourself administrator privileges. This only works if no admins have been set up yet.
               </p>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <p className="text-xs text-yellow-800">
+                  <strong>Note:</strong> This is a one-time setup. If admins already exist, this will be disabled.
+                </p>
+              </div>
               <Button
                 onClick={handleMakeAdmin}
                 disabled={isLoading}
