@@ -740,6 +740,33 @@ If user says "I need a calculator for paint coverage", generate:
     }
   });
 
+  // One-time admin setup endpoint (only works if no admins exist)
+  app.post('/api/setup-first-admin', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const userEmail = req.user.email;
+      
+      // Check if any admins already exist
+      const existingAdmins = await storage.getAdminUsers();
+      if (existingAdmins.length > 0) {
+        return res.status(403).json({ 
+          message: "Admin setup is disabled. Admins already exist.",
+          admins: existingAdmins.length
+        });
+      }
+      
+      // No admins exist, make this user the first admin
+      const admin = await storage.addAdmin(userId);
+      res.json({ 
+        message: `Successfully set up ${userEmail} as the first admin!`,
+        admin
+      });
+    } catch (error) {
+      console.error("Error setting up first admin:", error);
+      res.status(500).json({ message: "Failed to set up admin" });
+    }
+  });
+
   // Admin routes - Admin Users Management
   app.get('/api/admin/admins', isAuthenticated, isAdmin, async (req, res) => {
     try {
