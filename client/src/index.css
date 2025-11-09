@@ -49,8 +49,11 @@
   --ring: hsl(240, 4.9%, 83.9%);
 }
 
-@layer base {
-  /* Removed border-border to fix Tailwind build */
+
+}@layer base {
+  * {
+    /* Removed border-border to fix Tailwind build */
+  }
 }
 
   body {
