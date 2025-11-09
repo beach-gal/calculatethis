@@ -1,18 +1,13 @@
-import express from "express";
-import { createServer } from "@vercel/node"; // optional if using express directly
+import express, { Request, Response } from 'express'
+import { runYourAI } from './lib/runYourAI' // adjust path if needed
 
-const app = express();
+const app = express()
 
-// Example route for your AI calculator builder
-app.post("/api/generate-calculator", async (req, res) => {
-  try {
-    const result = await runYourAI(req.body); // replace with your actual logic
-    res.json(result);
-  } catch (err) {
-    console.error("AI error:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+app.use(express.json())
 
-// Vercel expects a default export
-export default app;
+app.post('/api/run', async (req: Request, res: Response) => {
+  const result = await runYourAI(req.body)
+  res.json(result)
+})
+
+export default app
