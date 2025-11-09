@@ -50,9 +50,8 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  /* Removed border-border to fix Tailwind build */
+}
 
   body {
     @apply font-sans antialiased;
