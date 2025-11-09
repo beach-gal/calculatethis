@@ -1,0 +1,457 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Professional tools for quick calculations and conversions.">
+    <meta name="keywords" content="calculator, math calculator, finance calculator, health calculator, online calculator, free calculator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#2563eb',
+                    'primary-light': '#3b82f6',
+                    'primary-lighter': '#dbeafe'
+                }
+            }
+        }
+    };
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .calculator-display { font-family: 'Courier New', monospace; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-primary">CalculateThis.org</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-primary font-medium">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-primary font-medium">Categories</a>
+                    <a href="#" class="text-gray-600 hover:text-primary font-medium">About</a>
+                    <a href="#" class="text-gray-600 hover:text-primary font-medium">Contact</a>
+                </nav>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Free Online Calculators</h2>
+            <p class="text-xl text-gray-600 mb-8">Professional tools for math, finance, health, and everyday calculations</p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="relative">
+                    <input 
+                        type="search" 
+                        placeholder="Find any calculator (e.g., mortgage, BMI, percentage)..."
+                        class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none"
+                        id="calculatorSearch"
+                    >
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-primary">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section - MANDATORY HORIZONTAL LAYOUT -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-bold text-center text-gray-900 mb-8">Calculator Categories</h3>
+            
+            <!-- Horizontal Category Layout with Flexbox -->
+            <div class="flex flex-col lg:flex-row gap-6 justify-between">
+                
+                <!-- Math Category -->
+                <!-- @COMPONENT: CategoryCard [title, icon, calculators] -->
+                <div class="flex-1 bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="text-center mb-4">
+                        <!-- Math symbols icon representing mathematical calculations -->
+                        <div class="w-12 h-12 mx-auto mb-3 bg-primary-lighter rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calculator text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Math</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#basic-math" class="text-primary hover:text-primary-light font-medium">• Basic Math Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Scientific Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Fraction Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Percentage Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Algebra Calculator</a></li>
+                    </ul>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Finance Category -->
+                <!-- @COMPONENT: CategoryCard [title, icon, calculators] -->
+                <div class="flex-1 bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="text-center mb-4">
+                        <!-- Dollar sign icon representing financial calculations -->
+                        <div class="w-12 h-12 mx-auto mb-3 bg-primary-lighter rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Finance</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Mortgage Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Loan Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Investment Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Tax Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Interest Calculator</a></li>
+                    </ul>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Health Category -->
+                <!-- @COMPONENT: CategoryCard [title, icon, calculators] -->
+                <div class="flex-1 bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="text-center mb-4">
+                        <!-- Heart icon representing health and fitness calculations -->
+                        <div class="w-12 h-12 mx-auto mb-3 bg-primary-lighter rounded-lg flex items-center justify-center">
+                            <i class="fas fa-heartbeat text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Health</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• BMI Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Calorie Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Body Fat Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• BMR Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Ideal Weight Calculator</a></li>
+                    </ul>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Other Category -->
+                <!-- @COMPONENT: CategoryCard [title, icon, calculators] -->
+                <div class="flex-1 bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow">
+                    <div class="text-center mb-4">
+                        <!-- Tools icon representing miscellaneous utility calculations -->
+                        <div class="w-12 h-12 mx-auto mb-3 bg-primary-lighter rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tools text-2xl text-primary"></i>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900">Other</h4>
+                    </div>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Age Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Date Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Time Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Unit Converter</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary" data-mock="true">• Tip Calculator</a></li>
+                    </ul>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Basic Math Calculator Section -->
+    <section id="basic-math" class="py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Basic Math Calculator</h3>
+                <p class="text-gray-600">Perform basic arithmetic operations with ease</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Calculator -->
+                <!-- @COMPONENT: BasicMathCalculator [display, buttons, operations] -->
+                <div class="lg:w-1/2">
+                    <div class="bg-gray-100 rounded-lg p-6 shadow-inner">
+                        <!-- Display -->
+                        <div class="bg-black rounded p-4 mb-4">
+                            <div id="calculator-display" class="calculator-display text-right text-white text-2xl font-mono h-8">0</div>
+                        </div>
+                        
+                        <!-- Buttons -->
+                        <div class="grid grid-cols-4 gap-2">
+                            <!-- Row 1 -->
+                            <button class="bg-gray-300 hover:bg-gray-400 p-4 rounded font-semibold" onclick="clearCalculator()">C</button>
+                            <button class="bg-gray-300 hover:bg-gray-400 p-4 rounded font-semibold" onclick="deleteLast()">⌫</button>
+                            <button class="bg-gray-300 hover:bg-gray-400 p-4 rounded font-semibold" onclick="appendToDisplay('%')">%</button>
+                            <button class="bg-primary hover:bg-primary-light text-white p-4 rounded font-semibold" onclick="appendToDisplay('/')">÷</button>
+                            
+                            <!-- Row 2 -->
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('7')">7</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('8')">8</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('9')">9</button>
+                            <button class="bg-primary hover:bg-primary-light text-white p-4 rounded font-semibold" onclick="appendToDisplay('*')">×</button>
+                            
+                            <!-- Row 3 -->
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('4')">4</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('5')">5</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('6')">6</button>
+                            <button class="bg-primary hover:bg-primary-light text-white p-4 rounded font-semibold" onclick="appendToDisplay('-')">−</button>
+                            
+                            <!-- Row 4 -->
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('1')">1</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('2')">2</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('3')">3</button>
+                            <button class="bg-primary hover:bg-primary-light text-white p-4 rounded font-semibold" onclick="appendToDisplay('+')">+</button>
+                            
+                            <!-- Row 5 -->
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold col-span-2" onclick="appendToDisplay('0')">0</button>
+                            <button class="bg-white hover:bg-gray-100 border p-4 rounded font-semibold" onclick="appendToDisplay('.')">.</button>
+                            <button class="bg-green-600 hover:bg-green-700 text-white p-4 rounded font-semibold" onclick="calculateResult()">=</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: BasicMathCalculator -->
+
+                <!-- Embed Code and Ad Widget -->
+                <div class="lg:w-1/2 space-y-6">
+                    <!-- Embed Code -->
+                    <div class="bg-gray-50 rounded-lg p-6 border">
+                        <h4 class="font-semibold text-gray-900 mb-3">Embed This Calculator</h4>
+                        <textarea 
+                            class="w-full h-20 p-3 text-sm bg-white border rounded resize-none font-mono"
+                            readonly
+                            data-mock="true"
+                        >&lt;iframe src="https://calculatethis.org/embed/basic-math" width="400" height="500"&gt;&lt;/iframe&gt;</textarea>
+                        <button class="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary-light text-sm">
+                            Copy Code
+                        </button>
+                    </div>
+
+                    <!-- Ad Widget Placeholder -->
+                    <div class="bg-gray-100 rounded-lg p-6 border-2 border-dashed border-gray-300 text-center">
+                        <i class="fas fa-ad text-3xl text-gray-400 mb-2"></i>
+                        <p class="text-gray-500 font-medium">Advertisement Space</p>
+                        <p class="text-sm text-gray-400">300x250 Banner</p>
+                    </div>
+
+                    <!-- Calculator Features -->
+                    <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                        <h4 class="font-semibold text-gray-900 mb-3">Calculator Features</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Basic arithmetic operations (+, −, ×, ÷)</li>
+                            <li>• Percentage calculations</li>
+                            <li>• Decimal number support</li>
+                            <li>• Clear and backspace functions</li>
+                            <li>• Keyboard input support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Calculators Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-2xl font-bold text-center text-gray-900 mb-8">Popular Calculators</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Popular Calculator Cards -->
+                <div class="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
+                    <h4 class="font-semibold text-gray-900 mb-2" data-mock="true">Mortgage Calculator</h4>
+                    <p class="text-sm text-gray-600 mb-3" data-mock="true">Calculate monthly payments and total interest</p>
+                    <a href="#" class="text-primary hover:text-primary-light text-sm font-medium" data-mock="true">Try Now →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
+                    <h4 class="font-semibold text-gray-900 mb-2" data-mock="true">BMI Calculator</h4>
+                    <p class="text-sm text-gray-600 mb-3" data-mock="true">Calculate your body mass index</p>
+                    <a href="#" class="text-primary hover:text-primary-light text-sm font-medium" data-mock="true">Try Now →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
+                    <h4 class="font-semibold text-gray-900 mb-2" data-mock="true">Percentage Calculator</h4>
+                    <p class="text-sm text-gray-600 mb-3" data-mock="true">Calculate percentages and percentage changes</p>
+                    <a href="#" class="text-primary hover:text-primary-light text-sm font-medium" data-mock="true">Try Now →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow">
+                    <h4 class="font-semibold text-gray-900 mb-2" data-mock="true">Tip Calculator</h4>
+                    <p class="text-sm text-gray-600 mb-3" data-mock="true">Calculate tips and split bills easily</p>
+                    <a href="#" class="text-primary hover:text-primary-light text-sm font-medium" data-mock="true">Try Now →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="col-span-1 md:col-span-2">
+                    <h3 class="text-lg font-bold text-primary mb-3">CalculateThis.org</h3>
+                    <p class="text-gray-600 text-sm mb-4">Your trusted source for free online calculators. Professional tools for math, finance, health, and everyday calculations.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary" data-mock="true">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary" data-mock="true">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary" data-mock="true">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3">Categories</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Math Calculators</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Finance Calculators</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Health Calculators</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Other Tools</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-3">Company</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><a href="#" class="hover:text-primary" data-mock="true">About Us</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Contact</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-primary" data-mock="true">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t mt-8 pt-6 text-center">
+                <p class="text-sm text-gray-500">© 2024 CalculateThis.org. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Basic Math Calculator -->
+    <script>
+    (function() {
+        let currentInput = '0';
+        let operator = null;
+        let previousInput = null;
+        let justCalculated = false;
+
+        const display = document.getElementById('calculator-display');
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        window.appendToDisplay = function(value) {
+            if (justCalculated && !isNaN(value)) {
+                currentInput = '';
+                justCalculated = false;
+            }
+
+            if (currentInput === '0' && !isNaN(value)) {
+                currentInput = value;
+            } else if (currentInput === '0' && value === '.') {
+                currentInput = '0.';
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        };
+
+        window.clearCalculator = function() {
+            currentInput = '0';
+            operator = null;
+            previousInput = null;
+            justCalculated = false;
+            updateDisplay();
+        };
+
+        window.deleteLast = function() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        };
+
+        window.calculateResult = function() {
+            if (operator && previousInput !== null) {
+                const prev = parseFloat(previousInput);
+                const current = parseFloat(currentInput);
+                let result;
+
+                switch (operator) {
+                    case '+':
+                        result = prev + current;
+                        break;
+                    case '-':
+                        result = prev - current;
+                        break;
+                    case '*':
+                        result = prev * current;
+                        break;
+                    case '/':
+                        result = current !== 0 ? prev / current : 'Error';
+                        break;
+                    case '%':
+                        result = prev % current;
+                        break;
+                    default:
+                        return;
+                }
+
+                currentInput = result.toString();
+                operator = null;
+                previousInput = null;
+                justCalculated = true;
+                updateDisplay();
+            }
+        };
+
+        // Handle operator input
+        const operatorButtons = document.querySelectorAll('button[onclick*="appendToDisplay"]');
+        operatorButtons.forEach(button => {
+            const onclick = button.getAttribute('onclick');
+            if (onclick.includes('+') || onclick.includes('-') || onclick.includes('*') || onclick.includes('/') || onclick.includes('%')) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const op = this.textContent === '÷' ? '/' : 
+                              this.textContent === '×' ? '*' : 
+                              this.textContent === '−' ? '-' : 
+                              this.textContent;
+                    
+                    if (operator && previousInput !== null && !justCalculated) {
+                        calculateResult();
+                    }
+                    
+                    operator = op === '+' || op === '-' || op === '*' || op === '/' || op === '%' ? op : null;
+                    previousInput = currentInput;
+                    currentInput = '0';
+                });
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('calculatorSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                // TODO: Implement search functionality
+                console.log('Search query:', this.value);
+            });
+        }
+
+        updateDisplay();
+    })();
+    </script>
+</body>
+</html>

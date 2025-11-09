@@ -1,0 +1,518 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators for Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Calculate percentages, loans, BMI, taxes, and 200+ other calculations instantly.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, percentage calculator, BMI calculator">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-blue': '#4A90E2',
+                        'blue-gray': '#718096',
+                        'calc-brown': '#8B4513',
+                        'calc-orange': '#FF8C00',
+                        'calc-blue': '#4169E1',
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .header-gradient {
+            background: linear-gradient(135deg, #4A90E2 0%, #718096 100%);
+        }
+        .categories {
+            display: grid;
+            grid-template-columns: 25% 25% 25% 25%;
+            width: 100%;
+            gap: 20px;
+        }
+        .category-links {
+            line-height: 1.2;
+            margin: 2px 0;
+            padding: 1px 0;
+        }
+        .calculator-display {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            .categories {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- @COMPONENT: Header [Navigation with logo and auth buttons] -->
+    <header class="header-gradient text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- @COMPONENT: Logo [Clickable home link] -->
+                <a href="/" class="flex items-center space-x-3" data-event="click:navigateHome">
+                    <img src="data:image/png;base64,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<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators for Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Professional calculator tools with easy-to-use interface and accurate results.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, health calculator, percentage calculator, tip calculator">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Courier+New&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'mono': ['Courier New', 'monospace']
+                    },
+                    colors: {
+                        'primary': '#4A90E2',
+                        'secondary': '#718096',
+                        'calc-brown': '#8B4513',
+                        'calc-orange': '#FF8C00',
+                        'calc-blue': '#4169E1'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .header-gradient {
+            background: linear-gradient(135deg, #4A90E2 0%, #718096 100%);
+        }
+        .categories {
+            display: grid;
+            grid-template-columns: 25% 25% 25% 25%;
+            width: 100%;
+        }
+        .category-links {
+            line-height: 1.2;
+            margin: 2px 0;
+        }
+        .calculator-display {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body class="font-sans bg-white">
+    <!-- @COMPONENT: Header [logo, navigation, authentication] -->
+    <header class="header-gradient shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <!-- @BIND: logo image -->
+                    <a href="/" class="flex items-center space-x-3">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiByeD0iMTIiIGZpbGw9InVybCgjZ3JhZGllbnQwX2xpbmVhcl8xXzEpIi8+CjxwYXRoIGQ9Ik0xNSAyMGg4djRoLTh2LTR6bTE2IDBoOHY0aC04di00eiIgZmlsbD0iIzMzMzMzMyIvPgo8cGF0aCBkPSJNMTUgMjhoOHY0aC04di00em0xNiAwaDB2NGgtOHYtNHoiIGZpbGw9IiMzMzMzMzMiLz4KPHA+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50MF9saW5lYXJfMV8xIiB4MT0iMCIgeTE9IjAiIHgyPSI2MCIgeTI9IjYwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QTkwRTIiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNzE4MDk2Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHN2Zz4K" alt="CalculateThis.org Logo" class="h-12 w-12">
+                        <div class="text-white">
+                            <h1 class="text-xl font-bold">CalculateThis.org</h1>
+                            <p class="text-sm text-blue-100">Professional Calculator Tools</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="/calculators" class="text-white hover:text-blue-100 transition-colors">All Calculators</a>
+                    <a href="/about" class="text-white hover:text-blue-100 transition-colors">About</a>
+                    <a href="/contact" class="text-white hover:text-blue-100 transition-colors">Contact</a>
+                </nav>
+
+                <div class="flex items-center space-x-3">
+                    <!-- @FUNCTIONALITY: User authentication buttons -->
+                    <button data-event="click:handleSignIn" class="text-white hover:text-blue-100 px-4 py-2 rounded-lg border border-white/20 transition-colors">
+                        Sign In
+                    </button>
+                    <button data-event="click:handleSignUp" class="bg-white text-primary hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: MainContent [hero, calculator, categories] -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- @COMPONENT: HeroSection [title, search] -->
+        <section class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Free Online Calculators</h1>
+            <p class="text-xl text-gray-600 mb-8">Professional calculator tools for math, finance, health, and more</p>
+            
+            <!-- @COMPONENT: SearchBar [calculator search functionality] -->
+            <div class="max-w-md mx-auto mb-8">
+                <div class="relative">
+                    <input type="text" placeholder="Search calculators..." class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- @COMPONENT: WorkingCalculator [functional calculator interface] -->
+        <section class="mb-16">
+            <div class="max-w-md mx-auto bg-gray-800 p-6 rounded-xl shadow-2xl">
+                <div class="calculator-display p-4 rounded-lg mb-4 text-right text-2xl font-mono" data-bind="calculator.display">0</div>
+                
+                <!-- @FUNCTIONALITY: Working calculator with color-coded buttons -->
+                <div class="grid grid-cols-4 gap-2">
+                    <!-- First Row -->
+                    <button class="bg-calc-blue text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:clearAll">AC</button>
+                    <button class="bg-calc-blue text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:toggleSign">+/-</button>
+                    <button class="bg-calc-blue text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:percentage">%</button>
+                    <button class="bg-calc-orange text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:divide">÷</button>
+                    
+                    <!-- Second Row -->
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="7">7</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="8">8</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="9">9</button>
+                    <button class="bg-calc-orange text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:multiply">×</button>
+                    
+                    <!-- Third Row -->
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="4">4</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="5">5</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="6">6</button>
+                    <button class="bg-calc-orange text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:subtract">-</button>
+                    
+                    <!-- Fourth Row -->
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="1">1</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="2">2</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:number" data-value="3">3</button>
+                    <button class="bg-calc-orange text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:add">+</button>
+                    
+                    <!-- Fifth Row -->
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity col-span-2" data-event="click:number" data-value="0">0</button>
+                    <button class="bg-calc-brown text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:decimal">.</button>
+                    <button class="bg-calc-orange text-white p-4 rounded-lg font-semibold hover:opacity-80 transition-opacity" data-event="click:equals">=</button>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: WorkingCalculator -->
+
+        <!-- @COMPONENT: CategoriesSection [4-column layout with tight spacing] -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Calculator Categories</h2>
+            
+            <!-- @FORCE: 4-column layout using CSS grid -->
+            <div class="categories gap-8">
+                <!-- @COMPONENT: MathCategory [50 calculators] -->
+                <div class="category bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Professional photo of mathematical symbols and calculator -->
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=200" alt="Mathematical symbols and calculator" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-primary mb-4 flex items-center">
+                        <i class="fas fa-calculator mr-2"></i>
+                        Math Calculators
+                    </h3>
+                    <div class="space-y-1">
+                        <!-- @MAP: mathCalculators.map(calc => ( -->
+                        <a href="/calculator/basic-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Basic Calculator</a>
+                        <a href="/calculator/scientific-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Scientific Calculator</a>
+                        <a href="/calculator/fraction-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Fraction Calculator</a>
+                        <a href="/calculator/percentage-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Percentage Calculator</a>
+                        <a href="/calculator/algebra-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Algebra Calculator</a>
+                        <a href="/calculator/geometry-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Geometry Calculator</a>
+                        <a href="/calculator/trigonometry-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Trigonometry Calculator</a>
+                        <a href="/calculator/calculus-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Calculus Calculator</a>
+                        <a href="/calculator/statistics-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Statistics Calculator</a>
+                        <a href="/calculator/probability-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Probability Calculator</a>
+                        <!-- @END_MAP )) -->
+                        <div class="pt-2">
+                            <a href="/math-calculators" class="text-primary font-medium text-sm hover:underline">View all 50 Math Calculators →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @COMPONENT: FinanceCategory [50 calculators] -->
+                <div class="category bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Professional photo of financial documents and calculator -->
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=200" alt="Financial documents and calculator on desk" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-primary mb-4 flex items-center">
+                        <i class="fas fa-dollar-sign mr-2"></i>
+                        Finance Calculators
+                    </h3>
+                    <div class="space-y-1">
+                        <a href="/calculator/mortgage-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Mortgage Calculator</a>
+                        <a href="/calculator/loan-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Loan Calculator</a>
+                        <a href="/calculator/compound-interest-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Compound Interest Calculator</a>
+                        <a href="/calculator/investment-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Investment Calculator</a>
+                        <a href="/calculator/retirement-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Retirement Calculator</a>
+                        <a href="/calculator/tax-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Tax Calculator</a>
+                        <a href="/calculator/budget-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Budget Calculator</a>
+                        <a href="/calculator/currency-converter" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Currency Converter</a>
+                        <a href="/calculator/tip-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Tip Calculator</a>
+                        <a href="/calculator/salary-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Salary Calculator</a>
+                        <div class="pt-2">
+                            <a href="/finance-calculators" class="text-primary font-medium text-sm hover:underline">View all 50 Finance Calculators →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @COMPONENT: HealthCategory [25 calculators] -->
+                <div class="category bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Professional photo of health and fitness equipment -->
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=200" alt="Health and fitness equipment including scale and measuring tape" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-primary mb-4 flex items-center">
+                        <i class="fas fa-heartbeat mr-2"></i>
+                        Health Calculators
+                    </h3>
+                    <div class="space-y-1">
+                        <a href="/calculator/bmi-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">BMI Calculator</a>
+                        <a href="/calculator/calorie-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Calorie Calculator</a>
+                        <a href="/calculator/body-fat-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Body Fat Calculator</a>
+                        <a href="/calculator/bmr-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">BMR Calculator</a>
+                        <a href="/calculator/ideal-weight-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Ideal Weight Calculator</a>
+                        <a href="/calculator/pregnancy-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Pregnancy Calculator</a>
+                        <a href="/calculator/heart-rate-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Heart Rate Calculator</a>
+                        <a href="/calculator/blood-pressure-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Blood Pressure Calculator</a>
+                        <a href="/calculator/water-intake-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Water Intake Calculator</a>
+                        <a href="/calculator/sleep-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Sleep Calculator</a>
+                        <div class="pt-2">
+                            <a href="/health-calculators" class="text-primary font-medium text-sm hover:underline">View all 25 Health Calculators →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- @COMPONENT: OtherCategory [75 calculators] -->
+                <div class="category bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Professional photo of various tools and measurement instruments -->
+                    <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=200" alt="Various measurement tools and conversion instruments" class="w-full h-32 object-cover rounded-lg mb-4">
+                    <h3 class="text-xl font-semibold text-primary mb-4 flex items-center">
+                        <i class="fas fa-tools mr-2"></i>
+                        Other Calculators
+                    </h3>
+                    <div class="space-y-1">
+                        <a href="/calculator/unit-converter" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Unit Converter</a>
+                        <a href="/calculator/age-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Age Calculator</a>
+                        <a href="/calculator/date-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Date Calculator</a>
+                        <a href="/calculator/time-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Time Calculator</a>
+                        <a href="/calculator/gpa-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">GPA Calculator</a>
+                        <a href="/calculator/grade-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Grade Calculator</a>
+                        <a href="/calculator/fuel-cost-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Fuel Cost Calculator</a>
+                        <a href="/calculator/carbon-footprint-calculator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Carbon Footprint Calculator</a>
+                        <a href="/calculator/password-generator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">Password Generator</a>
+                        <a href="/calculator/qr-code-generator" class="category-links block text-gray-700 hover:text-primary transition-colors text-sm">QR Code Generator</a>
+                        <div class="pt-2">
+                            <a href="/other-calculators" class="text-primary font-medium text-sm hover:underline">View all 75 Other Calculators →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CategoriesSection -->
+
+        <!-- @COMPONENT: FeaturedCalculators [popular tools showcase] -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Featured Calculators</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <div class="text-primary text-3xl mb-4"><i class="fas fa-percent"></i></div>
+                    <h3 class="text-xl font-semibold mb-3">Percentage Calculator</h3>
+                    <p class="text-gray-600 mb-4">Calculate percentages, percentage increase/decrease, and find what percent one number is of another.</p>
+                    <a href="/calculator/percentage-calculator" class="text-primary font-medium hover:underline">Use Calculator →</a>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <div class="text-primary text-3xl mb-4"><i class="fas fa-home"></i></div>
+                    <h3 class="text-xl font-semibold mb-3">Mortgage Calculator</h3>
+                    <p class="text-gray-600 mb-4">Calculate monthly mortgage payments, total interest, and amortization schedules for home loans.</p>
+                    <a href="/calculator/mortgage-calculator" class="text-primary font-medium hover:underline">Use Calculator →</a>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+                    <div class="text-primary text-3xl mb-4"><i class="fas fa-weight"></i></div>
+                    <h3 class="text-xl font-semibold mb-3">BMI Calculator</h3>
+                    <p class="text-gray-600 mb-4">Calculate your Body Mass Index (BMI) and understand your weight status based on your height and weight.</p>
+                    <a href="/calculator/bmi-calculator" class="text-primary font-medium hover:underline">Use Calculator →</a>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: FeaturedCalculators -->
+
+        <!-- @COMPONENT: AdWidget [SEO optimization area] -->
+        <section class="mb-16">
+            <div class="bg-gray-50 p-8 rounded-xl border border-gray-200">
+                <div class="text-center text-gray-500">
+                    <!-- Advertisement Widget Area -->
+                    <p class="text-sm mb-2">Advertisement</p>
+                    <div class="bg-white border-2 border-dashed border-gray-300 p-8 rounded-lg">
+                        <p class="text-gray-400">Ad Widget Placeholder<br>728x90 Leaderboard</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AdWidget -->
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- @COMPONENT: Footer [SEO links, company info] -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">CalculateThis.org</h3>
+                    <p class="text-gray-300 text-sm">Professional online calculators for math, finance, health, and more. Accurate, fast, and easy to use.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Popular Calculators</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="/calculator/percentage-calculator" class="block text-gray-300 hover:text-white transition-colors">Percentage Calculator</a>
+                        <a href="/calculator/mortgage-calculator" class="block text-gray-300 hover:text-white transition-colors">Mortgage Calculator</a>
+                        <a href="/calculator/bmi-calculator" class="block text-gray-300 hover:text-white transition-colors">BMI Calculator</a>
+                        <a href="/calculator/tip-calculator" class="block text-gray-300 hover:text-white transition-colors">Tip Calculator</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Categories</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="/math-calculators" class="block text-gray-300 hover:text-white transition-colors">Math Calculators</a>
+                        <a href="/finance-calculators" class="block text-gray-300 hover:text-white transition-colors">Finance Calculators</a>
+                        <a href="/health-calculators" class="block text-gray-300 hover:text-white transition-colors">Health Calculators</a>
+                        <a href="/other-calculators" class="block text-gray-300 hover:text-white transition-colors">Other Calculators</a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="/about" class="block text-gray-300 hover:text-white transition-colors">About Us</a>
+                        <a href="/contact" class="block text-gray-300 hover:text-white transition-colors">Contact</a>
+                        <a href="/privacy" class="block text-gray-300 hover:text-white transition-colors">Privacy Policy</a>
+                        <a href="/terms" class="block text-gray-300 hover:text-white transition-colors">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-300 text-sm">&copy; 2025 CalculateThis.org. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // TODO: Implement calculator functionality, user authentication, and search
+        (function() {
+            // Basic calculator state
+            let display = '0';
+            let operator = null;
+            let waitingForOperand = false;
+            let firstOperand = null;
+
+            const displayElement = document.querySelector('.calculator-display');
+            
+            function updateDisplay() {
+                displayElement.textContent = display;
+            }
+
+            // Number button handlers
+            document.querySelectorAll('[data-event="click:number"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const value = this.dataset.value;
+                    if (waitingForOperand) {
+                        display = value;
+                        waitingForOperand = false;
+                    } else {
+                        display = display === '0' ? value : display + value;
+                    }
+                    updateDisplay();
+                });
+            });
+
+            // Operator button handlers
+            document.querySelectorAll('[data-event*="add"], [data-event*="subtract"], [data-event*="multiply"], [data-event*="divide"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextOperator = this.dataset.event.split(':')[1];
+                    const inputValue = parseFloat(display);
+
+                    if (firstOperand === null) {
+                        firstOperand = inputValue;
+                    } else if (operator) {
+                        const currentValue = firstOperand || 0;
+                        const newValue = calculate(currentValue, inputValue, operator);
+
+                        display = String(newValue);
+                        firstOperand = newValue;
+                        updateDisplay();
+                    }
+
+                    waitingForOperand = true;
+                    operator = nextOperator;
+                });
+            });
+
+            // Equals button handler
+            document.querySelector('[data-event="click:equals"]').addEventListener('click', function() {
+                const inputValue = parseFloat(display);
+
+                if (firstOperand !== null && operator) {
+                    const newValue = calculate(firstOperand, inputValue, operator);
+                    display = String(newValue);
+                    firstOperand = null;
+                    operator = null;
+                    waitingForOperand = true;
+                    updateDisplay();
+                }
+            });
+
+            // Clear button handler
+            document.querySelector('[data-event="click:clearAll"]').addEventListener('click', function() {
+                display = '0';
+                firstOperand = null;
+                operator = null;
+                waitingForOperand = false;
+                updateDisplay();
+            });
+
+            // Decimal button handler
+            document.querySelector('[data-event="click:decimal"]').addEventListener('click', function() {
+                if (waitingForOperand) {
+                    display = '0.';
+                    waitingForOperand = false;
+                } else if (display.indexOf('.') === -1) {
+                    display += '.';
+                }
+                updateDisplay();
+            });
+
+            function calculate(firstOperand, secondOperand, operator) {
+                switch (operator) {
+                    case 'add':
+                        return firstOperand + secondOperand;
+                    case 'subtract':
+                        return firstOperand - secondOperand;
+                    case 'multiply':
+                        return firstOperand * secondOperand;
+                    case 'divide':
+                        return firstOperand / secondOperand;
+                    default:
+                        return secondOperand;
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

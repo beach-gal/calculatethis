@@ -1,0 +1,495 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators - Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Professional tools including mortgage, BMI, percentage, and scientific calculators.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, health calculator, free calculator">
+    <link rel="canonical" href="https://calculatethis.org">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary-blue': '#2563eb',
+                    'dark-blue': '#1d4ed8',
+                    'light-blue': '#dbeafe',
+                    'lighter-blue': '#bfdbfe'
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'system-ui', 'sans-serif']
+                }
+            }
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-inter bg-gray-50 text-gray-800">
+    <!-- @COMPONENT: Header [navigation and branding] -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-primary-blue">CalculateThis.org</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors font-medium">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors font-medium">All Calculators</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors font-medium">About</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors font-medium">Contact</a>
+                </nav>
+                <button class="md:hidden p-2">
+                    <i class="fas fa-bars text-gray-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: MainContent [homepage layout] -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- @COMPONENT: HeroSection [title and search] -->
+        <section class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Free Online Calculators</h2>
+            <p class="text-xl text-gray-600 mb-8">Professional tools for math, finance, health, and everyday calculations</p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto relative">
+                <input type="search" placeholder="Find any calculator... (e.g., mortgage, BMI, percentage)" 
+                       class="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-full focus:border-primary-blue focus:ring-4 focus:ring-blue-100 transition-all outline-none">
+                <button class="absolute right-2 top-2 bg-primary-blue text-white px-6 py-2 rounded-full hover:bg-dark-blue transition-colors">
+                    <i class="fas fa-search mr-2"></i>Search
+                </button>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- @COMPONENT: CategoryGrid [horizontal layout] -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Calculator Categories</h3>
+            
+            <!-- CRITICAL: Horizontal Flexbox Layout for Categories -->
+            <div class="flex flex-col lg:flex-row gap-6 justify-between">
+                
+                <!-- Math Category -->
+                <div class="flex-1 max-w-full lg:max-w-[23%] bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Small square calculator icon -->
+                    <img src="https://images.unsplash.com/photo-1596495578065-6e0763fa1178?ixlib=rb-4.0.3&auto=format&fit=crop&w=30&h=30" alt="Math Calculator Icon" class="w-8 h-8 rounded mb-4 mx-auto">
+                    <h4 class="text-lg font-semibold text-primary-blue text-center mb-3">Math</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/calculator/basic-math" class="text-gray-600 hover:text-primary-blue transition-colors block">• Basic Math Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Percentage Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Scientific Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Fraction Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block text-primary-blue">View All (12+)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Finance Category -->
+                <div class="flex-1 max-w-full lg:max-w-[23%] bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Financial calculator icon -->
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=30&h=30" alt="Finance Calculator Icon" class="w-8 h-8 rounded mb-4 mx-auto">
+                    <h4 class="text-lg font-semibold text-primary-blue text-center mb-3">Finance</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Mortgage Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Loan Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Investment Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Tip Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block text-primary-blue">View All (15+)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Health Category -->
+                <div class="flex-1 max-w-full lg:max-w-[23%] bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Health calculator icon -->
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=30&h=30" alt="Health Calculator Icon" class="w-8 h-8 rounded mb-4 mx-auto">
+                    <h4 class="text-lg font-semibold text-primary-blue text-center mb-3">Health</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• BMI Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Calorie Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Body Fat Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• BMR Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block text-primary-blue">View All (9+)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Other Category -->
+                <div class="flex-1 max-w-full lg:max-w-[23%] bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Other calculator icon -->
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=30&h=30" alt="Other Calculator Icon" class="w-8 h-8 rounded mb-4 mx-auto">
+                    <h4 class="text-lg font-semibold text-primary-blue text-center mb-3">Other</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Age Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Date Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• Time Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block">• GPA Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors block text-primary-blue">View All (20+)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CategoryGrid -->
+
+        <!-- @COMPONENT: FeaturedCalculators [popular tools showcase] -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Featured Calculators</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- A close-up of a basic calculator with number buttons -->
+                    <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200" alt="Basic Math Calculator" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Basic Math Calculator</h4>
+                    <p class="text-gray-600 mb-4">Perform basic arithmetic operations with our easy-to-use calculator.</p>
+                    <a href="/calculator/basic-math" class="inline-block bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-dark-blue transition-colors">Try Now</a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Mathematical percentage symbols and calculations on paper -->
+                    <img src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200" alt="Percentage Calculator" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Percentage Calculator</h4>
+                    <p class="text-gray-600 mb-4">Calculate percentages, discounts, and percentage changes easily.</p>
+                    <a href="#" class="inline-block bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed">Coming Soon</a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <!-- Restaurant receipt with tip calculation -->
+                    <img src="https://images.unsplash.com/photo-1554224154-22dec7ec8818?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200" alt="Tip Calculator" class="w-full h-40 object-cover rounded-lg mb-4">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Tip Calculator</h4>
+                    <p class="text-gray-600 mb-4">Calculate tips and split bills among multiple people.</p>
+                    <a href="#" class="inline-block bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed">Coming Soon</a>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: FeaturedCalculators -->
+
+        <!-- @COMPONENT: AdWidgetArea [SEO and monetization] -->
+        <section class="mb-16">
+            <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
+                <i class="fas fa-ad text-gray-400 text-4xl mb-4"></i>
+                <p class="text-gray-500 font-medium">Advertisement Widget Area</p>
+                <p class="text-sm text-gray-400 mt-2">728x90 Leaderboard Ad Placement</p>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AdWidgetArea -->
+
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- @COMPONENT: BasicMathCalculatorPage [dedicated calculator page] -->
+    <div id="basic-math-page" class="hidden">
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-4">
+                        <a href="#" onclick="showHomePage()" class="text-primary-blue hover:text-dark-blue">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                        </a>
+                        <h1 class="text-2xl font-bold text-primary-blue">CalculateThis.org</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Basic Math Calculator</h2>
+                <p class="text-lg text-gray-600">Perform basic arithmetic operations: addition, subtraction, multiplication, and division</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Calculator Interface -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+                        <!-- Display -->
+                        <div class="mb-6">
+                            <input type="text" id="calculator-display" readonly 
+                                   class="w-full text-right text-2xl font-mono bg-gray-50 border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-primary-blue focus:border-primary-blue"
+                                   placeholder="0">
+                        </div>
+
+                        <!-- Calculator Buttons -->
+                        <div class="grid grid-cols-4 gap-3">
+                            <!-- Row 1 -->
+                            <button onclick="clearDisplay()" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-4 rounded-lg transition-colors">C</button>
+                            <button onclick="deleteLast()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-4 rounded-lg transition-colors">⌫</button>
+                            <button onclick="appendToDisplay('/')" class="bg-primary-blue hover:bg-dark-blue text-white font-semibold py-4 rounded-lg transition-colors">÷</button>
+                            <button onclick="appendToDisplay('*')" class="bg-primary-blue hover:bg-dark-blue text-white font-semibold py-4 rounded-lg transition-colors">×</button>
+
+                            <!-- Row 2 -->
+                            <button onclick="appendToDisplay('7')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">7</button>
+                            <button onclick="appendToDisplay('8')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">8</button>
+                            <button onclick="appendToDisplay('9')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">9</button>
+                            <button onclick="appendToDisplay('-')" class="bg-primary-blue hover:bg-dark-blue text-white font-semibold py-4 rounded-lg transition-colors">−</button>
+
+                            <!-- Row 3 -->
+                            <button onclick="appendToDisplay('4')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">4</button>
+                            <button onclick="appendToDisplay('5')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">5</button>
+                            <button onclick="appendToDisplay('6')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">6</button>
+                            <button onclick="appendToDisplay('+')" class="bg-primary-blue hover:bg-dark-blue text-white font-semibold py-4 rounded-lg transition-colors">+</button>
+
+                            <!-- Row 4 -->
+                            <button onclick="appendToDisplay('1')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">1</button>
+                            <button onclick="appendToDisplay('2')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">2</button>
+                            <button onclick="appendToDisplay('3')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">3</button>
+                            <button onclick="calculate()" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 rounded-lg row-span-2 transition-colors">=</button>
+
+                            <!-- Row 5 -->
+                            <button onclick="appendToDisplay('0')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg col-span-2 transition-colors">0</button>
+                            <button onclick="appendToDisplay('.')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-4 rounded-lg transition-colors">.</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    <!-- Embed Code -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Embed This Calculator</h3>
+                        <textarea readonly class="w-full h-24 text-xs bg-gray-50 border border-gray-300 rounded p-3 font-mono"
+                                  onclick="this.select()"><iframe src="https://calculatethis.org/embed/basic-math" width="400" height="500" frameborder="0"></iframe></textarea>
+                        <button onclick="copyEmbedCode()" class="mt-3 w-full bg-primary-blue text-white py-2 rounded-lg hover:bg-dark-blue transition-colors">
+                            <i class="fas fa-copy mr-2"></i>Copy Embed Code
+                        </button>
+                    </div>
+
+                    <!-- Ad Widget -->
+                    <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
+                        <i class="fas fa-ad text-gray-400 text-2xl mb-2"></i>
+                        <p class="text-gray-500 text-sm">300x250 Medium Rectangle Ad</p>
+                    </div>
+
+                    <!-- Related Calculators -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Related Calculators</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-primary-blue hover:text-dark-blue transition-colors">Scientific Calculator</a></li>
+                            <li><a href="#" class="text-primary-blue hover:text-dark-blue transition-colors">Percentage Calculator</a></li>
+                            <li><a href="#" class="text-primary-blue hover:text-dark-blue transition-colors">Fraction Calculator</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO Content -->
+            <div class="mt-12 bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">About the Basic Math Calculator</h3>
+                <div class="prose max-w-none text-gray-600">
+                    <p class="mb-4">Our basic math calculator is a simple yet powerful tool for performing fundamental arithmetic operations. Whether you're a student, professional, or just need to do quick calculations, this calculator provides accurate results for addition, subtraction, multiplication, and division.</p>
+                    
+                    <h4 class="text-xl font-semibold text-gray-900 mt-6 mb-3">Features:</h4>
+                    <ul class="list-disc list-inside space-y-1 mb-4">
+                        <li>Easy-to-use interface with large buttons</li>
+                        <li>Supports decimal operations</li>
+                        <li>Clear and delete functionality</li>
+                        <li>Keyboard support for faster input</li>
+                        <li>Mobile-responsive design</li>
+                    </ul>
+
+                    <h4 class="text-xl font-semibold text-gray-900 mt-6 mb-3">How to Use:</h4>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>Enter your first number using the number buttons</li>
+                        <li>Click an operation (+, −, ×, ÷)</li>
+                        <li>Enter your second number</li>
+                        <li>Press equals (=) to see the result</li>
+                        <li>Use 'C' to clear or '⌫' to delete the last entry</li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- @END_COMPONENT: BasicMathCalculatorPage -->
+
+    <!-- @COMPONENT: Footer [site links and information] -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">CalculateThis.org</h3>
+                    <p class="text-gray-600">Professional online calculators for all your mathematical, financial, and health calculation needs.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Popular Calculators</h4>
+                    <ul class="space-y-2">
+                        <li><a href="/calculator/basic-math" class="text-gray-600 hover:text-primary-blue transition-colors">Basic Math Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Mortgage Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">BMI Calculator</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Percentage Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Math Calculators</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Finance Calculators</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Health Calculators</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Other Calculators</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center">
+                <p class="text-gray-600">&copy; 2024 CalculateThis.org. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // TODO: Implement business logic, API calls, or state management
+        
+        (function() {
+            // Calculator functionality
+            let display = '';
+            let lastOperation = '';
+            
+            window.appendToDisplay = function(value) {
+                const displayElement = document.getElementById('calculator-display');
+                if (displayElement) {
+                    display += value;
+                    displayElement.value = display;
+                }
+            };
+            
+            window.clearDisplay = function() {
+                display = '';
+                const displayElement = document.getElementById('calculator-display');
+                if (displayElement) {
+                    displayElement.value = '';
+                }
+            };
+            
+            window.deleteLast = function() {
+                display = display.slice(0, -1);
+                const displayElement = document.getElementById('calculator-display');
+                if (displayElement) {
+                    displayElement.value = display;
+                }
+            };
+            
+            window.calculate = function() {
+                try {
+                    // Basic security: only allow numbers and basic operators
+                    const sanitized = display.replace(/[^0-9+\-*/.]/g, '');
+                    const result = eval(sanitized);
+                    display = result.toString();
+                    const displayElement = document.getElementById('calculator-display');
+                    if (displayElement) {
+                        displayElement.value = display;
+                    }
+                } catch (error) {
+                    display = 'Error';
+                    const displayElement = document.getElementById('calculator-display');
+                    if (displayElement) {
+                        displayElement.value = 'Error';
+                    }
+                }
+            };
+            
+            // Page navigation
+            window.showBasicMathCalculator = function() {
+                document.querySelector('main').style.display = 'none';
+                document.querySelector('footer').style.display = 'none';
+                document.getElementById('basic-math-page').classList.remove('hidden');
+                
+                // Update URL without page reload
+                if (history.pushState) {
+                    history.pushState({page: 'basic-math'}, 'Basic Math Calculator', '/calculator/basic-math');
+                }
+            };
+            
+            window.showHomePage = function() {
+                document.querySelector('main').style.display = 'block';
+                document.querySelector('footer').style.display = 'block';
+                document.getElementById('basic-math-page').classList.add('hidden');
+                
+                // Update URL without page reload
+                if (history.pushState) {
+                    history.pushState({page: 'home'}, 'CalculateThis.org', '/');
+                }
+            };
+            
+            // Embed code functionality
+            window.copyEmbedCode = function() {
+                const textarea = document.querySelector('textarea');
+                if (textarea) {
+                    textarea.select();
+                    document.execCommand('copy');
+                    
+                    // Show feedback
+                    const button = event.target;
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check mr-2"></i>Copied!';
+                    button.classList.add('bg-green-500');
+                    button.classList.remove('bg-primary-blue');
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.classList.remove('bg-green-500');
+                        button.classList.add('bg-primary-blue');
+                    }, 2000);
+                }
+            };
+            
+            // Handle basic math calculator link clicks
+            document.addEventListener('DOMContentLoaded', function() {
+                const basicMathLinks = document.querySelectorAll('a[href="/calculator/basic-math"]');
+                basicMathLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        showBasicMathCalculator();
+                    });
+                });
+                
+                // Handle browser back/forward buttons
+                window.addEventListener('popstate', function(e) {
+                    if (e.state && e.state.page === 'basic-math') {
+                        showBasicMathCalculator();
+                    } else {
+                        showHomePage();
+                    }
+                });
+                
+                // Keyboard support for calculator
+                document.addEventListener('keydown', function(e) {
+                    if (document.getElementById('basic-math-page').classList.contains('hidden')) return;
+                    
+                    const key = e.key;
+                    if ('0123456789'.includes(key)) {
+                        appendToDisplay(key);
+                    } else if (key === '+') {
+                        appendToDisplay('+');
+                    } else if (key === '-') {
+                        appendToDisplay('-');
+                    } else if (key === '*') {
+                        appendToDisplay('*');
+                    } else if (key === '/') {
+                        e.preventDefault();
+                        appendToDisplay('/');
+                    } else if (key === '.') {
+                        appendToDisplay('.');
+                    } else if (key === 'Enter' || key === '=') {
+                        e.preventDefault();
+                        calculate();
+                    } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                        clearDisplay();
+                    } else if (key === 'Backspace') {
+                        e.preventDefault();
+                        deleteLast();
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

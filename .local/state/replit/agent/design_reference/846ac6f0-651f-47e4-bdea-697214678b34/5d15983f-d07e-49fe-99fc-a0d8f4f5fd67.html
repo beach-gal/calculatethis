@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators for Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Over 200 professional calculators including mortgage, BMI, percentage, and scientific calculators.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, health calculator, mortgage calculator, BMI calculator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'calc-blue': '#4169E1',
+                    'calc-brown': '#8B4513',
+                    'calc-orange': '#FF8C00',
+                    'calc-gray': '#F8F9FA'
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif'],
+                    'roboto': ['Roboto', 'sans-serif'],
+                    'mono': ['Courier New', 'monospace']
+                }
+            }
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 2px;
+            width: 320px;
+            height: 380px;
+        }
+        
+        .calc-display {
+            grid-column: 1 / -1;
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            text-align: right;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-radius: 4px;
+        }
+        
+        .calc-btn {
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .calc-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .calc-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn-number {
+            background: #8B4513;
+            color: white;
+        }
+        
+        .btn-operator {
+            background: #FF8C00;
+            color: white;
+        }
+        
+        .btn-function {
+            background: #4169E1;
+            color: white;
+        }
+        
+        .btn-clear {
+            background: #DC3545;
+            color: white;
+        }
+        
+        .calc-zero {
+            grid-column: span 2;
+        }
+        
+        .calc-equals {
+            grid-row: span 2;
+        }
+    </style>
+</head>
+<body class="bg-white font-roboto">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-calculator text-calc-blue text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-calc-blue font-inter">CalculateThis.org</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-calc-blue transition-colors">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-calc-blue transition-colors">Calculators</a>
+                    <a href="#" class="text-gray-600 hover:text-calc-blue transition-colors">About</a>
+                    <a href="#" class="text-gray-600 hover:text-calc-blue transition-colors">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-calc-blue">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section with Calculator -->
+    <section class="bg-calc-gray py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-8">
+                <h2 class="text-4xl font-bold text-gray-800 font-inter mb-4">Free Online Calculators</h2>
+                <p class="text-xl text-gray-600 mb-6">Professional calculators for math, finance, health, and more</p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-md mx-auto mb-8">
+                    <div class="relative">
+                        <input type="text" placeholder="Search calculators..." class="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-calc-blue focus:border-transparent">
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-calc-blue">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Working Calculator -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Basic Calculator</h3>
+                    <div class="calculator-grid">
+                        <div class="calc-display" data-mock="true">0</div>
+                        
+                        <button class="calc-btn btn-clear" data-event="click:clearAll">AC</button>
+                        <button class="calc-btn btn-function" data-event="click:clearEntry">CE</button>
+                        <button class="calc-btn btn-function" data-event="click:percentage">%</button>
+                        <button class="calc-btn btn-operator" data-event="click:divide">÷</button>
+                        
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="7">7</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="8">8</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="9">9</button>
+                        <button class="calc-btn btn-operator" data-event="click:multiply">×</button>
+                        
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="4">4</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="5">5</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="6">6</button>
+                        <button class="calc-btn btn-operator" data-event="click:subtract">-</button>
+                        
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="1">1</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="2">2</button>
+                        <button class="calc-btn btn-number" data-event="click:number" data-value="3">3</button>
+                        <button class="calc-btn btn-operator calc-equals" data-event="click:equals">=</button>
+                        
+                        <button class="calc-btn btn-number calc-zero" data-event="click:number" data-value="0">0</button>
+                        <button class="calc-btn btn-number" data-event="click:decimal">.</button>
+                        <button class="calc-btn btn-operator" data-event="click:add">+</button>
+                    </div>
+                    <!-- @FUNCTIONALITY: This calculator should implement basic arithmetic operations using JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ad Widget Area -->
+    <div class="bg-gray-100 py-4">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="bg-white border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <p class="text-gray-500 text-sm">Advertisement Space - 728x90 Leaderboard</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Categories -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12 font-inter">Calculator Categories</h2>
+            
+            <!-- @COMPONENT: CategoryGrid [categories: Array] -->
+            <div class="categories">
+                <!-- Math Calculators Category -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Small square icon for math symbols -->
+                    <div class="w-16 h-16 bg-calc-blue rounded-lg flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-calculator text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center font-inter">Math Calculators</h3>
+                    <div class="space-y-2 text-sm">
+                        <!-- @MAP: mathCalculators.map(calc => ( -->
+                        <a href="/calculator/basic-calculator" class="block text-calc-blue hover:underline" data-mock="true">Basic Calculator</a>
+                        <a href="/calculator/scientific-calculator" class="block text-calc-blue hover:underline" data-mock="true">Scientific Calculator</a>
+                        <a href="/calculator/graphing-calculator" class="block text-calc-blue hover:underline" data-mock="true">Graphing Calculator</a>
+                        <a href="/calculator/fraction-calculator" class="block text-calc-blue hover:underline" data-mock="true">Fraction Calculator</a>
+                        <a href="/calculator/percentage-calculator" class="block text-calc-blue hover:underline" data-mock="true">Percentage Calculator</a>
+                        <a href="/calculator/algebra-calculator" class="block text-calc-blue hover:underline" data-mock="true">Algebra Calculator</a>
+                        <a href="/calculator/geometry-calculator" class="block text-calc-blue hover:underline" data-mock="true">Geometry Calculator</a>
+                        <a href="/calculator/trigonometry-calculator" class="block text-calc-blue hover:underline" data-mock="true">Trigonometry Calculator</a>
+                        <a href="/calculator/matrix-calculator" class="block text-calc-blue hover:underline" data-mock="true">Matrix Calculator</a>
+                        <a href="/calculator/statistics-calculator" class="block text-calc-blue hover:underline" data-mock="true">Statistics Calculator</a>
+                        <a href="/calculator/probability-calculator" class="block text-calc-blue hover:underline" data-mock="true">Probability Calculator</a>
+                        <a href="/calculator/calculus-calculator" class="block text-calc-blue hover:underline" data-mock="true">Calculus Calculator</a>
+                        <a href="/calculator/derivative-calculator" class="block text-calc-blue hover:underline" data-mock="true">Derivative Calculator</a>
+                        <a href="/calculator/integral-calculator" class="block text-calc-blue hover:underline" data-mock="true">Integral Calculator</a>
+                        <a href="/calculator/limit-calculator" class="block text-calc-blue hover:underline" data-mock="true">Limit Calculator</a>
+                        <a href="/calculator/square-root-calculator" class="block text-calc-blue hover:underline" data-mock="true">Square Root Calculator</a>
+                        <a href="/calculator/cube-root-calculator" class="block text-calc-blue hover:underline" data-mock="true">Cube Root Calculator</a>
+                        <a href="/calculator/exponent-calculator" class="block text-calc-blue hover:underline" data-mock="true">Exponent Calculator</a>
+                        <a href="/calculator/logarithm-calculator" class="block text-calc-blue hover:underline" data-mock="true">Logarithm Calculator</a>
+                        <a href="/calculator/factorial-calculator" class="block text-calc-blue hover:underline" data-mock="true">Factorial Calculator</a>
+                        <a href="/calculator/prime-number-calculator" class="block text-calc-blue hover:underline" data-mock="true">Prime Number Calculator</a>
+                        <a href="/calculator/fibonacci-calculator" class="block text-calc-blue hover:underline" data-mock="true">Fibonacci Calculator</a>
+                        <a href="/calculator/quadratic-formula" class="block text-calc-blue hover:underline" data-mock="true">Quadratic Formula</a>
+                        <a href="/calculator/pythagorean-theorem" class="block text-calc-blue hover:underline" data-mock="true">Pythagorean Theorem</a>
+                        <a href="/calculator/area-calculator" class="block text-calc-blue hover:underline" data-mock="true">Area Calculator</a>
+                        <a href="/calculator/volume-calculator" class="block text-calc-blue hover:underline" data-mock="true">Volume Calculator</a>
+                        <a href="/calculator/perimeter-calculator" class="block text-calc-blue hover:underline" data-mock="true">Perimeter Calculator</a>
+                        <a href="/calculator/circle-calculator" class="block text-calc-blue hover:underline" data-mock="true">Circle Calculator</a>
+                        <a href="/calculator/triangle-calculator" class="block text-calc-blue hover:underline" data-mock="true">Triangle Calculator</a>
+                        <a href="/calculator/rectangle-calculator" class="block text-calc-blue hover:underline" data-mock="true">Rectangle Calculator</a>
+                        <a href="/calculator/pentagon-calculator" class="block text-calc-blue hover:underline" data-mock="true">Pentagon Calculator</a>
+                        <a href="/calculator/hexagon-calculator" class="block text-calc-blue hover:underline" data-mock="true">Hexagon Calculator</a>
+                        <a href="/calculator/octagon-calculator" class="block text-calc-blue hover:underline" data-mock="true">Octagon Calculator</a>
+                        <a href="/calculator/sphere-calculator" class="block text-calc-blue hover:underline" data-mock="true">Sphere Calculator</a>
+                        <a href="/calculator/cylinder-calculator" class="block text-calc-blue hover:underline" data-mock="true">Cylinder Calculator</a>
+                        <a href="/calculator/cone-calculator" class="block text-calc-blue hover:underline" data-mock="true">Cone Calculator</a>
+                        <a href="/calculator/pyramid-calculator" class="block text-calc-blue hover:underline" data-mock="true">Pyramid Calculator</a>
+                        <a href="/calculator/prism-calculator" class="block text-calc-blue hover:underline" data-mock="true">Prism Calculator</a>
+                        <a href="/calculator/angle-calculator" class="block text-calc-blue hover:underline" data-mock="true">Angle Calculator</a>
+                        <a href="/calculator/distance-calculator" class="block text-calc-blue hover:underline" data-mock="true">Distance Calculator</a>
+                        <a href="/calculator/midpoint-calculator" class="block text-calc-blue hover:underline" data-mock="true">Midpoint Calculator</a>
+                        <a href="/calculator/slope-calculator" class="block text-calc-blue hover:underline" data-mock="true">Slope Calculator</a>
+                        <a href="/calculator/equation-solver" class="block text-calc-blue hover:underline" data-mock="true">Equation Solver</a>
+                        <a href="/calculator/system-equations" class="block text-calc-blue hover:underline" data-mock="true">System of Equations</a>
+                        <a href="/calculator/inequality-solver" class="block text-calc-blue hover:underline" data-mock="true">Inequality Solver</a>
+                        <a href="/calculator/polynomial-calculator" class="block text-calc-blue hover:underline" data-mock="true">Polynomial Calculator</a>
+                        <a href="/calculator/rational-expressions" class="block text-calc-blue hover:underline" data-mock="true">Rational Expressions</a>
+                        <a href="/calculator/complex-numbers" class="block text-calc-blue hover:underline" data-mock="true">Complex Numbers</a>
+                        <a href="/calculator/binary-calculator" class="block text-calc-blue hover:underline" data-mock="true">Binary Calculator</a>
+                        <a href="/calculator/hex-calculator" class="block text-calc-blue hover:underline" data-mock="true">Hex Calculator</a>
+                        <a href="/calculator/octal-calculator" class="block text-calc-blue hover:underline" data-mock="true">Octal Calculator</a>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+
+                <!-- Finance Calculators Category -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Small square icon for finance -->
+                    <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-dollar-sign text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center font-inter">Finance Calculators</h3>
+                    <div class="space-y-2 text-sm">
+                        <!-- @MAP: financeCalculators.map(calc => ( -->
+                        <a href="/calculator/mortgage-calculator" class="block text-calc-blue hover:underline" data-mock="true">Mortgage Calculator</a>
+                        <a href="/calculator/loan-calculator" class="block text-calc-blue hover:underline" data-mock="true">Loan Calculator</a>
+                        <a href="/calculator/auto-loan-calculator" class="block text-calc-blue hover:underline" data-mock="true">Auto Loan Calculator</a>
+                        <a href="/calculator/personal-loan-calculator" class="block text-calc-blue hover:underline" data-mock="true">Personal Loan Calculator</a>
+                        <a href="/calculator/student-loan-calculator" class="block text-calc-blue hover:underline" data-mock="true">Student Loan Calculator</a>
+                        <a href="/calculator/refinance-calculator" class="block text-calc-blue hover:underline" data-mock="true">Refinance Calculator</a>
+                        <a href="/calculator/compound-interest" class="block text-calc-blue hover:underline" data-mock="true">Compound Interest</a>
+                        <a href="/calculator/simple-interest" class="block text-calc-blue hover:underline" data-mock="true">Simple Interest</a>
+                        <a href="/calculator/investment-calculator" class="block text-calc-blue hover:underline" data-mock="true">Investment Calculator</a>
+                        <a href="/calculator/retirement-calculator" class="block text-calc-blue hover:underline" data-mock="true">Retirement Calculator</a>
+                        <a href="/calculator/401k-calculator" class="block text-calc-blue hover:underline" data-mock="true">401k Calculator</a>
+                        <a href="/calculator/ira-calculator" class="block text-calc-blue hover:underline" data-mock="true">IRA Calculator</a>
+                        <a href="/calculator/roth-ira-calculator" class="block text-calc-blue hover:underline" data-mock="true">Roth IRA Calculator</a>
+                        <a href="/calculator/savings-calculator" class="block text-calc-blue hover:underline" data-mock="true">Savings Calculator</a>
+                        <a href="/calculator/cd-calculator" class="block text-calc-blue hover:underline" data-mock="true">CD Calculator</a>
+                        <a href="/calculator/budget-calculator" class="block text-calc-blue hover:underline" data-mock="true">Budget Calculator</a>
+                        <a href="/calculator/debt-payoff" class="block text-calc-blue hover:underline" data-mock="true">Debt Payoff Calculator</a>
+                        <a href="/calculator/credit-card-payoff" class="block text-calc-blue hover:underline" data-mock="true">Credit Card Payoff</a>
+                        <a href="/calculator/amortization" class="block text-calc-blue hover:underline" data-mock="true">Amortization Calculator</a>
+                        <a href="/calculator/tax-calculator" class="block text-calc-blue hover:underline" data-mock="true">Tax Calculator</a>
+                        <a href="/calculator/income-tax" class="block text-calc-blue hover:underline" data-mock="true">Income Tax Calculator</a>
+                        <a href="/calculator/sales-tax" class="block text-calc-blue hover:underline" data-mock="true">Sales Tax Calculator</a>
+                        <a href="/calculator/property-tax" class="block text-calc-blue hover:underline" data-mock="true">Property Tax Calculator</a>
+                        <a href="/calculator/capital-gains" class="block text-calc-blue hover:underline" data-mock="true">Capital Gains Calculator</a>
+                        <a href="/calculator/depreciation" class="block text-calc-blue hover:underline" data-mock="true">Depreciation Calculator</a>
+                        <a href="/calculator/roi-calculator" class="block text-calc-blue hover:underline" data-mock="true">ROI Calculator</a>
+                        <a href="/calculator/break-even" class="block text-calc-blue hover:underline" data-mock="true">Break Even Calculator</a>
+                        <a href="/calculator/present-value" class="block text-calc-blue hover:underline" data-mock="true">Present Value Calculator</a>
+                        <a href="/calculator/future-value" class="block text-calc-blue hover:underline" data-mock="true">Future Value Calculator</a>
+                        <a href="/calculator/annuity-calculator" class="block text-calc-blue hover:underline" data-mock="true">Annuity Calculator</a>
+                        <a href="/calculator/bond-calculator" class="block text-calc-blue hover:underline" data-mock="true">Bond Calculator</a>
+                        <a href="/calculator/stock-calculator" class="block text-calc-blue hover:underline" data-mock="true">Stock Calculator</a>
+                        <a href="/calculator/dividend-calculator" class="block text-calc-blue hover:underline" data-mock="true">Dividend Calculator</a>
+                        <a href="/calculator/portfolio-calculator" class="block text-calc-blue hover:underline" data-mock="true">Portfolio Calculator</a>
+                        <a href="/calculator/risk-calculator" class="block text-calc-blue hover:underline" data-mock="true">Risk Calculator</a>
+                        <a href="/calculator/sharpe-ratio" class="block text-calc-blue hover:underline" data-mock="true">Sharpe Ratio Calculator</a>
+                        <a href="/calculator/capm-calculator" class="block text-calc-blue hover:underline" data-mock="true">CAPM Calculator</a>
+                        <a href="/calculator/wacc-calculator" class="block text-calc-blue hover:underline" data-mock="true">WACC Calculator</a>
+                        <a href="/calculator/dcf-calculator" class="block text-calc-blue hover:underline" data-mock="true">DCF Calculator</a>
+                        <a href="/calculator/irr-calculator" class="block text-calc-blue hover:underline" data-mock="true">IRR Calculator</a>
+                        <a href="/calculator/npv-calculator" class="block text-calc-blue hover:underline" data-mock="true">NPV Calculator</a>
+                        <a href="/calculator/payback-period" class="block text-calc-blue hover:underline" data-mock="true">Payback Period</a>
+                        <a href="/calculator/profit-margin" class="block text-calc-blue hover:underline" data-mock="true">Profit Margin Calculator</a>
+                        <a href="/calculator/markup-calculator" class="block text-calc-blue hover:underline" data-mock="true">Markup Calculator</a>
+                        <a href="/calculator/discount-calculator" class="block text-calc-blue hover:underline" data-mock="true">Discount Calculator</a>
+                        <a href="/calculator/tip-calculator" class="block text-calc-blue hover:underline" data-mock="true">Tip Calculator</a>
+                        <a href="/calculator/currency-converter" class="block text-calc-blue hover:underline" data-mock="true">Currency Converter</a>
+                        <a href="/calculator/inflation-calculator" class="block text-calc-blue hover:underline" data-mock="true">Inflation Calculator</a>
+                        <a href="/calculator/salary-calculator" class="block text-calc-blue hover:underline" data-mock="true">Salary Calculator</a>
+                        <a href="/calculator/hourly-wage" class="block text-calc-blue hover:underline" data-mock="true">Hourly Wage Calculator</a>
+                        <a href="/calculator/overtime-calculator" class="block text-calc-blue hover:underline" data-mock="true">Overtime Calculator</a>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+
+                <!-- Health Calculators Category -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Small square icon for health -->
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-heartbeat text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center font-inter">Health Calculators</h3>
+                    <div class="space-y-2 text-sm">
+                        <!-- @MAP: healthCalculators.map(calc => ( -->
+                        <a href="/calculator/bmi-calculator" class="block text-calc-blue hover:underline" data-mock="true">BMI Calculator</a>
+                        <a href="/calculator/body-fat-calculator" class="block text-calc-blue hover:underline" data-mock="true">Body Fat Calculator</a>
+                        <a href="/calculator/bmr-calculator" class="block text-calc-blue hover:underline" data-mock="true">BMR Calculator</a>
+                        <a href="/calculator/calorie-calculator" class="block text-calc-blue hover:underline" data-mock="true">Calorie Calculator</a>
+                        <a href="/calculator/tdee-calculator" class="block text-calc-blue hover:underline" data-mock="true">TDEE Calculator</a>
+                        <a href="/calculator/ideal-weight" class="block text-calc-blue hover:underline" data-mock="true">Ideal Weight Calculator</a>
+                        <a href="/calculator/target-heart-rate" class="block text-calc-blue hover:underline" data-mock="true">Target Heart Rate</a>
+                        <a href="/calculator/body-surface-area" class="block text-calc-blue hover:underline" data-mock="true">Body Surface Area</a>
+                        <a href="/calculator/lean-body-mass" class="block text-calc-blue hover:underline" data-mock="true">Lean Body Mass</a>
+                        <a href="/calculator/water-intake" class="block text-calc-blue hover:underline" data-mock="true">Water Intake Calculator</a>
+                        <a href="/calculator/protein-calculator" class="block text-calc-blue hover:underline" data-mock="true">Protein Calculator</a>
+                        <a href="/calculator/macro-calculator" class="block text-calc-blue hover:underline" data-mock="true">Macro Calculator</a>
+                        <a href="/calculator/weight-loss" class="block text-calc-blue hover:underline" data-mock="true">Weight Loss Calculator</a>
+                        <a href="/calculator/pace-calculator" class="block text-calc-blue hover:underline" data-mock="true">Pace Calculator</a>
+                        <a href="/calculator/running-calculator" class="block text-calc-blue hover:underline" data-mock="true">Running Calculator</a>
+                        <a href="/calculator/pregnancy-calculator" class="block text-calc-blue hover:underline" data-mock="true">Pregnancy Calculator</a>
+                        <a href="/calculator/due-date" class="block text-calc-blue hover:underline" data-mock="true">Due Date Calculator</a>
+                        <a href="/calculator/ovulation-calculator" class="block text-calc-blue hover:underline" data-mock="true">Ovulation Calculator</a>
+                        <a href="/calculator/bac-calculator" class="block text-calc-blue hover:underline" data-mock="true">BAC Calculator</a>
+                        <a href="/calculator/blood-pressure" class="block text-calc-blue hover:underline" data-mock="true">Blood Pressure Calculator</a>
+                        <a href="/calculator/cholesterol-ratio" class="block text-calc-blue hover:underline" data-mock="true">Cholesterol Ratio</a>
+                        <a href="/calculator/diabetes-risk" class="block text-calc-blue hover:underline" data-mock="true">Diabetes Risk Calculator</a>
+                        <a href="/calculator/medication-dosage" class="block text-calc-blue hover:underline" data-mock="true">Medication Dosage</a>
+                        <a href="/calculator/sleep-calculator" class="block text-calc-blue hover:underline" data-mock="true">Sleep Calculator</a>
+                        <a href="/calculator/body-age" class="block text-calc-blue hover:underline" data-mock="true">Body Age Calculator</a>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+
+                <!-- Other Calculators Category -->
+                <div class="bg-white rounded-xl shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow">
+                    <!-- Small square icon for other -->
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-tools text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center font-inter">Other Calculators</h3>
+                    <div class="space-y-2 text-sm">
+                        <!-- @MAP: otherCalculators.map(calc => ( -->
+                        <a href="/calculator/age-calculator" class="block text-calc-blue hover:underline" data-mock="true">Age Calculator</a>
+                        <a href="/calculator/date-calculator" class="block text-calc-blue hover:underline" data-mock="true">Date Calculator</a>
+                        <a href="/calculator/time-calculator" class="block text-calc-blue hover:underline" data-mock="true">Time Calculator</a>
+                        <a href="/calculator/hours-calculator" class="block text-calc-blue hover:underline" data-mock="true">Hours Calculator</a>
+                        <a href="/calculator/days-calculator" class="block text-calc-blue hover:underline" data-mock="true">Days Calculator</a>
+                        <a href="/calculator/weeks-calculator" class="block text-calc-blue hover:underline" data-mock="true">Weeks Calculator</a>
+                        <a href="/calculator/months-calculator" class="block text-calc-blue hover:underline" data-mock="true">Months Calculator</a>
+                        <a href="/calculator/years-calculator" class="block text-calc-blue hover:underline" data-mock="true">Years Calculator</a>
+                        <a href="/calculator/timezone-converter" class="block text-calc-blue hover:underline" data-mock="true">Timezone Converter</a>
+                        <a href="/calculator/unit-converter" class="block text-calc-blue hover:underline" data-mock="true">Unit Converter</a>
+                        <a href="/calculator/length-converter" class="block text-calc-blue hover:underline" data-mock="true">Length Converter</a>
+                        <a href="/calculator/weight-converter" class="block text-calc-blue hover:underline" data-mock="true">Weight Converter</a>
+                        <a href="/calculator/temperature-converter" class="block text-calc-blue hover:underline" data-mock="true">Temperature Converter</a>
+                        <a href="/calculator/volume-converter" class="block text-calc-blue hover:underline" data-mock="true">Volume Converter</a>
+                        <a href="/calculator/area-converter" class="block text-calc-blue hover:underline" data-mock="true">Area Converter</a>
+                        <a href="/calculator/speed-converter" class="block text-calc-blue hover:underline" data-mock="true">Speed Converter</a>
+                        <a href="/calculator/pressure-converter" class="block text-calc-blue hover:underline" data-mock="true">Pressure Converter</a>
+                        <a href="/calculator/energy-converter" class="block text-calc-blue hover:underline" data-mock="true">Energy Converter</a>
+                        <a href="/calculator/power-converter" class="block text-calc-blue hover:underline" data-mock="true">Power Converter</a>
+                        <a href="/calculator/data-converter" class="block text-calc-blue hover:underline" data-mock="true">Data Converter</a>
+                        <a href="/calculator/gpa-calculator" class="block text-calc-blue hover:underline" data-mock="true">GPA Calculator</a>
+                        <a href="/calculator/grade-calculator" class="block text-calc-blue hover:underline" data-mock="true">Grade Calculator</a>
+                        <a href="/calculator/test-score" class="block text-calc-blue hover:underline" data-mock="true">Test Score Calculator</a>
+                        <a href="/calculator/class-rank" class="block text-calc-blue hover:underline" data-mock="true">Class Rank Calculator</a>
+                        <a href="/calculator/sat-score" class="block text-calc-blue hover:underline" data-mock="true">SAT Score Calculator</a>
+                        <a href="/calculator/act-score" class="block text-calc-blue hover:underline" data-mock="true">ACT Score Calculator</a>
+                        <a href="/calculator/random-number" class="block text-calc-blue hover:underline" data-mock="true">Random Number Generator</a>
+                        <a href="/calculator/random-password" class="block text-calc-blue hover:underline" data-mock="true">Random Password Generator</a>
+                        <a href="/calculator/qr-code" class="block text-calc-blue hover:underline" data-mock="true">QR Code Generator</a>
+                        <a href="/calculator/barcode-generator" class="block text-calc-blue hover:underline" data-mock="true">Barcode Generator</a>
+                        <a href="/calculator/hash-generator" class="block text-calc-blue hover:underline" data-mock="true">Hash Generator</a>
+                        <a href="/calculator/base64-encoder" class="block text-calc-blue hover:underline" data-mock="true">Base64 Encoder</a>
+                        <a href="/calculator/url-encoder" class="block text-calc-blue hover:underline" data-mock="true">URL Encoder</a>
+                        <a href="/calculator/text-analyzer" class="block text-calc-blue hover:underline" data-mock="true">Text Analyzer</a>
+                        <a href="/calculator/word-counter" class="block text-calc-blue hover:underline" data-mock="true">Word Counter</a>
+                        <a href="/calculator/character-counter" class="block text-calc-blue hover:underline" data-mock="true">Character Counter</a>
+                        <a href="/calculator/case-converter" class="block text-calc-blue hover:underline" data-mock="true">Case Converter</a>
+                        <a href="/calculator/color-picker" class="block text-calc-blue hover:underline" data-mock="true">Color Picker</a>
+                        <a href="/calculator/hex-color" class="block text-calc-blue hover:underline" data-mock="true">Hex Color Converter</a>
+                        <a href="/calculator/rgb-color" class="block text-calc-blue hover:underline" data-mock="true">RGB Color Converter</a>
+                        <a href="/calculator/ip-calculator" class="block text-calc-blue hover:underline" data-mock="true">IP Calculator</a>
+                        <a href="/calculator/subnet-calculator" class="block text-calc-blue hover:underline" data-mock="true">Subnet Calculator</a>
+                        <a href="/calculator/bandwidth-calculator" class="block text-calc-blue hover:underline" data-mock="true">Bandwidth Calculator</a>
+                        <a href="/calculator/download-time" class="block text-calc-blue hover:underline" data-mock="true">Download Time Calculator</a>
+                        <a href="/calculator/server-uptime" class="block text-calc-blue hover:underline" data-mock="true">Server Uptime Calculator</a>
+                        <a href="/calculator/concrete-calculator" class="block text-calc-blue hover:underline" data-mock="true">Concrete Calculator</a>
+                        <a href="/calculator/paint-calculator" class="block text-calc-blue hover:underline" data-mock="true">Paint Calculator</a>
+                        <a href="/calculator/flooring-calculator" class="block text-calc-blue hover:underline" data-mock="true">Flooring Calculator</a>
+                        <a href="/calculator/roofing-calculator" class="block text-calc-blue hover:underline" data-mock="true">Roofing Calculator</a>
+                        <a href="/calculator/fence-calculator" class="block text-calc-blue hover:underline" data-mock="true">Fence Calculator</a>
+                        <a href="/calculator/landscaping" class="block text-calc-blue hover:underline" data-mock="true">Landscaping Calculator</a>
+                        <a href="/calculator/pool-calculator" class="block text-calc-blue hover:underline" data-mock="true">Pool Calculator</a>
+                        <a href="/calculator/deck-calculator" class="block text-calc-blue hover:underline" data-mock="true">Deck Calculator</a>
+                        <a href="/calculator/stairs-calculator" class="block text-calc-blue hover:underline" data-mock="true">Stairs Calculator</a>
+                        <a href="/calculator/drywall-calculator" class="block text-calc-blue hover:underline" data-mock="true">Drywall Calculator</a>
+                        <a href="/calculator/insulation-calculator" class="block text-calc-blue hover:underline" data-mock="true">Insulation Calculator</a>
+                        <a href="/calculator/hvac-calculator" class="block text-calc-blue hover:underline" data-mock="true">HVAC Calculator</a>
+                        <a href="/calculator/electrical-load" class="block text-calc-blue hover:underline" data-mock="true">Electrical Load Calculator</a>
+                        <a href="/calculator/wire-gauge" class="block text-calc-blue hover:underline" data-mock="true">Wire Gauge Calculator</a>
+                        <a href="/calculator/plumbing-calculator" class="block text-calc-blue hover:underline" data-mock="true">Plumbing Calculator</a>
+                        <a href="/calculator/pipe-flow" class="block text-calc-blue hover:underline" data-mock="true">Pipe Flow Calculator</a>
+                        <a href="/calculator/fuel-calculator" class="block text-calc-blue hover:underline" data-mock="true">Fuel Calculator</a>
+                        <a href="/calculator/gas-mileage" class="block text-calc-blue hover:underline" data-mock="true">Gas Mileage Calculator</a>
+                        <a href="/calculator/trip-cost" class="block text-calc-blue hover:underline" data-mock="true">Trip Cost Calculator</a>
+                        <a href="/calculator/carbon-footprint" class="block text-calc-blue hover:underline" data-mock="true">Carbon Footprint</a>
+                        <a href="/calculator/solar-calculator" class="block text-calc-blue hover:underline" data-mock="true">Solar Calculator</a>
+                        <a href="/calculator/battery-life" class="block text-calc-blue hover:underline" data-mock="true">Battery Life Calculator</a>
+                        <a href="/calculator/ohms-law" class="block text-calc-blue hover:underline" data-mock="true">Ohm's Law Calculator</a>
+                        <a href="/calculator/resistor-calculator" class="block text-calc-blue hover:underline" data-mock="true">Resistor Calculator</a>
+                        <a href="/calculator/capacitor-calculator" class="block text-calc-blue hover:underline" data-mock="true">Capacitor Calculator</a>
+                        <a href="/calculator/inductor-calculator" class="block text-calc-blue hover:underline" data-mock="true">Inductor Calculator</a>
+                        <a href="/calculator/frequency-calculator" class="block text-calc-blue hover:underline" data-mock="true">Frequency Calculator</a>
+                        <a href="/calculator/wavelength-calculator" class="block text-calc-blue hover:underline" data-mock="true">Wavelength Calculator</a>
+                        <a href="/calculator/antenna-calculator" class="block text-calc-blue hover:underline" data-mock="true">Antenna Calculator</a>
+                        <a href="/calculator/decibel-calculator" class="block text-calc-blue hover:underline" data-mock="true">Decibel Calculator</a>
+                        <a href="/calculator/sound-level" class="block text-calc-blue hover:underline" data-mock="true">Sound Level Calculator</a>
+                        <!-- @END_MAP )) -->
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: CategoryGrid -->
+        </div>
+    </section>
+
+    <!-- Ad Widget Area -->
+    <div class="bg-gray-100 py-4">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="bg-white border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <p class="text-gray-500 text-sm">Advertisement Space - 728x90 Leaderboard</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Calculators Section -->
+    <section class="py-16 bg-calc-gray">
+        <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12 font-inter">Most Popular Calculators</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-calc-blue rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-percentage text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Percentage Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate percentages easily</p>
+                    <a href="/calculator/percentage-calculator" class="text-calc-blue hover:text-blue-700 font-medium" data-mock="true">Use Calculator →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-home text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Mortgage Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate monthly payments</p>
+                    <a href="/calculator/mortgage-calculator" class="text-calc-blue hover:text-blue-700 font-medium" data-mock="true">Use Calculator →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-weight text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">BMI Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate body mass index</p>
+                    <a href="/calculator/bmi-calculator" class="text-calc-blue hover:text-blue-700 font-medium" data-mock="true">Use Calculator →</a>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-birthday-cake text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Age Calculator</h3>
+                    <p class="text-gray-600 text-sm mb-4">Calculate your exact age</p>
+                    <a href="/calculator/age-calculator" class="text-calc-blue hover:text-blue-700 font-medium" data-mock="true">Use Calculator →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEO Content Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="prose max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 font-inter">About CalculateThis.org</h2>
+                <p class="text-lg text-gray-600 mb-6">
+                    CalculateThis.org is your comprehensive resource for free online calculators covering mathematics, finance, health, and everyday calculations. Our collection of over 200 professional calculators helps you solve complex problems quickly and accurately.
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 mt-12">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Why Choose Our Calculators?</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                <span>100% Free to use</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                <span>No registration required</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                <span>Mobile-friendly design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                <span>Accurate calculations</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-600 mt-1 mr-2"></i>
+                                <span>Embed functionality</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Calculator Categories</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-start">
+                                <i class="fas fa-calculator text-calc-blue mt-1 mr-2"></i>
+                                <span><strong>Math:</strong> 50+ calculators for algebra, geometry, statistics</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-dollar-sign text-green-600 mt-1 mr-2"></i>
+                                <span><strong>Finance:</strong> 50+ calculators for loans, investments, taxes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-heartbeat text-red-600 mt-1 mr-2"></i>
+                                <span><strong>Health:</strong> 25+ calculators for BMI, calories, fitness</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-tools text-purple-600 mt-1 mr-2"></i>
+                                <span><strong>Other:</strong> 75+ calculators for dates, conversions, utilities</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-calculator text-calc-blue text-xl"></i>
+                        <span class="text-xl font-bold font-inter">CalculateThis.org</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Free online calculators for all your mathematical, financial, and everyday calculation needs.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Popular Calculators</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Percentage Calculator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Mortgage Calculator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">BMI Calculator</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Age Calculator</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Categories</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Math Calculators</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Finance Calculators</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Health Calculators</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Other Calculators</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors" data-mock="true">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © 2024 CalculateThis.org. All rights reserved. | Over 200 free online calculators.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        // Basic calculator functionality
+        let display = document.querySelector('.calc-display');
+        let currentValue = '0';
+        let previousValue = null;
+        let operator = null;
+        let waitingForOperand = false;
+
+        function updateDisplay() {
+            display.textContent = currentValue;
+        }
+
+        function inputNumber(num) {
+            if (waitingForOperand) {
+                currentValue = num;
+                waitingForOperand = false;
+            } else {
+                currentValue = currentValue === '0' ? num : currentValue + num;
+            }
+            updateDisplay();
+        }
+
+        function inputOperator(nextOperator) {
+            const inputValue = parseFloat(currentValue);
+
+            if (previousValue === null) {
+                previousValue = inputValue;
+            } else if (operator) {
+                const currentResult = calculate();
+                currentValue = String(currentResult);
+                previousValue = currentResult;
+                updateDisplay();
+            }
+
+            waitingForOperand = true;
+            operator = nextOperator;
+        }
+
+        function calculate() {
+            const prev = parseFloat(previousValue);
+            const current = parseFloat(currentValue);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+': return prev + current;
+                case '-': return prev - current;
+                case '×': return prev * current;
+                case '÷': return prev / current;
+                case '=': return current;
+                default: return current;
+            }
+        }
+
+        function clearAll() {
+            currentValue = '0';
+            previousValue = null;
+            operator = null;
+            waitingForOperand = false;
+            updateDisplay();
+        }
+
+        function clearEntry() {
+            currentValue = '0';
+            updateDisplay();
+        }
+
+        function percentage() {
+            currentValue = String(parseFloat(currentValue) / 100);
+            updateDisplay();
+        }
+
+        function decimal() {
+            if (waitingForOperand) {
+                currentValue = '0.';
+                waitingForOperand = false;
+            } else if (currentValue.indexOf('.') === -1) {
+                currentValue += '.';
+            }
+            updateDisplay();
+        }
+
+        function equals() {
+            const inputValue = parseFloat(currentValue);
+
+            if (previousValue !== null && operator) {
+                const result = calculate();
+                currentValue = String(result);
+                previousValue = null;
+                operator = null;
+                waitingForOperand = true;
+                updateDisplay();
+            }
+        }
+
+        // Event listeners for calculator buttons
+        document.querySelectorAll('[data-event]').forEach(button => {
+            button.addEventListener('click', function() {
+                const event = this.getAttribute('data-event');
+                
+                switch(event) {
+                    case 'click:clearAll':
+                        clearAll();
+                        break;
+                    case 'click:clearEntry':
+                        clearEntry();
+                        break;
+                    case 'click:percentage':
+                        percentage();
+                        break;
+                    case 'click:number':
+                        inputNumber(this.getAttribute('data-value') || this.textContent);
+                        break;
+                    case 'click:decimal':
+                        decimal();
+                        break;
+                    case 'click:add':
+                        inputOperator('+');
+                        break;
+                    case 'click:subtract':
+                        inputOperator('-');
+                        break;
+                    case 'click:multiply':
+                        inputOperator('×');
+                        break;
+                    case 'click:divide':
+                        inputOperator('÷');
+                        break;
+                    case 'click:equals':
+                        equals();
+                        break;
+                }
+            });
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key >= '0' && e.key <= '9') {
+                inputNumber(e.key);
+            } else if (e.key === '.') {
+                decimal();
+            } else if (e.key === '+') {
+                inputOperator('+');
+            } else if (e.key === '-') {
+                inputOperator('-');
+            } else if (e.key === '*') {
+                inputOperator('×');
+            } else if (e.key === '/') {
+                e.preventDefault();
+                inputOperator('÷');
+            } else if (e.key === 'Enter' || e.key === '=') {
+                equals();
+            } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                clearAll();
+            } else if (e.key === 'Backspace') {
+                clearEntry();
+            }
+        });
+
+        // TODO: Implement individual calculator page generation for all 200 calculators
+        // TODO: Implement embed functionality for all calculators
+        // TODO: Implement search functionality across all calculators
+        // TODO: Add analytics tracking for popular calculators
+    })();
+    </script>
+</body>
+</html>

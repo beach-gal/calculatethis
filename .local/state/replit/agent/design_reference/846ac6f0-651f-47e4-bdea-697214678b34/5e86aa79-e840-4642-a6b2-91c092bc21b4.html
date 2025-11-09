@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators for Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Professional calculator tools including mortgage, BMI, percentage, and scientific calculators.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, health calculator, mortgage calculator, BMI calculator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary-blue': '#0066CC',
+                    'dark-blue': '#004499',
+                    'light-blue': '#3399FF',
+                    'calculator-orange': '#FF6600',
+                    'calculator-blue': '#0099FF',
+                    'calculator-gray': '#666666'
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif']
+                }
+            }
+        }
+    };
+    </script>
+    
+    <style>
+        .category-container {
+            white-space: nowrap;
+        }
+        
+        .category {
+            display: inline-block;
+            width: 24%;
+            vertical-align: top;
+            white-space: normal;
+        }
+        
+        .calculator-button {
+            transition: all 0.2s ease;
+        }
+        
+        .calculator-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .calculator-button:active {
+            transform: translateY(0);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+        
+        @media (max-width: 1024px) {
+            .category {
+                display: block;
+                width: 48%;
+                display: inline-block;
+                margin-bottom: 20px;
+            }
+            .category-container {
+                white-space: normal;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .category {
+                display: block;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold text-primary-blue">CalculateThis.org</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">All Calculators</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">About</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Contact</a>
+                </nav>
+                <button class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Hero Section with Calculator -->
+        <section class="text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Free Online Calculators</h2>
+            <p class="text-xl text-gray-600 mb-8">Professional calculator tools for math, finance, health, and more</p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-md mx-auto mb-8">
+                <div class="relative">
+                    <input type="text" placeholder="Search calculators..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none">
+                    <button class="absolute right-3 top-3 text-gray-400 hover:text-primary-blue">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Working Calculator -->
+            <div class="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto mb-12">
+                <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                    <div class="text-right text-2xl font-mono" id="calculator-display">0</div>
+                </div>
+                
+                <div class="grid grid-cols-4 gap-3">
+                    <!-- Row 1 -->
+                    <button class="calculator-button bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold" onclick="clearDisplay()">C</button>
+                    <button class="calculator-button bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold" onclick="deleteLast()">⌫</button>
+                    <button class="calculator-button bg-calculator-blue hover:bg-blue-600 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('%')">%</button>
+                    <button class="calculator-button bg-calculator-orange hover:bg-orange-600 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('/')">÷</button>
+                    
+                    <!-- Row 2 -->
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('7')">7</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('8')">8</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('9')">9</button>
+                    <button class="calculator-button bg-calculator-orange hover:bg-orange-600 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('*')">×</button>
+                    
+                    <!-- Row 3 -->
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('4')">4</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('5')">5</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('6')">6</button>
+                    <button class="calculator-button bg-calculator-orange hover:bg-orange-600 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('-')">-</button>
+                    
+                    <!-- Row 4 -->
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('1')">1</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('2')">2</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('3')">3</button>
+                    <button class="calculator-button bg-calculator-orange hover:bg-orange-600 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('+')">+</button>
+                    
+                    <!-- Row 5 -->
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold col-span-2" onclick="appendToDisplay('0')">0</button>
+                    <button class="calculator-button bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold" onclick="appendToDisplay('.')">.</button>
+                    <button class="calculator-button bg-calculator-blue hover:bg-blue-600 text-white py-3 rounded-lg font-semibold" onclick="calculate()">=</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-gray-900 mb-8">Calculator Categories</h3>
+            
+            <div class="category-container">
+                <!-- Math Category -->
+                <div class="category bg-white rounded-lg shadow-md p-6 mr-3 category-card">
+                    <div class="text-center mb-4">
+                        <!-- Calculator icon for math -->
+                        <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=28&h=28" alt="Math Calculator Icon" class="w-7 h-7 mx-auto mb-2 rounded">
+                        <h4 class="text-lg font-semibold text-primary-blue">Math</h4>
+                    </div>
+                    <ul class="text-sm space-y-1 text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue">Scientific Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Fraction Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Percentage Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Triangle Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Standard Deviation</a></li>
+                        <li><a href="#" class="hover:text-primary-blue text-xs">View All Math →</a></li>
+                    </ul>
+                </div>
+
+                <!-- Finance Category -->
+                <div class="category bg-white rounded-lg shadow-md p-6 mr-3 category-card">
+                    <div class="text-center mb-4">
+                        <!-- Dollar sign icon for finance -->
+                        <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?ixlib=rb-4.0.3&auto=format&fit=crop&w=28&h=28" alt="Finance Calculator Icon" class="w-7 h-7 mx-auto mb-2 rounded">
+                        <h4 class="text-lg font-semibold text-primary-blue">Finance</h4>
+                    </div>
+                    <ul class="text-sm space-y-1 text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue">Mortgage Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Loan Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Investment Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Retirement Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Tax Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue text-xs">View All Finance →</a></li>
+                    </ul>
+                </div>
+
+                <!-- Health Category -->
+                <div class="category bg-white rounded-lg shadow-md p-6 mr-3 category-card">
+                    <div class="text-center mb-4">
+                        <!-- Heart icon for health -->
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=28&h=28" alt="Health Calculator Icon" class="w-7 h-7 mx-auto mb-2 rounded">
+                        <h4 class="text-lg font-semibold text-primary-blue">Health</h4>
+                    </div>
+                    <ul class="text-sm space-y-1 text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue">BMI Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Calorie Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Body Fat Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">BMR Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Ideal Weight</a></li>
+                        <li><a href="#" class="hover:text-primary-blue text-xs">View All Health →</a></li>
+                    </ul>
+                </div>
+
+                <!-- Other Category -->
+                <div class="category bg-white rounded-lg shadow-md p-6 category-card">
+                    <div class="text-center mb-4">
+                        <!-- Tools icon for other -->
+                        <img src="https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=28&h=28" alt="Other Calculator Icon" class="w-7 h-7 mx-auto mb-2 rounded">
+                        <h4 class="text-lg font-semibold text-primary-blue">Other</h4>
+                    </div>
+                    <ul class="text-sm space-y-1 text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue">Age Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Date Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Time Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">GPA Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue">Password Generator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue text-xs">View All Other →</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ad Widget Areas -->
+        <section class="mb-12">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <p class="text-gray-500 font-medium">Advertisement Placement Area</p>
+                    <p class="text-gray-400 text-sm mt-2">728x90 Banner Ad</p>
+                </div>
+                <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <p class="text-gray-500 font-medium">Advertisement Placement Area</p>
+                    <p class="text-gray-400 text-sm mt-2">300x250 Medium Rectangle</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Calculators -->
+        <section class="mb-12">
+            <h3 class="text-3xl font-bold text-center text-gray-900 mb-8">Popular Calculators</h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h4 class="text-xl font-semibold text-primary-blue mb-3">Tip Calculator</h4>
+                    <p class="text-gray-600 mb-4">Calculate tips and split bills easily with customizable tip percentages.</p>
+                    <a href="#" class="text-primary-blue hover:text-dark-blue font-medium">Try Calculator →</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h4 class="text-xl font-semibold text-primary-blue mb-3">Percentage Calculator</h4>
+                    <p class="text-gray-600 mb-4">Calculate percentages, percentage increase, decrease, and more.</p>
+                    <a href="#" class="text-primary-blue hover:text-dark-blue font-medium">Try Calculator →</a>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <h4 class="text-xl font-semibold text-primary-blue mb-3">Mortgage Calculator</h4>
+                    <p class="text-gray-600 mb-4">Calculate monthly mortgage payments with principal, interest, taxes, and insurance.</p>
+                    <a href="#" class="text-primary-blue hover:text-dark-blue font-medium">Try Calculator →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h5 class="text-lg font-semibold mb-4">CalculateThis.org</h5>
+                    <p class="text-gray-400">Free online calculators for all your mathematical, financial, and health calculation needs.</p>
+                </div>
+                <div>
+                    <h6 class="font-semibold mb-4">Calculator Categories</h6>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Math Calculators</a></li>
+                        <li><a href="#" class="hover:text-white">Finance Calculators</a></li>
+                        <li><a href="#" class="hover:text-white">Health Calculators</a></li>
+                        <li><a href="#" class="hover:text-white">Other Calculators</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="font-semibold mb-4">Popular Tools</h6>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">Mortgage Calculator</a></li>
+                        <li><a href="#" class="hover:text-white">BMI Calculator</a></li>
+                        <li><a href="#" class="hover:text-white">Percentage Calculator</a></li>
+                        <li><a href="#" class="hover:text-white">Tip Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="font-semibold mb-4">Company</h6>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 CalculateThis.org. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            let display = document.getElementById('calculator-display');
+            let currentInput = '0';
+            let shouldResetDisplay = false;
+
+            function updateDisplay() {
+                display.textContent = currentInput;
+            }
+
+            window.appendToDisplay = function(value) {
+                if (shouldResetDisplay) {
+                    currentInput = '';
+                    shouldResetDisplay = false;
+                }
+                
+                if (currentInput === '0' && value !== '.') {
+                    currentInput = value;
+                } else {
+                    currentInput += value;
+                }
+                updateDisplay();
+            };
+
+            window.clearDisplay = function() {
+                currentInput = '0';
+                updateDisplay();
+            };
+
+            window.deleteLast = function() {
+                if (currentInput.length > 1) {
+                    currentInput = currentInput.slice(0, -1);
+                } else {
+                    currentInput = '0';
+                }
+                updateDisplay();
+            };
+
+            window.calculate = function() {
+                try {
+                    // Replace display symbols with actual operators
+                    let expression = currentInput.replace(/×/g, '*').replace(/÷/g, '/');
+                    let result = eval(expression);
+                    currentInput = result.toString();
+                    shouldResetDisplay = true;
+                    updateDisplay();
+                } catch (error) {
+                    currentInput = 'Error';
+                    shouldResetDisplay = true;
+                    updateDisplay();
+                }
+            };
+        })();
+
+        // TODO: Implement business logic for calculator embedding, search functionality, and category navigation
+        // TODO: Add analytics tracking for calculator usage
+        // TODO: Implement responsive menu toggle for mobile
+    </script>
+</body>
+</html>

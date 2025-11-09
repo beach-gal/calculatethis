@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CalculateThis.org - Free Online Calculators - Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and more. Professional calculator tools with easy-to-use interface and accurate results.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, health calculator, free calculator">
+    <meta name="robots" content="index, follow">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary-blue': '#2563eb',
+                    'secondary-blue': '#1e40af',
+                    'light-blue': '#dbeafe',
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif'],
+                }
+            }
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-inter bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-calculator text-primary-blue text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-gray-900">CalculateThis.org</h1>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Home</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">All Calculators</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">About</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-blue transition-colors">Contact</a>
+                </nav>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary-blue to-secondary-blue text-white py-12">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Free Online Calculators</h2>
+            <p class="text-xl mb-8 text-blue-100">Professional calculator tools for Math, Finance, Health, and more</p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-md mx-auto mb-8">
+                <div class="relative">
+                    <input type="text" placeholder="Search calculators..." class="w-full px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <button class="absolute right-2 top-2 px-4 py-1 bg-primary-blue text-white rounded-lg hover:bg-secondary-blue transition-colors">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Working Calculator Section -->
+    <section class="bg-white py-8 border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-semibold text-gray-900 mb-2">Basic Calculator</h3>
+                <p class="text-gray-600">Quick calculations right here on the homepage</p>
+            </div>
+            
+            <!-- Calculator Widget -->
+            <div class="max-w-sm mx-auto bg-gray-100 rounded-2xl p-6 shadow-lg">
+                <!-- Display -->
+                <div class="bg-black text-white text-right text-2xl font-mono p-4 rounded-lg mb-4 min-h-[60px] flex items-center justify-end" id="calculator-display">0</div>
+                
+                <!-- Buttons Grid -->
+                <div class="grid grid-cols-4 gap-3">
+                    <!-- Row 1 -->
+                    <button class="calculator-btn bg-gray-300 hover:bg-gray-400" onclick="clearCalculator()">C</button>
+                    <button class="calculator-btn bg-gray-300 hover:bg-gray-400" onclick="deleteLast()">⌫</button>
+                    <button class="calculator-btn bg-gray-300 hover:bg-gray-400" onclick="appendToDisplay('/')">/</button>
+                    <button class="calculator-btn bg-orange-500 hover:bg-orange-600 text-white" onclick="appendToDisplay('*')">×</button>
+                    
+                    <!-- Row 2 -->
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('7')">7</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('8')">8</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('9')">9</button>
+                    <button class="calculator-btn bg-orange-500 hover:bg-orange-600 text-white" onclick="appendToDisplay('-')">-</button>
+                    
+                    <!-- Row 3 -->
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('4')">4</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('5')">5</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('6')">6</button>
+                    <button class="calculator-btn bg-orange-500 hover:bg-orange-600 text-white" onclick="appendToDisplay('+')">+</button>
+                    
+                    <!-- Row 4 -->
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('1')">1</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('2')">2</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('3')">3</button>
+                    <button class="calculator-btn bg-green-500 hover:bg-green-600 text-white row-span-2" onclick="calculate()" style="grid-row: span 2; min-height: 80px;">=</button>
+                    
+                    <!-- Row 5 -->
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white col-span-2" onclick="appendToDisplay('0')" style="grid-column: span 2;">0</button>
+                    <button class="calculator-btn bg-blue-500 hover:bg-blue-600 text-white" onclick="appendToDisplay('.')">.</button>
+                </div>
+            </div>
+
+            <!-- Embed Code Section -->
+            <div class="mt-6 text-center">
+                <button class="text-primary-blue hover:text-secondary-blue text-sm font-medium" onclick="toggleEmbedCode()">
+                    <i class="fas fa-code mr-1"></i> Get Embed Code
+                </button>
+                <div id="embed-code" class="hidden mt-3 bg-gray-100 p-3 rounded-lg text-sm text-left max-w-md mx-auto">
+                    <code class="text-gray-700">&lt;iframe src="https://calculatethis.org/embed/basic" width="300" height="400" frameborder="0"&gt;&lt;/iframe&gt;</code>
+                    <button class="ml-2 text-primary-blue hover:text-secondary-blue" onclick="copyEmbedCode()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Categories Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h3 class="text-3xl font-bold text-gray-900 mb-4">Calculator Categories</h3>
+                <p class="text-lg text-gray-600">Choose from our comprehensive collection of professional calculators</p>
+            </div>
+
+            <!-- 4-Column Category Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Math Calculators -->
+                <!-- @COMPONENT: CategoryCard [title: "Math Calculators", icon: calculator, calculators: array] -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 p-6">
+                    <!-- Square math calculator icon -->
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64" alt="Math calculator icon" class="w-8 h-8 mx-auto mb-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3 text-center">Math Calculators</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Scientific Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Percentage Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Fraction Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Algebra Calculator</a></li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-primary-blue font-medium text-sm hover:text-secondary-blue">View All Math →</a>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Finance Calculators -->
+                <!-- @COMPONENT: CategoryCard [title: "Finance Calculators", icon: finance, calculators: array] -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 p-6">
+                    <!-- Square finance/money icon -->
+                    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64" alt="Finance calculator icon" class="w-8 h-8 mx-auto mb-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3 text-center">Finance Calculators</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Mortgage Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Loan Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Investment Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Tip Calculator</a></li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-primary-blue font-medium text-sm hover:text-secondary-blue">View All Finance →</a>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Health Calculators -->
+                <!-- @COMPONENT: CategoryCard [title: "Health Calculators", icon: health, calculators: array] -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 p-6">
+                    <!-- Square health/medical icon -->
+                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64" alt="Health calculator icon" class="w-8 h-8 mx-auto mb-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3 text-center">Health Calculators</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">BMI Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Calorie Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Body Fat Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Pregnancy Calculator</a></li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-primary-blue font-medium text-sm hover:text-secondary-blue">View All Health →</a>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+
+                <!-- Other Calculators -->
+                <!-- @COMPONENT: CategoryCard [title: "Other Calculators", icon: tools, calculators: array] -->
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 p-6">
+                    <!-- Square tools/other icon -->
+                    <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&auto=format&fit=crop&w=64&h=64" alt="Other calculator tools icon" class="w-8 h-8 mx-auto mb-4 rounded-lg">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-3 text-center">Other Calculators</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Age Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Date Calculator</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Unit Converter</a></li>
+                        <li><a href="#" class="hover:text-primary-blue transition-colors">Password Generator</a></li>
+                    </ul>
+                    <div class="mt-4 text-center">
+                        <a href="#" class="text-primary-blue font-medium text-sm hover:text-secondary-blue">View All Tools →</a>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: CategoryCard -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Ad Widget Areas -->
+    <section class="py-8 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Ad Widget 1 -->
+                <div class="bg-white rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
+                    <i class="fas fa-ad text-gray-400 text-3xl mb-3"></i>
+                    <p class="text-gray-500 font-medium">Advertisement Space 1</p>
+                    <p class="text-gray-400 text-sm">728x90 Banner Ad</p>
+                </div>
+                
+                <!-- Ad Widget 2 -->
+                <div class="bg-white rounded-lg border-2 border-dashed border-gray-300 p-8 text-center">
+                    <i class="fas fa-ad text-gray-400 text-3xl mb-3"></i>
+                    <p class="text-gray-500 font-medium">Advertisement Space 2</p>
+                    <p class="text-gray-400 text-sm">728x90 Banner Ad</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Calculators Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Most Popular Calculators</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- @MAP: popularCalculators.map(calc => ( -->
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-percentage text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">Percentage</p>
+                </a>
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-home text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">Mortgage</p>
+                </a>
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-weight text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">BMI</p>
+                </a>
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-utensils text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">Tip</p>
+                </a>
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-chart-line text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">Interest</p>
+                </a>
+                <a href="#" class="text-center p-4 rounded-lg hover:bg-light-blue transition-colors group">
+                    <i class="fas fa-calendar text-primary-blue text-2xl mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-sm font-medium text-gray-700">Age</p>
+                </a>
+                <!-- @END_MAP )) -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-calculator text-primary-blue text-xl"></i>
+                        <h4 class="text-lg font-semibold">CalculateThis.org</h4>
+                    </div>
+                    <p class="text-gray-400 text-sm">Professional online calculators for all your mathematical, financial, and health calculation needs.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-3">Popular Calculators</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Percentage Calculator</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Mortgage Calculator</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">BMI Calculator</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Tip Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-3">Categories</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Math Calculators</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Finance Calculators</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Health Calculators</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Other Tools</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-3">Company</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 CalculateThis.org. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .calculator-btn {
+            @apply h-12 rounded-lg font-semibold text-lg transition-all duration-200 active:scale-95;
+        }
+    </style>
+
+    <script>
+        // Calculator functionality
+        (function() {
+            let display = document.getElementById('calculator-display');
+            let currentInput = '0';
+            let shouldResetDisplay = false;
+
+            window.appendToDisplay = function(value) {
+                if (shouldResetDisplay) {
+                    currentInput = '';
+                    shouldResetDisplay = false;
+                }
+                
+                if (currentInput === '0' && value !== '.') {
+                    currentInput = value;
+                } else {
+                    currentInput += value;
+                }
+                
+                display.textContent = currentInput;
+            };
+
+            window.clearCalculator = function() {
+                currentInput = '0';
+                display.textContent = currentInput;
+                shouldResetDisplay = false;
+            };
+
+            window.deleteLast = function() {
+                if (currentInput.length > 1) {
+                    currentInput = currentInput.slice(0, -1);
+                } else {
+                    currentInput = '0';
+                }
+                display.textContent = currentInput;
+            };
+
+            window.calculate = function() {
+                try {
+                    // Replace × with * for evaluation
+                    let expression = currentInput.replace(/×/g, '*');
+                    let result = eval(expression);
+                    currentInput = result.toString();
+                    display.textContent = currentInput;
+                    shouldResetDisplay = true;
+                } catch (error) {
+                    display.textContent = 'Error';
+                    currentInput = '0';
+                    shouldResetDisplay = true;
+                }
+            };
+
+            // Embed code functionality
+            window.toggleEmbedCode = function() {
+                const embedDiv = document.getElementById('embed-code');
+                embedDiv.classList.toggle('hidden');
+            };
+
+            window.copyEmbedCode = function() {
+                const embedCode = '&lt;iframe src="https://calculatethis.org/embed/basic" width="300" height="400" frameborder="0"&gt;&lt;/iframe&gt;';
+                navigator.clipboard.writeText(embedCode.replace(/&lt;/g, '<').replace(/&gt;/g, '>'))
+                    .then(() => alert('Embed code copied to clipboard!'))
+                    .catch(() => alert('Failed to copy embed code'));
+            };
+        })();
+
+        // Search functionality
+        document.querySelector('input[placeholder="Search calculators..."]').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                // TODO: Implement search functionality
+                console.log('Searching for:', this.value);
+            }
+        });
+
+        // Responsive menu toggle
+        document.querySelector('.md\\:hidden').addEventListener('click', function() {
+            // TODO: Implement mobile menu toggle
+            console.log('Mobile menu toggle clicked');
+        });
+    </script>
+</body>
+</html>

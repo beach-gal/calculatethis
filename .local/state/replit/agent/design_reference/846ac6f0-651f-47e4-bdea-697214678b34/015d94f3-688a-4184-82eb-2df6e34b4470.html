@@ -1,0 +1,672 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate This - Free Online Calculators for Math, Finance, Health & More</title>
+    <meta name="description" content="Free online calculators for math, finance, health, and other calculations. Easy-to-use tools for percentage, mortgage, BMI, and 200+ other calculators.">
+    <meta name="keywords" content="calculator, online calculator, math calculator, finance calculator, percentage calculator, mortgage calculator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'calc-brown': '#8B4513',
+                    'calc-orange': '#FF8C00',
+                    'calc-blue': '#4169E1',
+                    'header-blue': '#4A90E2',
+                    'header-gray': '#718096'
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif']
+                }
+            }
+        }
+    };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/outline/index.css">
+</head>
+<body class="bg-gray-50 font-inter text-gray-800">
+    
+    <!-- Header with Gradient -->
+    <header class="w-full h-16" style="background: linear-gradient(135deg, #4A90E2 0%, #718096 100%);">
+        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+            <!-- @COMPONENT: Logo [clickable home link] -->
+            <a href="/" class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-header-blue" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                    </svg>
+                </div>
+                <span class="text-white text-xl font-bold tracking-wide">CALCULATE THIS</span>
+            </a>
+            <!-- @END_COMPONENT: Logo -->
+            
+            <!-- Navigation -->
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="/calculators" class="text-white hover:text-blue-100 transition-colors">All Calculators</a>
+                <a href="/about" class="text-white hover:text-blue-100 transition-colors">About</a>
+                <a href="/contact" class="text-white hover:text-blue-100 transition-colors">Contact</a>
+            </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Hero Section with Search -->
+        <section class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Free Online Calculators
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Over 200 free calculators for math, finance, health, and everyday calculations. 
+                Fast, accurate, and easy to use.
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto mb-8">
+                <div class="relative">
+                    <input type="search" 
+                           placeholder="Search calculators (e.g., mortgage, BMI, percentage)..."
+                           class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-header-blue focus:outline-none shadow-sm">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 bg-header-blue text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Working Calculator Widget -->
+        <!-- @COMPONENT: WorkingCalculator [basic math operations] -->
+        <section class="max-w-md mx-auto mb-16 bg-white rounded-2xl shadow-lg p-6">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">Basic Calculator</h2>
+            
+            <!-- Calculator Display -->
+            <div class="mb-4">
+                <input id="calculatorDisplay" 
+                       type="text" 
+                       value="0" 
+                       readonly
+                       class="w-full h-16 text-right text-2xl font-mono bg-gray-100 border-2 border-gray-200 rounded-lg px-4 focus:outline-none">
+            </div>
+            
+            <!-- Calculator Buttons Grid -->
+            <div class="grid grid-cols-4 gap-2">
+                <!-- Row 1: Clear, +/-, %, ÷ -->
+                <button onclick="clearCalculator()" class="calc-btn bg-calc-blue text-white">AC</button>
+                <button onclick="toggleSign()" class="calc-btn bg-calc-blue text-white">+/-</button>
+                <button onclick="percentage()" class="calc-btn bg-calc-blue text-white">%</button>
+                <button onclick="operation('/')" class="calc-btn bg-calc-orange text-white">÷</button>
+                
+                <!-- Row 2: 7, 8, 9, × -->
+                <button onclick="appendNumber('7')" class="calc-btn bg-calc-brown text-white">7</button>
+                <button onclick="appendNumber('8')" class="calc-btn bg-calc-brown text-white">8</button>
+                <button onclick="appendNumber('9')" class="calc-btn bg-calc-brown text-white">9</button>
+                <button onclick="operation('*')" class="calc-btn bg-calc-orange text-white">×</button>
+                
+                <!-- Row 3: 4, 5, 6, - -->
+                <button onclick="appendNumber('4')" class="calc-btn bg-calc-brown text-white">4</button>
+                <button onclick="appendNumber('5')" class="calc-btn bg-calc-brown text-white">5</button>
+                <button onclick="appendNumber('6')" class="calc-btn bg-calc-brown text-white">6</button>
+                <button onclick="operation('-')" class="calc-btn bg-calc-orange text-white">-</button>
+                
+                <!-- Row 4: 1, 2, 3, + -->
+                <button onclick="appendNumber('1')" class="calc-btn bg-calc-brown text-white">1</button>
+                <button onclick="appendNumber('2')" class="calc-btn bg-calc-brown text-white">2</button>
+                <button onclick="appendNumber('3')" class="calc-btn bg-calc-brown text-white">3</button>
+                <button onclick="operation('+')" class="calc-btn bg-calc-orange text-white">+</button>
+                
+                <!-- Row 5: 0 (span 2), ., = -->
+                <button onclick="appendNumber('0')" class="calc-btn bg-calc-brown text-white col-span-2">0</button>
+                <button onclick="appendNumber('.')" class="calc-btn bg-calc-brown text-white">.</button>
+                <button onclick="calculate()" class="calc-btn bg-calc-orange text-white">=</button>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: WorkingCalculator -->
+
+        <!-- Calculator Categories Grid -->
+        <!-- @STATE: categories loaded from data -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900">Calculator Categories</h2>
+            
+            <!-- 4-Column Grid Layout -->
+            <div class="categories grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" style="grid-template-columns: repeat(4, 1fr);">
+                
+                <!-- Math Calculators Category -->
+                <div class="category-card bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <!-- Math icon from simple geometric shapes -->
+                    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Math Calculators</h3>
+                    <p class="text-gray-600 text-center mb-6 text-sm">Basic math, algebra, geometry, and advanced calculations</p>
+                    
+                    <!-- Extensive Calculator List -->
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <!-- @MAP: mathCalculators.map(calc => ( -->
+                        <a href="/calculator/basic-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Basic Calculator</a>
+                        <a href="/calculator/scientific-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Scientific Calculator</a>
+                        <a href="/calculator/fraction-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Fraction Calculator</a>
+                        <a href="/calculator/percentage-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Percentage Calculator</a>
+                        <a href="/calculator/algebra-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Algebra Calculator</a>
+                        <a href="/calculator/geometry-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Geometry Calculator</a>
+                        <a href="/calculator/triangle-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Triangle Calculator</a>
+                        <a href="/calculator/circle-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Circle Calculator</a>
+                        <a href="/calculator/area-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Area Calculator</a>
+                        <a href="/calculator/volume-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Volume Calculator</a>
+                        <a href="/calculator/perimeter-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Perimeter Calculator</a>
+                        <a href="/calculator/pythagorean-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Pythagorean Calculator</a>
+                        <a href="/calculator/quadratic-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Quadratic Calculator</a>
+                        <a href="/calculator/logarithm-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Logarithm Calculator</a>
+                        <a href="/calculator/exponential-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Exponential Calculator</a>
+                        <a href="/calculator/factorial-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Factorial Calculator</a>
+                        <a href="/calculator/prime-number-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Prime Number Calculator</a>
+                        <a href="/calculator/gcd-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">GCD Calculator</a>
+                        <a href="/calculator/lcm-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">LCM Calculator</a>
+                        <a href="/calculator/matrix-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Matrix Calculator</a>
+                        <a href="/calculator/derivative-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Derivative Calculator</a>
+                        <a href="/calculator/integral-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Integral Calculator</a>
+                        <a href="/calculator/statistics-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Statistics Calculator</a>
+                        <a href="/calculator/mean-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Mean Calculator</a>
+                        <a href="/calculator/median-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Median Calculator</a>
+                        <a href="/calculator/mode-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Mode Calculator</a>
+                        <a href="/calculator/standard-deviation-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Standard Deviation Calculator</a>
+                        <a href="/calculator/variance-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Variance Calculator</a>
+                        <a href="/calculator/correlation-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Correlation Calculator</a>
+                        <a href="/calculator/probability-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Probability Calculator</a>
+                        <a href="/calculator/combination-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Combination Calculator</a>
+                        <a href="/calculator/permutation-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Permutation Calculator</a>
+                        <a href="/calculator/sequence-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Sequence Calculator</a>
+                        <a href="/calculator/series-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Series Calculator</a>
+                        <a href="/calculator/fibonacci-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Fibonacci Calculator</a>
+                        <a href="/calculator/binary-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Binary Calculator</a>
+                        <a href="/calculator/hexadecimal-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Hexadecimal Calculator</a>
+                        <a href="/calculator/octal-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Octal Calculator</a>
+                        <a href="/calculator/decimal-to-binary" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Decimal to Binary</a>
+                        <a href="/calculator/binary-to-decimal" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Binary to Decimal</a>
+                        <a href="/calculator/hex-to-decimal" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Hex to Decimal</a>
+                        <a href="/calculator/decimal-to-hex" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Decimal to Hex</a>
+                        <a href="/calculator/number-base-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Number Base Converter</a>
+                        <a href="/calculator/roman-numeral-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Roman Numeral Calculator</a>
+                        <a href="/calculator/unit-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Unit Converter</a>
+                        <a href="/calculator/angle-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Angle Converter</a>
+                        <a href="/calculator/trigonometry-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Trigonometry Calculator</a>
+                        <a href="/calculator/sine-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Sine Calculator</a>
+                        <a href="/calculator/cosine-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Cosine Calculator</a>
+                        <a href="/calculator/tangent-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Tangent Calculator</a>
+                        <a href="/calculator/random-number-generator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Random Number Generator</a>
+                        <!-- @END_MAP )) -->
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="text-xs text-gray-500">50 calculators</span>
+                    </div>
+                </div>
+
+                <!-- Finance Calculators Category -->
+                <div class="category-card bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <!-- Finance icon -->
+                    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Finance Calculators</h3>
+                    <p class="text-gray-600 text-center mb-6 text-sm">Loans, mortgages, investments, taxes, and financial planning</p>
+                    
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <a href="/calculator/mortgage-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Mortgage Calculator</a>
+                        <a href="/calculator/loan-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Loan Calculator</a>
+                        <a href="/calculator/auto-loan-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Auto Loan Calculator</a>
+                        <a href="/calculator/personal-loan-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Personal Loan Calculator</a>
+                        <a href="/calculator/student-loan-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Student Loan Calculator</a>
+                        <a href="/calculator/refinance-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Refinance Calculator</a>
+                        <a href="/calculator/compound-interest-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Compound Interest Calculator</a>
+                        <a href="/calculator/simple-interest-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Simple Interest Calculator</a>
+                        <a href="/calculator/investment-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Investment Calculator</a>
+                        <a href="/calculator/retirement-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Retirement Calculator</a>
+                        <a href="/calculator/401k-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">401k Calculator</a>
+                        <a href="/calculator/ira-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">IRA Calculator</a>
+                        <a href="/calculator/roth-ira-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Roth IRA Calculator</a>
+                        <a href="/calculator/savings-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Savings Calculator</a>
+                        <a href="/calculator/cd-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">CD Calculator</a>
+                        <a href="/calculator/bond-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Bond Calculator</a>
+                        <a href="/calculator/stock-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Stock Calculator</a>
+                        <a href="/calculator/dividend-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Dividend Calculator</a>
+                        <a href="/calculator/tax-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Tax Calculator</a>
+                        <a href="/calculator/income-tax-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Income Tax Calculator</a>
+                        <a href="/calculator/sales-tax-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Sales Tax Calculator</a>
+                        <a href="/calculator/property-tax-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Property Tax Calculator</a>
+                        <a href="/calculator/capital-gains-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Capital Gains Calculator</a>
+                        <a href="/calculator/payroll-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Payroll Calculator</a>
+                        <a href="/calculator/salary-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Salary Calculator</a>
+                        <a href="/calculator/hourly-wage-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Hourly Wage Calculator</a>
+                        <a href="/calculator/net-worth-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Net Worth Calculator</a>
+                        <a href="/calculator/debt-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Debt Calculator</a>
+                        <a href="/calculator/debt-to-income-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Debt-to-Income Calculator</a>
+                        <a href="/calculator/credit-card-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Credit Card Calculator</a>
+                        <a href="/calculator/credit-card-payoff-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Credit Card Payoff Calculator</a>
+                        <a href="/calculator/amortization-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Amortization Calculator</a>
+                        <a href="/calculator/apr-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">APR Calculator</a>
+                        <a href="/calculator/loan-comparison-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Loan Comparison Calculator</a>
+                        <a href="/calculator/present-value-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Present Value Calculator</a>
+                        <a href="/calculator/future-value-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Future Value Calculator</a>
+                        <a href="/calculator/annuity-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Annuity Calculator</a>
+                        <a href="/calculator/life-insurance-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Life Insurance Calculator</a>
+                        <a href="/calculator/mortgage-refinance-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Mortgage Refinance Calculator</a>
+                        <a href="/calculator/home-affordability-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Home Affordability Calculator</a>
+                        <a href="/calculator/rent-vs-buy-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Rent vs Buy Calculator</a>
+                        <a href="/calculator/down-payment-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Down Payment Calculator</a>
+                        <a href="/calculator/closing-cost-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Closing Cost Calculator</a>
+                        <a href="/calculator/pmi-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">PMI Calculator</a>
+                        <a href="/calculator/heloc-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">HELOC Calculator</a>
+                        <a href="/calculator/business-loan-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Business Loan Calculator</a>
+                        <a href="/calculator/roi-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">ROI Calculator</a>
+                        <a href="/calculator/break-even-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Break-Even Calculator</a>
+                        <a href="/calculator/profit-margin-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Profit Margin Calculator</a>
+                        <a href="/calculator/currency-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Currency Converter</a>
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="text-xs text-gray-500">50 calculators</span>
+                    </div>
+                </div>
+
+                <!-- Health Calculators Category -->
+                <div class="category-card bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <!-- Health icon -->
+                    <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Health Calculators</h3>
+                    <p class="text-gray-600 text-center mb-6 text-sm">BMI, calories, fitness, medical, and wellness calculations</p>
+                    
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <a href="/calculator/bmi-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">BMI Calculator</a>
+                        <a href="/calculator/calorie-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Calorie Calculator</a>
+                        <a href="/calculator/bmr-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">BMR Calculator</a>
+                        <a href="/calculator/body-fat-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Body Fat Calculator</a>
+                        <a href="/calculator/ideal-weight-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Ideal Weight Calculator</a>
+                        <a href="/calculator/weight-loss-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Weight Loss Calculator</a>
+                        <a href="/calculator/pregnancy-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Pregnancy Calculator</a>
+                        <a href="/calculator/due-date-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Due Date Calculator</a>
+                        <a href="/calculator/ovulation-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Ovulation Calculator</a>
+                        <a href="/calculator/water-intake-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Water Intake Calculator</a>
+                        <a href="/calculator/protein-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Protein Calculator</a>
+                        <a href="/calculator/macro-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Macro Calculator</a>
+                        <a href="/calculator/heart-rate-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Heart Rate Calculator</a>
+                        <a href="/calculator/pace-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Pace Calculator</a>
+                        <a href="/calculator/running-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Running Calculator</a>
+                        <a href="/calculator/vo2-max-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">VO2 Max Calculator</a>
+                        <a href="/calculator/one-rep-max-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">One Rep Max Calculator</a>
+                        <a href="/calculator/body-surface-area-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Body Surface Area Calculator</a>
+                        <a href="/calculator/blood-pressure-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Blood Pressure Calculator</a>
+                        <a href="/calculator/cholesterol-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Cholesterol Calculator</a>
+                        <a href="/calculator/diabetes-risk-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Diabetes Risk Calculator</a>
+                        <a href="/calculator/sleep-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Sleep Calculator</a>
+                        <a href="/calculator/caffeine-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Caffeine Calculator</a>
+                        <a href="/calculator/alcohol-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Alcohol Calculator</a>
+                        <a href="/calculator/bac-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">BAC Calculator</a>
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="text-xs text-gray-500">25 calculators</span>
+                    </div>
+                </div>
+
+                <!-- Other Calculators Category -->
+                <div class="category-card bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                    <!-- Other/Tools icon -->
+                    <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Other Calculators</h3>
+                    <p class="text-gray-600 text-center mb-6 text-sm">Age, date, time, GPA, construction, and specialty tools</p>
+                    
+                    <div class="space-y-2 max-h-96 overflow-y-auto">
+                        <a href="/calculator/age-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Age Calculator</a>
+                        <a href="/calculator/date-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Date Calculator</a>
+                        <a href="/calculator/time-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Time Calculator</a>
+                        <a href="/calculator/hours-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Hours Calculator</a>
+                        <a href="/calculator/time-zone-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Time Zone Calculator</a>
+                        <a href="/calculator/gpa-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">GPA Calculator</a>
+                        <a href="/calculator/grade-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Grade Calculator</a>
+                        <a href="/calculator/test-score-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Test Score Calculator</a>
+                        <a href="/calculator/final-grade-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Final Grade Calculator</a>
+                        <a href="/calculator/concrete-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Concrete Calculator</a>
+                        <a href="/calculator/paint-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Paint Calculator</a>
+                        <a href="/calculator/tile-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Tile Calculator</a>
+                        <a href="/calculator/flooring-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Flooring Calculator</a>
+                        <a href="/calculator/carpet-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Carpet Calculator</a>
+                        <a href="/calculator/lumber-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Lumber Calculator</a>
+                        <a href="/calculator/roofing-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Roofing Calculator</a>
+                        <a href="/calculator/drywall-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Drywall Calculator</a>
+                        <a href="/calculator/mulch-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Mulch Calculator</a>
+                        <a href="/calculator/gravel-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Gravel Calculator</a>
+                        <a href="/calculator/soil-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Soil Calculator</a>
+                        <a href="/calculator/fence-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Fence Calculator</a>
+                        <a href="/calculator/deck-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Deck Calculator</a>
+                        <a href="/calculator/stairs-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Stairs Calculator</a>
+                        <a href="/calculator/password-generator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Password Generator</a>
+                        <a href="/calculator/qr-code-generator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">QR Code Generator</a>
+                        <a href="/calculator/color-code-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Color Code Converter</a>
+                        <a href="/calculator/ip-subnet-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">IP Subnet Calculator</a>
+                        <a href="/calculator/bandwidth-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Bandwidth Calculator</a>
+                        <a href="/calculator/hash-generator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Hash Generator</a>
+                        <a href="/calculator/text-analyzer" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Text Analyzer</a>
+                        <a href="/calculator/word-counter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Word Counter</a>
+                        <a href="/calculator/character-counter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Character Counter</a>
+                        <a href="/calculator/case-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Case Converter</a>
+                        <a href="/calculator/text-formatter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Text Formatter</a>
+                        <a href="/calculator/markdown-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Markdown Converter</a>
+                        <a href="/calculator/html-encoder" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">HTML Encoder</a>
+                        <a href="/calculator/url-encoder" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">URL Encoder</a>
+                        <a href="/calculator/base64-encoder" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Base64 Encoder</a>
+                        <a href="/calculator/json-validator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">JSON Validator</a>
+                        <a href="/calculator/css-minifier" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">CSS Minifier</a>
+                        <a href="/calculator/javascript-minifier" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">JavaScript Minifier</a>
+                        <a href="/calculator/image-compressor" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Image Compressor</a>
+                        <a href="/calculator/image-resizer" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Image Resizer</a>
+                        <a href="/calculator/color-picker" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Color Picker</a>
+                        <a href="/calculator/gradient-generator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Gradient Generator</a>
+                        <a href="/calculator/font-size-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Font Size Converter</a>
+                        <a href="/calculator/screen-resolution-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Screen Resolution Calculator</a>
+                        <a href="/calculator/aspect-ratio-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Aspect Ratio Calculator</a>
+                        <a href="/calculator/dpi-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">DPI Calculator</a>
+                        <a href="/calculator/pixel-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Pixel Calculator</a>
+                        <a href="/calculator/bandwidth-monitor" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Bandwidth Monitor</a>
+                        <a href="/calculator/ping-test" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Ping Test</a>
+                        <a href="/calculator/speed-test" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Speed Test</a>
+                        <a href="/calculator/weather-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Weather Calculator</a>
+                        <a href="/calculator/temperature-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Temperature Converter</a>
+                        <a href="/calculator/unit-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Unit Converter</a>
+                        <a href="/calculator/measurement-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Measurement Converter</a>
+                        <a href="/calculator/length-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Length Converter</a>
+                        <a href="/calculator/weight-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Weight Converter</a>
+                        <a href="/calculator/volume-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Volume Converter</a>
+                        <a href="/calculator/area-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Area Converter</a>
+                        <a href="/calculator/pressure-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Pressure Converter</a>
+                        <a href="/calculator/energy-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Energy Converter</a>
+                        <a href="/calculator/power-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Power Converter</a>
+                        <a href="/calculator/frequency-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Frequency Converter</a>
+                        <a href="/calculator/speed-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Speed Converter</a>
+                        <a href="/calculator/time-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Time Converter</a>
+                        <a href="/calculator/data-converter" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Data Converter</a>
+                        <a href="/calculator/file-size-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">File Size Calculator</a>
+                        <a href="/calculator/download-time-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Download Time Calculator</a>
+                        <a href="/calculator/storage-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Storage Calculator</a>
+                        <a href="/calculator/backup-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Backup Calculator</a>
+                        <a href="/calculator/disk-space-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Disk Space Calculator</a>
+                        <a href="/calculator/memory-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Memory Calculator</a>
+                        <a href="/calculator/cpu-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">CPU Calculator</a>
+                        <a href="/calculator/gpu-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">GPU Calculator</a>
+                        <a href="/calculator/power-supply-calculator" class="block text-blue-600 hover:text-blue-800 text-sm py-1 hover:bg-blue-50 px-2 rounded transition-colors" data-mock="true">Power Supply Calculator</a>
+                    </div>
+                    <div class="text-center mt-4">
+                        <span class="text-xs text-gray-500">75 calculators</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Calculators Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">Popular Calculators</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="/calculator/percentage-calculator" class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Percentage Calculator</h3>
+                    <p class="text-gray-600 text-sm">Calculate percentages, percentage increase/decrease, and percentage of a number.</p>
+                </a>
+                <a href="/calculator/tip-calculator" class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Tip Calculator</h3>
+                    <p class="text-gray-600 text-sm">Calculate tips and split bills among multiple people.</p>
+                </a>
+                <a href="/calculator/mortgage-calculator" class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow" data-mock="true">
+                    <h3 class="text-lg font-semibold mb-2 text-gray-800">Mortgage Calculator</h3>
+                    <p class="text-gray-600 text-sm">Calculate monthly mortgage payments, total interest, and amortization schedules.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Ad Widget Areas -->
+        <!-- @COMPONENT: AdWidget [728x90 leaderboard] -->
+        <section class="mb-12">
+            <div class="bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <p class="text-gray-500 text-sm">Advertisement Space - 728x90 Leaderboard</p>
+                <p class="text-gray-400 text-xs mt-2">Ad widget placeholder for monetization</p>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AdWidget -->
+
+        <!-- SEO Content Section -->
+        <section class="mb-16">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6 text-gray-900">About Calculate This</h2>
+                <div class="prose max-w-none text-gray-600">
+                    <p class="mb-4">
+                        Calculate This is your comprehensive resource for over 200 free online calculators. Whether you need basic math calculations, 
+                        complex financial planning tools, health and fitness calculators, or specialized conversion tools, we have you covered.
+                    </p>
+                    <p class="mb-4">
+                        Our calculators are designed to be fast, accurate, and easy to use. Each tool is optimized for both desktop and mobile devices, 
+                        ensuring you can perform calculations anywhere, anytime. From students working on homework to professionals managing finances, 
+                        our tools serve users across all backgrounds and needs.
+                    </p>
+                    <p>
+                        All calculators include detailed explanations, step-by-step guides, and the ability to embed them on your own website. 
+                        Start calculating today and discover why millions of users trust Calculate This for their calculation needs.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Calculate This</h3>
+                    <p class="text-gray-400 text-sm">Free online calculators for math, finance, health, and more. Fast, accurate, and easy to use.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Popular Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/math-calculators" class="hover:text-white transition-colors">Math Calculators</a></li>
+                        <li><a href="/finance-calculators" class="hover:text-white transition-colors">Finance Calculators</a></li>
+                        <li><a href="/health-calculators" class="hover:text-white transition-colors">Health Calculators</a></li>
+                        <li><a href="/conversion-calculators" class="hover:text-white transition-colors">Conversion Tools</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Popular Tools</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/calculator/percentage-calculator" class="hover:text-white transition-colors">Percentage Calculator</a></li>
+                        <li><a href="/calculator/mortgage-calculator" class="hover:text-white transition-colors">Mortgage Calculator</a></li>
+                        <li><a href="/calculator/bmi-calculator" class="hover:text-white transition-colors">BMI Calculator</a></li>
+                        <li><a href="/calculator/tip-calculator" class="hover:text-white transition-colors">Tip Calculator</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="/contact" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                <p class="text-gray-400 text-sm">&copy; 2024 Calculate This. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .calc-btn {
+            @apply h-12 rounded-lg font-semibold text-lg border-none cursor-pointer transition-all duration-200 hover:opacity-90 active:scale-95;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        @media (max-width: 1024px) {
+            .categories {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .categories {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+
+    <script>
+        (function() {
+            // Calculator functionality
+            let display = document.getElementById('calculatorDisplay');
+            let currentInput = '0';
+            let operator = null;
+            let previousInput = null;
+            let waitingForOperand = false;
+
+            function updateDisplay() {
+                display.value = currentInput;
+            }
+
+            window.clearCalculator = function() {
+                currentInput = '0';
+                operator = null;
+                previousInput = null;
+                waitingForOperand = false;
+                updateDisplay();
+            };
+
+            window.appendNumber = function(number) {
+                if (waitingForOperand) {
+                    currentInput = number;
+                    waitingForOperand = false;
+                } else {
+                    currentInput = currentInput === '0' ? number : currentInput + number;
+                }
+                updateDisplay();
+            };
+
+            window.operation = function(nextOperator) {
+                const inputValue = parseFloat(currentInput);
+
+                if (previousInput === null) {
+                    previousInput = inputValue;
+                } else if (operator) {
+                    const currentValue = previousInput || 0;
+                    const newValue = performCalculation[operator](currentValue, inputValue);
+
+                    currentInput = String(newValue);
+                    previousInput = newValue;
+                    updateDisplay();
+                }
+
+                waitingForOperand = true;
+                operator = nextOperator;
+            };
+
+            window.calculate = function() {
+                const inputValue = parseFloat(currentInput);
+
+                if (previousInput !== null && operator) {
+                    const newValue = performCalculation[operator](previousInput, inputValue);
+                    currentInput = String(newValue);
+                    previousInput = null;
+                    operator = null;
+                    waitingForOperand = true;
+                    updateDisplay();
+                }
+            };
+
+            window.toggleSign = function() {
+                const value = parseFloat(currentInput);
+                currentInput = String(-value);
+                updateDisplay();
+            };
+
+            window.percentage = function() {
+                const value = parseFloat(currentInput);
+                currentInput = String(value / 100);
+                updateDisplay();
+            };
+
+            const performCalculation = {
+                '/': (firstOperand, secondOperand) => firstOperand / secondOperand,
+                '*': (firstOperand, secondOperand) => firstOperand * secondOperand,
+                '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+                '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+                '=': (firstOperand, secondOperand) => secondOperand
+            };
+
+            // Search functionality
+            const searchInput = document.querySelector('input[type="search"]');
+            const searchButton = document.querySelector('button');
+
+            if (searchInput && searchButton) {
+                searchButton.addEventListener('click', function() {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        // TODO: Implement search functionality
+                        console.log('Searching for:', query);
+                        alert('Search functionality would filter calculators based on: ' + query);
+                    }
+                });
+
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchButton.click();
+                    }
+                });
+            }
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.querySelector('.md\\:hidden button');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', function() {
+                    // TODO: Implement mobile menu toggle
+                    console.log('Mobile menu toggle clicked');
+                });
+            }
+
+            // Category card hover effects
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Initialize calculator display
+            updateDisplay();
+        })();
+    </script>
+
+</body>
+</html>
