@@ -9,8 +9,3 @@
   ],
   "outputDirectory": "dist/public"
 }
-{
-  "redirects": [
-    { "source": "/", "destination": "https://www.calculatethis.org", "permanent": true }
-  ]
-}
