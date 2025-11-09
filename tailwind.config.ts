@@ -6,7 +6,7 @@ export default defineConfig({
   theme: {
     extend: {
       colors: {
-        border: "hsl(240, 5%, 90%)",
+        border: "hsl(240, 5%, 90%)", // 👈 this is the key
         input: "hsl(240, 5%, 96%)",
         ring: "hsl(240, 5%, 85%)",
         background: "hsl(0, 0%, 100%)",
