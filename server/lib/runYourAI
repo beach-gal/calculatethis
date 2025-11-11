@@ -1,4 +1,4 @@
-export async function runYourAI(input: any) {
+export async function runYourAI(input: { prompt?: string }) {
   const prompt = input?.prompt || "Create a calculator for freelance income after taxes"
 
   // Placeholder response — replace with actual AI logic later
