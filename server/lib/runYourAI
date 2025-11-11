@@ -1,3 +1,4 @@
+export async function runYourAI(input) {
 export async function runYourAI(input: { prompt?: string }) {
   const prompt = input?.prompt || "Create a calculator for freelance income after taxes"
 
