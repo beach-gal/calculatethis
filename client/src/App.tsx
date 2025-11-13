@@ -13,17 +13,18 @@ export default function App() {
         'params': {}
       };
     `;
-    document.body.appendChild(configScript);
+    const adZone = document.getElementById("ad-zone");
+    if (adZone) adZone.appendChild(configScript);
 
     const invokeScript = document.createElement("script");
     invokeScript.src = "//www.highperformanceformat.com/1694f76c60dc9c369aaaed6a68a889c0/invoke.js";
     invokeScript.type = "text/javascript";
-    document.body.appendChild(invokeScript);
+    if (adZone) adZone.appendChild(invokeScript);
   }, []);
 
   return (
     <div style={{ padding: "2rem", background: "#f0f0f0" }}>
-      <h1>✅ React App Loaded</h1>
+      <h1>✅ React App Is Rendering</h1>
       <p>This confirms your layout is working.</p>
       <div
         id="ad-zone"
