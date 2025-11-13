@@ -22,16 +22,26 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ padding: "2rem", background: "#f0f0f0" }}>
-      <h1>✅ React App Loaded</h1>
-      <p>This confirms your layout is working.</p>
+    <div
+      style={{
+        background: "#ff0",
+        color: "#000",
+        padding: "3rem",
+        fontSize: "2rem",
+        border: "5px solid red",
+        zIndex: 9999,
+        position: "relative",
+      }}
+    >
+      <h1>🔥 React App Is Rendering</h1>
+      <p>This content should be impossible to miss.</p>
       <div
         id="ad-zone"
         style={{
           width: "728px",
           height: "90px",
           margin: "2rem auto",
-          border: "1px dashed #ccc",
+          border: "2px dashed #000",
           background: "#fff",
         }}
       ></div>
