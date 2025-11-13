@@ -1,3 +1,4 @@
+
 {
   "name": "calculatethis",
   "version": "1.0.0",
@@ -5,8 +6,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
-    "build": "npx vite build && npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "NODE_ENV=production node dist/index.js"
+    "build": "vite build && tsc --project server/tsconfig.json",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

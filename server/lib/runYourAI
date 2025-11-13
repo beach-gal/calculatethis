@@ -1,0 +1,18 @@
+export async function runYourAI(input) {
+export async function runYourAI(input: { prompt?: string }) {
+  const prompt = input?.prompt || "Create a calculator for freelance income after taxes"
+
+  // Placeholder response — replace with actual AI logic later
+  return {
+    success: true,
+    prompt,
+    calculator: {
+      title: "Freelance Income Calculator",
+      fields: [
+        { label: "Gross Income", type: "number", id: "income" },
+        { label: "Tax Rate (%)", type: "number", id: "taxRate" }
+      ],
+      formula: "income - (income * taxRate / 100)"
+    }
+  }
+}
