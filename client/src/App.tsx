@@ -1,6 +1,6 @@
 import { Router, Route } from "wouter";
-import HomePage from "./pages/HomePage";
-import CalculatorPage from "./pages/CalculatorPage";
+import HomePage from "./pages/HomePage.tsx";
+import CalculatorPage from "./pages/CalculatorPage.tsx";
 
 export default function App() {
   return (
