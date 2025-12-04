@@ -9,7 +9,7 @@ export default function App() {
       <Route path="/" component={HomePage} />
 
       {/* Dynamic calculator route */}
-      <Route path="/calculator/:slug" component={CalculatorPage} />
+      <Route path="/calculator/:type" component={CalculatorPage} />
     </Router>
   );
 }
