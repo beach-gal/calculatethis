@@ -1,12 +1,9 @@
-import express from "express";
-import { createServerlessHandler } from "@vercel/node"; // optional helper
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const app = express();
-
-// Define your routes
-app.get("/generate", (req, res) => {
-  res.json({ message: "AI calculator generated!" });
-});
-
-// Export as a serverless handler
-export default app;
+export default function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'GET' && req.url === '/api/generate') {
+    return res.json({ message: "AI calculator generated!" });
+  }
+  
+  return res.status(404).json({ error: 'Not found' });
+}
