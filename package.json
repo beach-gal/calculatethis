@@ -16,10 +16,6 @@
     "react-dom": "19.2.1",
     "@vercel/node": "5.5.15"
   },
-  "overrides": {
-    "esbuild": "0.24.2",
-    "path-to-regexp": "6.3.0"
-  },
   "author": "Patti",
   "license": "MIT"
 }
