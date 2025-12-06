@@ -1,48 +1,25 @@
 {
   "name": "calculatethis",
   "version": "1.0.0",
-  "description": "Faceless calculator hub with hybrid frontend/backend",
-  "main": "dist/index.js",
+  "description": "Calculator hub project",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
-    "@radix-ui/react-dialog": "^1.1.15",
-    "@radix-ui/react-label": "^2.1.8",
-    "@radix-ui/react-popover": "^1.1.15",
-    "@radix-ui/react-select": "^2.2.6",
-    "@radix-ui/react-switch": "^1.2.6",
-    "@radix-ui/react-tabs": "^1.1.13",
-    "@radix-ui/react-toast": "^1.2.15",
-    "@radix-ui/react-tooltip": "^1.2.8",
-    "@tanstack/react-query": "^5.90.7",
-    "@vercel/node": "^3.2.29",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "express": "^4.18.2",
-    "lucide-react": "^0.553.0",
-    "react-hook-form": "^7.66.0",
-    "react-icons": "^5.5.0",
-    "tailwind-merge": "^3.4.0",
-    "tailwind-variants": "^3.1.1",
-    "wouter": "^3.7.1",
-    "zod": "^4.1.12"
+    "next": "16.0.7",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "@vercel/node": "5.5.15"
   },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.17",
-    "@types/express": "^5.0.5",
-    "@vitejs/plugin-react": "^4.3.3",
-    "autoprefixer": "^10.4.21",
-    "esbuild": "^0.27.0",
-    "postcss": "^8.5.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3",
-    "vite": "^7.2.2"
+  "overrides": {
+    "esbuild": "0.24.2",
+    "path-to-regexp": "6.3.0"
   },
-  "type": "module"
+  "author": "Patti",
+  "license": "MIT"
 }
