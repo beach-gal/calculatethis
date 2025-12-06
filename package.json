@@ -11,17 +11,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-<<<<<<< HEAD
     "next": "16.0.7",
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "@vercel/node": "5.5.15"
-=======
-    "@vercel/node": "5.5.15",
-    "next": "16.0.7",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
->>>>>>> 381c704 (Lock React 19.2.1 + Next.js 16.0.7)
   },
   "author": "Patti",
   "license": "MIT"
